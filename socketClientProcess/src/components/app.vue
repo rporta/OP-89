@@ -27,10 +27,75 @@
             <f7-link popup-close>Close</f7-link>
           </f7-nav-right>
         </f7-navbar>
-        <f7-block>
-          <p>Socket Client content goes here.</p>
-        </f7-block>
-      </f7-page>
+
+
+        <f7-messagebar
+          :placeholder="placeholder"
+          ref="messagebar"
+          :attachments-visible="attachmentsVisible"
+          :sheet-visible="sheetVisible"
+        >
+          <f7-link
+            icon-ios="f7:camera_fill"
+            icon-aurora="f7:camera_fill"
+            icon-md="material:camera_alt"
+            slot="inner-start"
+            @click="sheetVisible = !sheetVisible"
+          ></f7-link>
+          <f7-link
+            icon-ios="f7:arrow_up_fill"
+            icon-aurora="f7:arrow_up_fill"
+            icon-md="material:send"
+            slot="inner-end"
+            @click="sendMessage"
+          ></f7-link>
+          <f7-messagebar-attachments>
+            <f7-messagebar-attachment
+              v-for="(image, index) in attachments"
+              :key="index"
+              :image="image"
+              @attachment:delete="deleteAttachment(image)"
+            ></f7-messagebar-attachment>
+          </f7-messagebar-attachments>
+          <f7-messagebar-sheet>
+            <f7-messagebar-sheet-image
+              v-for="(image, index) in images"
+              :key="index"
+              :image="image"
+              :checked="attachments.indexOf(image) >= 0"
+              @change="handleAttachment"
+            ></f7-messagebar-sheet-image>
+          </f7-messagebar-sheet>
+        </f7-messagebar>
+
+        <f7-messages ref="messages">
+          <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
+          <f7-message
+            v-for="(message, index) in messagesData"
+            :key="index"
+            :type="message.type"
+            :image="message.image"
+            :name="message.name"
+            :avatar="message.avatar"
+            :first="isFirstMessage(message, index)"
+            :last="isLastMessage(message, index)"
+            :tail="isTailMessage(message, index)"
+          >
+            <span slot="text" v-if="message.text" v-html="message.text"></span>
+          </f7-message>
+          <f7-message v-if="typingMessage"
+            type="received"
+            :typing="true"
+            :first="true"
+            :last="true"
+            :tail="true"
+            :header="`${typingMessage.name} is typing`"
+            :avatar="typingMessage.avatar"
+          ></f7-message>
+        </f7-messages>
+
+
+      </f7-page>      
     </f7-view>
   </f7-popup>
 
