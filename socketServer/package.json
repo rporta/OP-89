@@ -1,0 +1,19 @@
+{
+  "name": "socketserver",
+  "version": "1.0.0",
+  "description": "## Pasos para inciar socketServer",
+  "main": "index.js",
+  "scripts": {
+    "start-dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "Ramiro Portas",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
+}
