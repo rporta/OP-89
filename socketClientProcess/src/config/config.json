@@ -1,7 +1,6 @@
 {
     "interval": 1,
     "api": {
-        "host_old": "rtasrv.opratel.com",
         "host": "localhost",
         "port": "3000"
     }
