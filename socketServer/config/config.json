@@ -1,0 +1,7 @@
+{
+    "interval": 1,
+    "api": {
+        "host": "localhost",
+        "port": "3000"
+    }
+}
