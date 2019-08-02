@@ -113,57 +113,6 @@
         sheetVisible: false,
         typingMessage: null,
         messagesData: [
-          {
-            type: 'sent',
-            text: 'Hi, Kate',
-          },
-          {
-            type: 'sent',
-            text: 'How are you?',
-          },
-          {
-            name: 'Kate',
-            type: 'received',
-            text: 'Hi, I am good!',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-          },
-          {
-            name: 'Blue Ninja',
-            type: 'received',
-            text: 'Hi there, I am also fine, thanks! And how are you?',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg',
-          },
-          {
-            type: 'sent',
-            text: 'Hey, Blue Ninja! Glad to see you ;)',
-          },
-          {
-            type: 'sent',
-            text: 'Hey, look, cutest kitten ever!',
-          },
-          {
-            type: 'sent',
-            image: 'https://cdn.framework7.io/placeholder/cats-200x260-4.jpg',
-
-          },
-          {
-            name: 'Kate',
-            type: 'received',
-            text: 'Nice!',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-          },
-          {
-            name: 'Kate',
-            type: 'received',
-            text: 'Like it very much!',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-          },
-          {
-            name: 'Blue Ninja',
-            type: 'received',
-            text: 'Awesome!',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg',
-          },
         ],
         images: [
           'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
@@ -336,7 +285,7 @@
             });
             self.typingMessage = null;
             self.responseInProgress = false;
-          }, 4000);
+          }, 1000);
         }, 1000);
       },      
     },
