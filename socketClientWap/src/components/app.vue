@@ -18,7 +18,7 @@
             <f7-list-item link="#" title="Configuracion App">
               <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
             </f7-list-item>
-            <f7-list-item  accordion-item title="Lista de clientes wap">
+            <f7-list-item  accordion-item title="Lista de clientes process">
               <f7-icon text-color="green" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
               <f7-accordion-content :style="generateColor('rgb(11, 11, 11)')">
 
@@ -105,7 +105,6 @@
           </f7-nav-right>
         </f7-navbar>
 
-
         <f7-messagebar
           :placeholder="placeholder"
           ref="messagebar"
@@ -113,11 +112,12 @@
           :sheet-visible="sheetVisible"
         >
           <f7-link
+            ref="camera"
             icon-ios="f7:camera_fill"
             icon-aurora="f7:camera_fill"
             icon-md="material:camera_alt"
             slot="inner-start"
-            @click="sheetVisible = !sheetVisible"
+            @click="clickCamera()"
           ></f7-link>
           <f7-link
             icon-ios="f7:arrow_up_fill"
@@ -125,6 +125,7 @@
             icon-md="material:send"
             slot="inner-end"
             @click="sendMessage"
+
           ></f7-link>
           <f7-messagebar-attachments>
             <f7-messagebar-attachment
@@ -145,7 +146,7 @@
           </f7-messagebar-sheet>
         </f7-messagebar>
 
-        <f7-messages ref="messages">
+        <f7-messages ref="messages" >
           <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
           <f7-message
             v-for="(message, index) in messagesData"
@@ -170,12 +171,9 @@
             :avatar="typingMessage.avatar"
           ></f7-message>
         </f7-messages>
-
-
       </f7-page>      
     </f7-view>
   </f7-popup>
-
 </f7-app>
 </template>
 <style>
@@ -183,9 +181,12 @@
   min-width: 300px;
   max-width: 400px;
 }    
-
+/*.page-content .messages-content {
+  height: calc(100% - 48px) !important;
+}*/
 </style>
 <script>
+  import Dom7 from 'Dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
 
@@ -282,6 +283,7 @@
         // Login screen data
         username: '',
         password: '',
+        preSendMessage: "",
       }
     },
     methods: {
@@ -335,6 +337,14 @@
           self.attachments.splice(self.attachments.indexOf(image), 1);
         }
       },
+      keymonitor(e){
+        console.log("keymonitor");
+        //socket emmit 
+        socket.emit("typingMessage", {
+          name: "ramiro",
+          avatar: "https://cdn.framework7.io/placeholder/people-100x100-9.jpg",
+        });
+      },
       sendMessage() {
         const self = this;
         const text = self.messagebar.getValue().replace(/\n/g, '<br>').trim();
@@ -364,28 +374,12 @@
         // Send message
         self.messagesData.push(...messagesToSend);
 
-        // Mock response
-        if (self.responseInProgress) return;
-        self.responseInProgress = true;
-        setTimeout(() => {
-          const answer = self.answers[Math.floor(Math.random() * self.answers.length)];
-          const person = self.people[Math.floor(Math.random() * self.people.length)];
-          self.typingMessage = {
-            name: person.name,
-            avatar: person.avatar,
-          };
-          setTimeout(() => {
-            self.messagesData.push({
-              text: answer,
-              type: 'received',
-              name: person.name,
-              avatar: person.avatar,
-            });
-            self.typingMessage = null;
-            self.responseInProgress = false;
-          }, 1000);
-        }, 1000);
-      },      
+        socket.emit("message", messagesToSend);
+      },
+      clickCamera(){
+        this.sheetVisible = !this.sheetVisible;
+        this.keymonitor();
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -394,13 +388,34 @@
           cordovaApp.init(f7);
         }
         // Call F7 APIs here
-      });
+        this.messagebar = this.$refs.messagebar.f7Messagebar;
+        this.messages = this.$refs.messages.f7Messages;   
+        this.camera = this.$refs.camera;   
 
-      const self = this;
-      self.$f7ready(() => {
-        self.messagebar = self.$refs.messagebar.f7Messagebar;
-        self.messages = self.$refs.messages.f7Messages;
-      });      
+        Dom7(this.messages.$pageContentEl).attr({
+          style: "height : calc(100% - 48px) !important;"
+        });
+        Dom7(this.messagebar.$textareaEl).keypress(this.keymonitor);
+
+        var self = this;
+
+        socket.on("sendTypingMessage", function(data){
+          self.responseInProgress = true;
+          self.typingMessage = data;      
+        });
+        socket.on("sendMessage", function(data){
+          var tempTypingMessage = self.typingMessage;
+          self.typingMessage = null;
+          self.responseInProgress = false;        
+          for(let m in data){
+            var currentData = data[m];
+            currentData.type = 'received';
+            currentData.name = tempTypingMessage.name;
+            currentData.avatar = tempTypingMessage.avatar;
+            self.messagesData.push(currentData);
+          }
+        });
+      }); 
     },
     computed: {
       attachmentsVisible() {

@@ -1,14 +1,92 @@
 <template>
-<f7-app :params="f7params">
+<f7-app :params="f7params" theme-dark>
   <!-- Status bar overlay for fullscreen mode-->
   <f7-statusbar></f7-statusbar>
 
   <!-- Right panel with reveal effect-->
-  <f7-panel right reveal theme-dark>
+  <f7-panel >
     <f7-view>
       <f7-page>
         <f7-navbar title="Right Panel"></f7-navbar>
-        <f7-block>Right panel content goes here</f7-block>
+          <f7-list>
+            <f7-list-item link="#" title="Inicio">
+              <f7-icon text-color="white" slot="media" ios="f7:home" aurora="f7:home" md="material:home"></f7-icon>
+            </f7-list-item>
+            <f7-list-item  link="#" title="Configuracion de perfil">
+              <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
+            </f7-list-item>
+            <f7-list-item link="#" title="Configuracion App">
+              <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+            </f7-list-item>
+            <f7-list-item  accordion-item title="Lista de clientes process">
+              <f7-icon text-color="green" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
+              <f7-accordion-content :style="generateColor('rgb(11, 11, 11)')">
+
+
+
+
+
+                  <f7-list-item  accordion-item title="Linux">
+                    <f7-icon text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
+                    <f7-accordion-content bg-color="black">
+                        <f7-list-item link="#" title="Ver informacion">
+                          <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
+                        </f7-list-item>
+                        <f7-list-item link="#" title="Configuracion">
+                          <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
+                        </f7-list-item> 
+                        <f7-list-item link="#" title="Desconectar">
+                          <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
+                        </f7-list-item> 
+                        <f7-list-item link="#" title="Acciones">
+                          <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                        </f7-list-item>                         
+                    </f7-accordion-content>
+                  </f7-list-item>
+
+
+                  <f7-list-item  accordion-item title="Samsung A7">
+                    <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
+                    <f7-accordion-content bg-color="black">
+                        <f7-list-item link="#" title="Ver informacion">
+                          <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
+                        </f7-list-item>
+                        <f7-list-item link="#" title="Configuracion">
+                          <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
+                        </f7-list-item> 
+                        <f7-list-item link="#" title="Desconectar">
+                          <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
+                        </f7-list-item> 
+                        <f7-list-item link="#" title="Acciones">
+                          <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                        </f7-list-item>                         
+                    </f7-accordion-content>
+                  </f7-list-item>
+              </f7-accordion-content>
+            </f7-list-item>
+            <f7-list-item  accordion-item title="Lista de clientes wap">
+              <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
+              <f7-accordion-content :style="generateColor('rgb(11, 11, 11)')">
+                <f7-list-item  accordion-item title="Samsung A7">
+                  <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
+                  <f7-accordion-content bg-color="black">
+                      <f7-list-item link="#" title="Ver informacion">
+                        <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
+                      </f7-list-item>
+                      <f7-list-item link="#" title="Configuracion">
+                        <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
+                      </f7-list-item> 
+                      <f7-list-item link="#" title="Desconectar">
+                        <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
+                      </f7-list-item> 
+                      <f7-list-item link="#" title="Acciones">
+                        <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                      </f7-list-item>                         
+                  </f7-accordion-content>
+                </f7-list-item>
+              </f7-accordion-content>
+            </f7-list-item>                                   
+          </f7-list>
       </f7-page>
     </f7-view>
   </f7-panel>
@@ -27,7 +105,6 @@
           </f7-nav-right>
         </f7-navbar>
 
-
         <f7-messagebar
           :placeholder="placeholder"
           ref="messagebar"
@@ -35,11 +112,12 @@
           :sheet-visible="sheetVisible"
         >
           <f7-link
+            ref="camera"
             icon-ios="f7:camera_fill"
             icon-aurora="f7:camera_fill"
             icon-md="material:camera_alt"
             slot="inner-start"
-            @click="sheetVisible = !sheetVisible"
+            @click="clickCamera()"
           ></f7-link>
           <f7-link
             icon-ios="f7:arrow_up_fill"
@@ -47,6 +125,7 @@
             icon-md="material:send"
             slot="inner-end"
             @click="sendMessage"
+
           ></f7-link>
           <f7-messagebar-attachments>
             <f7-messagebar-attachment
@@ -67,7 +146,7 @@
           </f7-messagebar-sheet>
         </f7-messagebar>
 
-        <f7-messages ref="messages">
+        <f7-messages ref="messages" >
           <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
           <f7-message
             v-for="(message, index) in messagesData"
@@ -92,15 +171,22 @@
             :avatar="typingMessage.avatar"
           ></f7-message>
         </f7-messages>
-
-
       </f7-page>      
     </f7-view>
   </f7-popup>
-
 </f7-app>
 </template>
+<style>
+.panel {
+  min-width: 300px;
+  max-width: 400px;
+}    
+/*.page-content .messages-content {
+  height: calc(100% - 48px) !important;
+}*/
+</style>
 <script>
+  import Dom7 from 'Dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
 
@@ -112,7 +198,8 @@
         attachments: [],
         sheetVisible: false,
         typingMessage: null,
-        messagesData: [],
+        messagesData: [
+        ],
         images: [
           'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
           'https://cdn.framework7.io/placeholder/cats-200x300-2.jpg',
@@ -159,6 +246,11 @@
           id: 'io.framework7.myapp', // App bundle ID
           name: 'socketClientProcess', // App name
           theme: 'auto', // Automatic theme detection
+          panel: {
+            swipe: 'right',
+            effect:"reveal",
+            leftBreakpoint: 800,
+          },   
           // App root data
           data: function () {
             return {
@@ -191,9 +283,18 @@
         // Login screen data
         username: '',
         password: '',
+        preSendMessage: "",
       }
     },
     methods: {
+      getF7(){
+        return this.$f7;
+      },
+      generateColor(color){
+        return {
+          "background-color": color  + "!important"
+        };
+      },
       alertLoginData() {
         this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
       },
@@ -236,6 +337,14 @@
           self.attachments.splice(self.attachments.indexOf(image), 1);
         }
       },
+      keymonitor(e){
+        console.log("keymonitor");
+        //socket emmit 
+        socket.emit("typingMessage", {
+          name: "ramiro",
+          avatar: "https://cdn.framework7.io/placeholder/people-100x100-9.jpg",
+        });
+      },
       sendMessage() {
         const self = this;
         const text = self.messagebar.getValue().replace(/\n/g, '<br>').trim();
@@ -265,28 +374,12 @@
         // Send message
         self.messagesData.push(...messagesToSend);
 
-        // Mock response
-        if (self.responseInProgress) return;
-        self.responseInProgress = true;
-        setTimeout(() => {
-          const answer = self.answers[Math.floor(Math.random() * self.answers.length)];
-          const person = self.people[Math.floor(Math.random() * self.people.length)];
-          self.typingMessage = {
-            name: person.name,
-            avatar: person.avatar,
-          };
-          setTimeout(() => {
-            self.messagesData.push({
-              text: answer,
-              type: 'received',
-              name: person.name,
-              avatar: person.avatar,
-            });
-            self.typingMessage = null;
-            self.responseInProgress = false;
-          }, 4000);
-        }, 1000);
-      },      
+        socket.emit("message", messagesToSend);
+      },
+      clickCamera(){
+        this.sheetVisible = !this.sheetVisible;
+        this.keymonitor();
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -295,13 +388,34 @@
           cordovaApp.init(f7);
         }
         // Call F7 APIs here
-      });
+        this.messagebar = this.$refs.messagebar.f7Messagebar;
+        this.messages = this.$refs.messages.f7Messages;   
+        this.camera = this.$refs.camera;   
 
-      const self = this;
-      self.$f7ready(() => {
-        self.messagebar = self.$refs.messagebar.f7Messagebar;
-        self.messages = self.$refs.messages.f7Messages;
-      });      
+        Dom7(this.messages.$pageContentEl).attr({
+          style: "height : calc(100% - 48px) !important;"
+        });
+        Dom7(this.messagebar.$textareaEl).keypress(this.keymonitor);
+
+        var self = this;
+
+        socket.on("sendTypingMessage", function(data){
+          self.responseInProgress = true;
+          self.typingMessage = data;      
+        });
+        socket.on("sendMessage", function(data){
+          var tempTypingMessage = self.typingMessage;
+          self.typingMessage = null;
+          self.responseInProgress = false;        
+          for(let m in data){
+            var currentData = data[m];
+            currentData.type = 'received';
+            currentData.name = tempTypingMessage.name;
+            currentData.avatar = tempTypingMessage.avatar;
+            self.messagesData.push(currentData);
+          }
+        });
+      }); 
     },
     computed: {
       attachmentsVisible() {
