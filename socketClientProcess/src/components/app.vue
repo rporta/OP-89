@@ -181,9 +181,6 @@
   min-width: 300px;
   max-width: 400px;
 }    
-/*.page-content .messages-content {
-  height: calc(100% - 48px) !important;
-}*/
 </style>
 <script>
   import Dom7 from 'Dom7';
@@ -193,8 +190,7 @@
   export default {
     data() {
       return {
-
-
+        // Set messages-f7
         attachments: [],
         sheetVisible: false,
         typingMessage: null,
@@ -212,35 +208,7 @@
           'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
           'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
         ],
-        people: [
-          {
-            name: 'Kate Johnson',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-9.jpg',
-          },
-          {
-            name: 'Blue Ninja',
-            avatar: 'https://cdn.framework7.io/placeholder/people-100x100-7.jpg',
-          },
-        ],
-        answers: [
-          'Yes!',
-          'No',
-          'Hm...',
-          'I am not sure',
-          'And what about you?',
-          'May be ;)',
-          'Lorem ipsum dolor sit amet, consectetur',
-          'What?',
-          'Are you sure?',
-          'Of course',
-          'Need to think about it',
-          'Amazing!!!',
-        ],
         responseInProgress: false,
-      
-
-
-
         // Framework7 Parameters
         f7params: {
           id: 'io.framework7.myapp', // App bundle ID
@@ -261,12 +229,8 @@
 
             };
           },
-
           // App routes
           routes: routes,
-
-
-
           // Input settings
           input: {
             scrollIntoViewOnFocus: this.$device.cordova && !this.$device.electron,
@@ -279,11 +243,9 @@
             androidOverlaysWebView: false,
           },
         },
-
         // Login screen data
         username: '',
         password: '',
-        preSendMessage: "",
       }
     },
     methods: {
@@ -298,7 +260,6 @@
       alertLoginData() {
         this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
       },
-
       isFirstMessage(message, index) {
         const self = this;
         const previousMessage = self.messagesData[index - 1];
@@ -339,11 +300,29 @@
       },
       keymonitor(e){
         console.log("keymonitor");
-        //socket emmit 
-        socket.emit("typingMessage", {
-          name: "ramiro",
-          avatar: "https://cdn.framework7.io/placeholder/people-100x100-9.jpg",
-        });
+        var self = this;
+        setTimeout(function() {
+          var text = Dom7(self.messagebar.$textareaEl).val().replace(/\n/g, '<br>').trim();
+          var isAddcomment = (self.attachments.length > 0 ? true : false);
+          var isOffKeymonitor = (text == "" ? true : false);
+
+          if(isOffKeymonitor && !isAddcomment){
+            self.offKeymonitor(e);
+          }else{
+            // Send socket 
+            socket.emit("typingMessage", {
+              name: "ramiro",
+              avatar: "https://cdn.framework7.io/placeholder/people-100x100-9.jpg",
+            });
+          }
+        }, 100);
+      },
+      offKeymonitor(e){
+        console.log("offKeymonitor");
+        // Send socket         
+        setTimeout(function() {
+          socket.emit("offTypingMessage", {});          
+        }, 500);
       },
       sendMessage() {
         const self = this;
@@ -362,7 +341,6 @@
         if (messagesToSend.length === 0) {
           return;
         }
-
         // Reset attachments
         self.attachments = [];
         // Hide sheet
@@ -373,12 +351,11 @@
         if (text.length) self.messagebar.focus();
         // Send message
         self.messagesData.push(...messagesToSend);
-
+        // Send socket
         socket.emit("message", messagesToSend);
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
-        this.keymonitor();
       }
     },
     mounted() {
@@ -392,17 +369,22 @@
         this.messages = this.$refs.messages.f7Messages;   
         this.camera = this.$refs.camera;   
 
+        // Set Dom7 style, events
         Dom7(this.messages.$pageContentEl).attr({
           style: "height : calc(100% - 48px) !important;"
         });
-        Dom7(this.messagebar.$textareaEl).keypress(this.keymonitor);
+        Dom7(this.messagebar.$textareaEl).keydown(this.keymonitor);
 
+        // Set socket on
         var self = this;
-
         socket.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      
         });
+        socket.on("sendOffTypingMessage", function(data){
+          self.responseInProgress = false;
+          self.typingMessage = null;      
+        });        
         socket.on("sendMessage", function(data){
           var tempTypingMessage = self.typingMessage;
           self.typingMessage = null;
@@ -423,8 +405,14 @@
         return self.attachments.length > 0;
       },
       placeholder() {
+        console.log("placeholder");
         const self = this;
-        return self.attachments.length > 0 ? 'Add comment or Send' : 'Message';
+
+        var isAddcomment = (self.attachments.length > 0 ? true : false);
+
+        this.keymonitor();
+
+        return isAddcomment ? 'Add comment or Send' : 'Message';
       },
     },    
   }
