@@ -1,97 +1,5 @@
 <template>
-<f7-app :params="f7params" theme-dark>
-  <!-- Status bar overlay for fullscreen mode-->
-  <f7-statusbar></f7-statusbar>
-
-  <!-- Right panel with reveal effect-->
-  <f7-panel >
-    <f7-view>
-      <f7-page>
-        <f7-navbar title="Right Panel"></f7-navbar>
-          <f7-list>
-            <f7-list-item @click="redirectTo('/')" link="#" title="Inicio">
-              <f7-icon text-color="white" slot="media" ios="f7:home" aurora="f7:home" md="material:home"></f7-icon>
-            </f7-list-item>
-            <f7-list-item @click="redirectTo('/configPerfil/')" link="#" title="Configuracion de perfil" >
-              <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
-            </f7-list-item>
-            <f7-list-item @click="redirectTo('/configApp/')" link="#" title="Configuracion App">
-              <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-            </f7-list-item>
-            <f7-list-item  accordion-item title="Lista de clientes process">
-              <f7-icon text-color="green" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
-              <f7-accordion-content :style="generateColor('rgb(11, 11, 11)')">
-                  <f7-list-item  accordion-item title="Linux">
-                    <f7-icon text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
-                    <f7-accordion-content bg-color="black">
-                        <f7-list-item link="#" @click="redirectTo('/infoClient/')" title="Ver informacion">
-                          <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
-                        </f7-list-item>
-                        <f7-list-item @click="redirectTo('/configClient/')" link="#" title="Configuracion">
-                          <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
-                        </f7-list-item> 
-                        <f7-list-item link="#" title="Desconectar">
-                          <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
-                        </f7-list-item> 
-                        <f7-list-item link="#" title="Acciones">
-                          <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
-                        </f7-list-item>                         
-                    </f7-accordion-content>
-                  </f7-list-item>
-                  <f7-list-item  accordion-item title="Samsung A7">
-                    <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
-                    <f7-accordion-content bg-color="black">
-                        <f7-list-item link="#" title="Ver informacion">
-                          <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
-                        </f7-list-item>
-                        <f7-list-item link="#" title="Configuracion">
-                          <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
-                        </f7-list-item> 
-                        <f7-list-item link="#" title="Desconectar">
-                          <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
-                        </f7-list-item> 
-                        <f7-list-item link="#" title="Acciones">
-                          <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
-                        </f7-list-item>                         
-                    </f7-accordion-content>
-                  </f7-list-item>
-              </f7-accordion-content>
-            </f7-list-item>
-            <f7-list-item  accordion-item title="Lista de clientes wap">
-              <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
-              <f7-accordion-content :style="generateColor('rgb(11, 11, 11)')">
-                <f7-list-item  accordion-item title="Samsung A7">
-                  <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
-                  <f7-accordion-content bg-color="black">
-                      <f7-list-item link="#" title="Ver informacion">
-                        <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
-                      </f7-list-item>
-                      <f7-list-item link="#" title="Configuracion">
-                        <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
-                      </f7-list-item> 
-                      <f7-list-item link="#" title="Desconectar">
-                        <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
-                      </f7-list-item> 
-                      <f7-list-item link="#" title="Acciones">
-                        <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
-                      </f7-list-item>                         
-                  </f7-accordion-content>
-                </f7-list-item>
-              </f7-accordion-content>
-            </f7-list-item>                                   
-          </f7-list>
-      </f7-page>
-    </f7-view>
-  </f7-panel>
-
-
-  <!-- Your main view, should have "view-main" class -->
-  <f7-view main class="safe-areas" url="/"></f7-view>
-
-  <!-- Popup -->
-  <f7-popup id="my-popup">
-    <f7-view>
-      <f7-page>
+  <f7-page name="socketClient">
         <f7-navbar title="Socket Client">
           <f7-nav-right>
             <f7-link popup-close>Close</f7-link>
@@ -164,22 +72,13 @@
             :avatar="typingMessage.avatar"
           ></f7-message>
         </f7-messages>
-      </f7-page>      
-    </f7-view>
-  </f7-popup>
-</f7-app>
+  </f7-page>
 </template>
-<style>
-.panel {
-  min-width: 300px;
-  max-width: 400px;
-}    
-</style>
 <script>
   import Dom7 from 'Dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-
+  
   export default {
     data() {
       return {
@@ -202,44 +101,7 @@
           'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
         ],
         responseInProgress: false,
-        // Framework7 Parameters
-        f7params: {
-          id: 'io.framework7.myapp', // App bundle ID
-          name: 'socketClientProcess', // App name
-          theme: 'auto', // Automatic theme detection
-          panel: {
-            swipe: 'right',
-            effect:"reveal",
-            leftBreakpoint: 800,
-          },   
-          // App root data
-          data: function () {
-            return {
-              user: {
-                firstName: 'John',
-                lastName: 'Doe',
-              },
-
-            };
-          },
-          // App routes
-          routes: routes,
-          // Input settings
-          input: {
-            scrollIntoViewOnFocus: this.$device.cordova && !this.$device.electron,
-            scrollIntoViewCentered: this.$device.cordova && !this.$device.electron,
-          },
-          // Cordova Statusbar settings
-          statusbar: {
-            overlay: this.$device.cordova && this.$device.ios || 'auto',
-            iosOverlaysWebView: true,
-            androidOverlaysWebView: false,
-          },
-        },
-        // Login screen data
-        username: '',
-        password: '',
-      }
+      };
     },
     methods: {
       getF7(){
@@ -354,6 +216,7 @@
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
       }
+
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -395,7 +258,7 @@
           }
         });
       }); 
-    },
+    },    
     computed: {
       attachmentsVisible() {
         const self = this;
@@ -411,6 +274,6 @@
 
         return isAddcomment ? 'Add comment or Send' : 'Message';
       },
-    },    
-  }
+    }
+  };
 </script>

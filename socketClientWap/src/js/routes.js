@@ -6,7 +6,12 @@ import FormPage from '../pages/form.vue';
 import DynamicRoutePage from '../pages/dynamic-route.vue';
 import RequestAndLoad from '../pages/request-and-load.vue';
 import NotFoundPage from '../pages/404.vue';
-import Config from '../pages/config.vue';
+import ConfigApp from '../pages/ConfigApp.vue';
+import ConfigPerfil from '../pages/ConfigPerfil.vue';
+import ConfigClient from '../pages/ConfigClient.vue';
+import InfoClient from '../pages/infoClient.vue';
+import RightPanel from '../pages/rightPanel.vue';
+import SocketClient from '../pages/socketClient.vue';
 
 var routes = [{
     path: '/',
@@ -20,8 +25,33 @@ var routes = [{
   },
 
   {
-    path: '/config/',
-    component: Config,
+    path: '/configApp/',
+    component: ConfigApp,
+  },
+
+  {
+    path: '/configPerfil/',
+    component: ConfigPerfil,
+  },
+
+  {
+    path: '/configClient/',
+    component: ConfigClient,
+  },
+
+  {
+    path: '/infoClient/',
+    component: InfoClient,
+  },
+
+  {
+    path: '/rightPanel/',
+    component: RightPanel,
+  },
+
+  {
+    path: '/socketClient/',
+    component: SocketClient,
   },
 
   {
