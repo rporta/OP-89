@@ -21,6 +21,7 @@ server.listen(port, () => {
 		console.log(`client: ${socket.id}`);
 
 		socket.on("init", function(data) {
+			console.log(data);
 			clients.push(data);
 		});
 

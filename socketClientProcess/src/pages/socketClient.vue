@@ -212,8 +212,24 @@
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
+      },
+      getInfoDevice(){
+        var device = this.getF7().device;
+        var data = {};
+        for(let key in device){
+          if(key != "pixelRatio"){          
+            var currentValue = device[key];
+            if(typeof currentValue === "boolean"){
+              if(currentValue){
+                data[key] = currentValue;
+              }
+            }else{
+              data[key] = currentValue;
+            }
+          }
+        }
+        return data;
       }
-
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -235,11 +251,13 @@
 
         // Set socket on
         var self = this;
+
+        var initData = {
+            id: socket.id,
+            driver:  this.getInfoDevice()
+        };
         socket.on('connect', function() {
-            socket.emit("init", {
-                id: socket.id,
-                driver: navigator.userAgent
-            });
+            socket.emit("init", initData);
         });
         socket.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
