@@ -36,7 +36,7 @@
           theme: 'auto', // Automatic theme detection
           panel: {
             swipe: 'right',
-            effect:"reveal",
+            effect: 'reveal',
             leftBreakpoint: 800,
           },   
           // App root data

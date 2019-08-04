@@ -32,11 +32,11 @@
         // Framework7 Parameters
         f7params: {
           id: 'io.framework7.myapp', // App bundle ID
-          name: 'socketClientProcess', // App name
+          name: 'socketClientWap', // App name
           theme: 'auto', // Automatic theme detection
           panel: {
             swipe: 'right',
-            effect:"reveal",
+            effect: 'reveal',
             leftBreakpoint: 800,
           },   
           // App root data
