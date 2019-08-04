@@ -26,16 +26,11 @@ Framework7.use(Framework7Vue);
 
 // Init App
 app = new Vue({
-	el: '#app',
-	render: (h) => h(App),
+    el: '#app',
+    render: (h) => h(App),
 
-	// Register App Component
-	components: {
-		app: App
-	},
-	methods: {
-		getF7() {
-			return this.$children[0].getF7();
-		}
-	}
+    // Register App Component
+    components: {
+        app: App
+    },
 });
