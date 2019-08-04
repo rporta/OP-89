@@ -78,7 +78,7 @@
   import Dom7 from 'Dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  
+  import config from '../config/config.json';
   export default {
     data() {
       return {
@@ -101,6 +101,8 @@
           'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
         ],
         responseInProgress: false,
+        // Set default config
+        config : config
       };
     },
     methods: {
@@ -158,7 +160,6 @@
         }
       },
       keymonitor(e){
-        console.log("keymonitor");
         var self = this;
         setTimeout(function() {
           var text = Dom7(self.messagebar.$textareaEl).val().replace(/\n/g, '<br>').trim();
@@ -169,15 +170,11 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", {
-              name: "ramiro",
-              avatar: "https://cdn.framework7.io/placeholder/people-100x100-9.jpg",
-            });
+            socket.emit("typingMessage", config.perfil);
           }
         }, 100);
       },
       offKeymonitor(e){
-        console.log("offKeymonitor");
         // Send socket         
         setTimeout(function() {
           socket.emit("offTypingMessage", {});          
