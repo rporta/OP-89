@@ -12,5 +12,12 @@
   </f7-page>
 </template>
 <script>
-  export default {};
+  import config from '../config/config.json';
+  export default {
+    data() {
+      return {
+        config : config
+      };
+    }
+  };
 </script>

@@ -179,6 +179,7 @@
   import Dom7 from 'Dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
+  import config from '../config/config.json';
 
   export default {
     data() {
@@ -308,8 +309,8 @@
           }else{
             // Send socket 
             socket.emit("typingMessage", {
-              name: "ramiro",
-              avatar: "https://cdn.framework7.io/placeholder/people-100x100-9.jpg",
+              name: config.perfil.name,
+              avatar: config.perfil.avatar,
             });
           }
         }, 100);
