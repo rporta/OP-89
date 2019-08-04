@@ -79,11 +79,6 @@
         if (f7.device.cordova) {
           cordovaApp.init(f7);
         }
-        // Call F7 APIs here
-        this.messagebar = this.$refs.messagebar.f7Messagebar;
-        this.messages = this.$refs.messages.f7Messages;   
-        this.camera = this.$refs.camera;   
-
         // Set Dom7 style, events
       }); 
     }    

@@ -102,7 +102,7 @@
         ],
         responseInProgress: false,
         // Set default config
-        config : config
+        config : config,     
       };
     },
     methods: {
@@ -221,6 +221,7 @@
         if (f7.device.cordova) {
           cordovaApp.init(f7);
         }
+
         // Call F7 APIs here
         this.messagebar = this.$refs.messagebar.f7Messagebar;
         this.messages = this.$refs.messages.f7Messages;   
@@ -234,6 +235,12 @@
 
         // Set socket on
         var self = this;
+        socket.on('connect', function() {
+            socket.emit("init", {
+                id: socket.id,
+                driver: navigator.userAgent
+            });
+        });
         socket.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      
@@ -262,7 +269,6 @@
         return self.attachments.length > 0;
       },
       placeholder() {
-        console.log("placeholder");
         const self = this;
 
         var isAddcomment = (self.attachments.length > 0 ? true : false);
