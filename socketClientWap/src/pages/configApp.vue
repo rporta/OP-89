@@ -5,7 +5,7 @@
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
-    <f7-block-title>Configuracion socket </f7-block-title>
+    <f7-block-title>Config socket </f7-block-title>
     <f7-list no-hairlines-md form id="configuracionSocket">
       <f7-list-input
         label="Port"
