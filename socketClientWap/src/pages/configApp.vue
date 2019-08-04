@@ -6,7 +6,7 @@
       </f7-nav-right>
     </f7-navbar>
     <f7-block-title>Config socket </f7-block-title>
-    <f7-list no-hairlines-md form id="configuracionSocket">
+    <f7-list no-hairlines-md form form-store-data ref="configSocket">
       <f7-list-input
         label="Port"
         floating-label
@@ -65,7 +65,7 @@
     },
     methods: {
       resetDefaultConfig(){
-        var formConfigPerfil = this.$refs.configPerfil.$el;
+        var formConfigPerfil = this.$refs.configSocket.$el;
         var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
         const configDefaultString = JSON.stringify(this.configDefault);
         const configDefaultJSON = JSON.parse(configDefaultString); 
