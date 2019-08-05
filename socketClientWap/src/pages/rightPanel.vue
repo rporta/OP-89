@@ -12,7 +12,7 @@
         <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
       </f7-list-item>
       <f7-list-item  accordion-item title="Lista de clientes process">
-        <f7-icon :text-color="((clients.length > 0 && Process) ? true : false)  ? 'green' : 'red'" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
+        <f7-icon :text-color="Process ? 'green' : 'red'" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
         <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
           <f7-list-item accordion-item v-show="client.type == 'Process' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id">
             <f7-icon text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
@@ -39,7 +39,7 @@
         </f7-accordion-content>
       </f7-list-item>
       <f7-list-item  accordion-item title="Lista de clientes wap" >
-        <f7-icon :text-color="((clients.length > 0 && Wap) ? true : false) ? 'green' : 'red'" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
+        <f7-icon :text-color="Wap ? 'green' : 'red'" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
         <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
           <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id">
             <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
@@ -112,15 +112,14 @@
         socket.on('sendClients', function(data) {
           for(let d in data){
             var currentData = data[d];
-            if(socket.id !== currentData.id){
-              if(currentData.type != config.type){
-                self[currentData.type] = true;
-              }
-            }
-            else{
+            if(socket.id == currentData.id){
               data.splice(d, 1);
             }
           }
+          for(let d in data){
+            var currentData = data[d];
+            self[currentData.type] = true;
+          }            
           const clientsToString = JSON.stringify(self.clients);
           const clientsToArray =  JSON.parse(clientsToString);
           self.clients = clientsToArray;
