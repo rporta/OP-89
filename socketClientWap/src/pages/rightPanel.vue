@@ -26,9 +26,14 @@
               <f7-list-item link="#" title="Desconectar">
                 <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
-              <f7-list-item link="#" title="Acciones">
+              <f7-list-item  accordion-item link="#" title="Acciones">
                 <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
-              </f7-list-item>                         
+                <f7-accordion-content bg-color="black">
+                  <f7-list-item @click="redirectTo('/socketClient/')" link="#" title="Conversar">
+                    <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                  </f7-list-item>
+                </f7-accordion-content>
+              </f7-list-item>
             </f7-accordion-content>
             </f7-list-item>
         </f7-accordion-content>
@@ -48,9 +53,17 @@
               <f7-list-item link="#" title="Desconectar">
                 <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
-              <f7-list-item link="#" title="Acciones">
+              <f7-list-item  accordion-item link="#" title="Acciones">
                 <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
-              </f7-list-item>                         
+                <f7-accordion-content bg-color="black">
+                  <f7-list-item @click="redirectTo('/socketClient/')" link="#" title="Conversar">
+                    <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                  </f7-list-item>
+                  <f7-list-item link="#" title="Iniciar proceso URL">
+                    <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                  </f7-list-item> 
+                </f7-accordion-content>
+              </f7-list-item>                        
             </f7-accordion-content>
           </f7-list-item>
         </f7-accordion-content>

@@ -12,6 +12,7 @@ import ConfigClient from '../pages/ConfigClient.vue';
 import InfoClient from '../pages/infoClient.vue';
 import RightPanel from '../pages/rightPanel.vue';
 import SocketClient from '../pages/socketClient.vue';
+import SocketClientPopup from '../pages/SocketClientPopup.vue';
 
 var routes = [{
     path: '/',
@@ -52,6 +53,11 @@ var routes = [{
   {
     path: '/socketClient/',
     component: SocketClient,
+  },
+
+  {
+    path: '/socketClientPopup/',
+    component: SocketClientPopup,
   },
 
   {

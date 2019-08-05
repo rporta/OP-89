@@ -1,4 +1,5 @@
 {
+	"type": "Wap",
 	"api": {
 		"host": "localhost",
 		"port": "3000"

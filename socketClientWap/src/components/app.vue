@@ -11,7 +11,7 @@
   <f7-view main class="safe-areas" url="/"></f7-view>
   <!-- Popup -->
   <f7-popup id="my-popup">
-    <f7-view url="/socketClient/">
+    <f7-view url="/socketClientPopup/">
     </f7-view>
   </f7-popup>
 </f7-app>

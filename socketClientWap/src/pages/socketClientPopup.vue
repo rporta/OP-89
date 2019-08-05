@@ -1,8 +1,8 @@
 <template>
   <f7-page name="socketClient">
-        <f7-navbar title="Conversar">
+        <f7-navbar title="Socket Client">
           <f7-nav-right>
-            <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
+            <f7-link popup-close>Close</f7-link>
           </f7-nav-right>
         </f7-navbar>
 
