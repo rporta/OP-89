@@ -2,7 +2,7 @@
     "type": "Process",
     "api": {
         "host": "localhost",
-        "port": "3000"
+        "port": "10000"
     },
     "perfil": {
         "name": "ramiro",
