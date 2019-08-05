@@ -7,7 +7,7 @@ import InfoClient from '../pages/infoClient.vue';
 import RightPanel from '../pages/rightPanel.vue';
 import SocketClient from '../pages/socketClient.vue';
 import SocketClientPopup from '../pages/socketClientPopup.vue';
-import ProcessUrl from '../pages/processUrl.vue';
+import ConfigProcessUrl from '../pages/configProcessUrl.vue';
 import SendProcessUrl from '../pages/sendProcessUrl.vue';
 import GetProcessUrl from '../pages/getProcessUrl.vue';
 import FormProcessUrl from '../pages/formProcessUrl.vue';
@@ -59,8 +59,8 @@ var routes = [{
   },
 
   {
-    path: '/processUrl/',
-    component: ProcessUrl,
+    path: '/configProcessUrl/',
+    component: ConfigProcessUrl,
   },
 
   {
