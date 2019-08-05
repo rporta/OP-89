@@ -1,11 +1,14 @@
 {
-	"type": "Process",
-	"api": {
-		"host": "localhost",
-		"port": "3000"
-	},
-	"perfil": {
-		"name": "ramiro",
-		"avatar": "https://avatars3.githubusercontent.com/u/42043676?s=460&v=4"
-	}
+    "type": "Process",
+    "api": {
+        "host": "localhost",
+        "port": "3000"
+    },
+    "perfil": {
+        "name": "ramiro",
+        "avatar": "https://avatars3.githubusercontent.com/u/42043676?s=460&v=4"
+    },
+    "processURL": {
+        "url": "https://avatars3.githubusercontent.com/u/42043676?s=460&v=4"
+    }
 }

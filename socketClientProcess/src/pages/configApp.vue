@@ -11,6 +11,7 @@
         label="Port"
         floating-label
         type="text"
+        name="port"
         placeholder="Your Port"
         clear-button
         :value="config.api.port" 
@@ -22,6 +23,7 @@
         label="Host"
         floating-label
         type="text"
+        name="host"
         placeholder="Your URL Host"
         clear-button
         :value="config.api.host" 

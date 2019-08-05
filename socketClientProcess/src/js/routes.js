@@ -8,6 +8,9 @@ import RightPanel from '../pages/rightPanel.vue';
 import SocketClient from '../pages/socketClient.vue';
 import SocketClientPopup from '../pages/socketClientPopup.vue';
 import ProcessUrl from '../pages/processUrl.vue';
+import SendProcessUrl from '../pages/sendProcessUrl.vue';
+import GetProcessUrl from '../pages/getProcessUrl.vue';
+import FormProcessUrl from '../pages/formProcessUrl.vue';
 import NotFoundPage from '../pages/404.vue';
 
 var routes = [{
@@ -58,6 +61,21 @@ var routes = [{
   {
     path: '/processUrl/',
     component: ProcessUrl,
+  },
+
+  {
+    path: '/sendProcessUrl/',
+    component: SendProcessUrl,
+  },
+
+  {
+    path: '/getProcessUrl/',
+    component: GetProcessUrl,
+  },
+
+  {
+    path: '/formProcessUrl/',
+    component: FormProcessUrl,
   },
 
   {
