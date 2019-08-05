@@ -116,10 +116,29 @@
               data.splice(d, 1);
             }
           }
+          var isData = (data.length > 0 ? true : false);
+          if(!isData){
+            self.Wap = false;
+            self.Process = false;
+          }
           for(let d in data){
             var currentData = data[d];
-            self[currentData.type] = true;
-          }            
+            if(currentData.type == "Wap"){
+              self.Wap = true;
+              break;
+            }else{
+              self.Wap = false;
+            }
+          }
+          for(let d in data){
+            var currentData = data[d];
+            if(currentData.type == "Process"){
+              self.Process = true;
+              break;
+            }else{
+              self.Process = false;
+            }
+          }
           const clientsToString = JSON.stringify(self.clients);
           const clientsToArray =  JSON.parse(clientsToString);
           self.clients = clientsToArray;
