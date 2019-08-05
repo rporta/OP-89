@@ -21,15 +21,19 @@ server.listen(port, () => {
 		console.log(`client: ${socket.id}`);
 
 		socket.on("init", function(data) {
-			// console.log(data);
+			// add client
 			clients.push(data);
 		});
-
 		socket.on('disconnect', function() {
-			// aca debo elimiar el client en clients
+			// remove client
 			var socketIdDisconnect = socket.id;
+			for (let c in clients) {
+				var currentClient = clients[c];
+				if (currentClient.id == socketIdDisconnect) {
+					clients.splice(c, 1);
+				}
+			}
 		});
-
 		socket.on("getClients", function(data) {
 			// set data getClients
 			var getClients = clients.filter(onlyUnique);
