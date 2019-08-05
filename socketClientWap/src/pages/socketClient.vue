@@ -252,13 +252,13 @@
         // Set socket on
         var self = this;
 
-        var initData = {
-            id: socket.id,
-            wifi: "on",
-            driver:  this.getInfoDevice(),
-            type: "Wap"
-        };
         socket.on('connect', function() {
+            var initData = {
+                id: socket.id,
+                type: "Wap",
+                wifi: "on",
+                driver:  self.getInfoDevice()
+            };
             socket.emit("init", initData);
         });
         socket.on("sendTypingMessage", function(data){

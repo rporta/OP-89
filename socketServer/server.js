@@ -21,8 +21,24 @@ server.listen(port, () => {
 		console.log(`client: ${socket.id}`);
 
 		socket.on("init", function(data) {
-			console.log(data);
+			// console.log(data);
 			clients.push(data);
+		});
+
+		socket.on('disconnect', function() {
+			// aca debo elimiar el client en clients
+			var socketIdDisconnect = socket.id;
+		});
+
+		socket.on("getClients", function(data) {
+			// set data getClients
+			var getClients = clients.filter(onlyUnique);
+			// sendClients, a mi unicamente
+			for (let id in io.sockets.connected) {
+				if (id == socket.id) {
+					io.sockets.connected[id].emit("sendClients", getClients);
+				}
+			}
 		});
 
 		socket.on("typingMessage", function(data) {
@@ -51,3 +67,7 @@ server.listen(port, () => {
 		});
 	});
 });
+
+function onlyUnique(value, index, self) {
+	return self.indexOf(value) === index;
+}
