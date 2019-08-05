@@ -23,7 +23,7 @@
 }    
 </style>
 <script>
-  import Dom7 from 'Dom7';
+  import Dom7 from 'dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
   export default {
@@ -51,6 +51,8 @@
           },
           // App routes
           routes: routes,
+          cache: false,
+
           // Input settings
           input: {
             scrollIntoViewOnFocus: this.$device.cordova && !this.$device.electron,

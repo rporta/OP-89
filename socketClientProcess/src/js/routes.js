@@ -6,13 +6,13 @@ import FormPage from '../pages/form.vue';
 import DynamicRoutePage from '../pages/dynamic-route.vue';
 import RequestAndLoad from '../pages/request-and-load.vue';
 import NotFoundPage from '../pages/404.vue';
-import ConfigApp from '../pages/ConfigApp.vue';
-import ConfigPerfil from '../pages/ConfigPerfil.vue';
-import ConfigClient from '../pages/ConfigClient.vue';
+import ConfigApp from '../pages/configApp.vue';
+import ConfigPerfil from '../pages/configPerfil.vue';
+import ConfigClient from '../pages/configClient.vue';
 import InfoClient from '../pages/infoClient.vue';
 import RightPanel from '../pages/rightPanel.vue';
 import SocketClient from '../pages/socketClient.vue';
-import SocketClientPopup from '../pages/SocketClientPopup.vue';
+import SocketClientPopup from '../pages/socketClientPopup.vue';
 
 var routes = [{
     path: '/',
