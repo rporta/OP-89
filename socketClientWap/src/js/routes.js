@@ -34,12 +34,12 @@ var routes = [{
   },
 
   {
-    path: '/configClient/',
+    path: '/configClient/:pSocketId',
     component: ConfigClient,
   },
 
   {
-    path: '/infoClient/',
+    path: '/infoClient/:pSocketId',
     component: InfoClient,
   },
 
@@ -49,7 +49,7 @@ var routes = [{
   },
 
   {
-    path: '/socketClient/',
+    path: '/socketClient/:pSocketId',
     component: SocketClient,
   },
 
@@ -59,22 +59,22 @@ var routes = [{
   },
 
   {
-    path: '/configProcessUrl/',
+    path: '/configProcessUrl/:pSocketId',
     component: ConfigProcessUrl,
   },
 
   {
-    path: '/sendProcessUrl/',
+    path: '/sendProcessUrl/:pSocketId',
     component: SendProcessUrl,
   },
 
   {
-    path: '/getProcessUrl/',
+    path: '/getProcessUrl/:pSocketId',
     component: GetProcessUrl,
   },
 
   {
-    path: '/formProcessUrl/',
+    path: '/formProcessUrl/:pSocketId',
     component: FormProcessUrl,
   },
 

@@ -1,12 +1,12 @@
 <template>
   <f7-page name="configClient">
-    <f7-navbar title="Configuracion Client" back-link="Back">
+    <f7-navbar :title="'Configuracion Client :' + ' # ' + socketId" back-link="Back">
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
     <f7-block strong>
-      <p>Sorry</p>
+      <p># {{socketId}} </p>
       <p>Requested content not found.</p>
     </f7-block>
   </f7-page>
@@ -18,8 +18,16 @@
     data() {
       return {
         config : config,
-        configDefault : configDefault
+        configDefault : configDefault,
+        socketId: this.pSocketId        
       };
-    }
+    },
+    props:{
+      pSocketId:{
+        type: String,
+        required : false,
+        default: "",
+      }
+    },    
   };
 </script>

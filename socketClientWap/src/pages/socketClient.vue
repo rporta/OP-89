@@ -1,6 +1,6 @@
 <template>
   <f7-page name="socketClient">
-        <f7-navbar title="Conversar">
+        <f7-navbar :title="'Conversar con :' + ' # ' + socketId">
           <f7-nav-right>
             <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
           </f7-nav-right>
@@ -79,6 +79,7 @@
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
   import config from '../config/config.json';
+  import configDefault from '../config/configDefault.json';     
   export default {
     data() {
       return {
@@ -103,8 +104,18 @@
         responseInProgress: false,
         // Set default config
         config : config,     
+        configDefault : configDefault,
+        socketId: this.pSocketId
+        
       };
     },
+    props:{
+      pSocketId:{
+        type: String,
+        required : false,
+        default: "",
+      }
+    },    
     methods: {
       getF7(){
         return this.$f7;

@@ -17,10 +17,10 @@
           <f7-list-item accordion-item v-show="client.type == 'Process' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id">
             <f7-icon text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
-              <f7-list-item link="#" @click="redirectTo('/infoClient/')" title="Ver informacion">
+              <f7-list-item link="#" @click="redirectTo('/infoClient/' + client.id)" title="Ver informacion">
                 <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
               </f7-list-item>
-              <f7-list-item @click="redirectTo('/configClient/')" link="#" title="Configuracion">
+              <f7-list-item @click="redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
                 <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
               <f7-list-item link="#" title="Desconectar">
@@ -29,7 +29,7 @@
               <f7-list-item  accordion-item link="#" title="Acciones">
                 <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                 <f7-accordion-content bg-color="black">
-                  <f7-list-item @click="redirectTo('/socketClient/')" link="#" title="Conversar">
+                  <f7-list-item @click="redirectTo('/socketClient/' + client.id)" link="#" title="Conversar">
                     <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                   </f7-list-item>
                 </f7-accordion-content>
@@ -44,10 +44,10 @@
           <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id">
             <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
-              <f7-list-item link="#" @click="redirectTo('/infoClient/')" title="Ver informacion">
+              <f7-list-item link="#" @click="redirectTo('/infoClient/'+ client.id )" title="Ver informacion">
                 <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
               </f7-list-item>
-              <f7-list-item @click="redirectTo('/configClient/')" link="#" title="Configuracion">
+              <f7-list-item @click="redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
                 <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
               <f7-list-item link="#" title="Desconectar">
@@ -56,10 +56,10 @@
               <f7-list-item  accordion-item link="#" title="Acciones">
                 <f7-icon text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                 <f7-accordion-content bg-color="black">
-                  <f7-list-item @click="redirectTo('/socketClient/')" link="#" title="Conversar">
+                  <f7-list-item @click="redirectTo('/socketClient/' + client.id)" link="#" title="Conversar">
                     <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                   </f7-list-item>
-                  <f7-list-item @click="redirectTo('/configProcessUrl/')" link="#" title="Iniciar proceso URL">
+                  <f7-list-item @click="redirectTo('/configProcessUrl/' + client.id)" link="#" title="Iniciar proceso URL">
                     <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                   </f7-list-item> 
                 </f7-accordion-content>

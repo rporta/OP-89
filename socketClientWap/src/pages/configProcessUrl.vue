@@ -1,6 +1,6 @@
 <template>
   <f7-page name="configProcessUrl">
-    <f7-navbar title="Configuracion proceso URL" back-link="Back">
+    <f7-navbar :title="'Configuracion proceso URL :' + ' # ' + socketId" back-link="Back">
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
@@ -56,9 +56,17 @@
     data() {
       return {
         config : config,
-        configDefault : configDefault  
+        configDefault : configDefault,
+        socketId: this.pSocketId          
       };
     },
+    props:{
+      pSocketId:{
+        type: String,
+        required : false,
+        default: "",
+      }
+    },     
     methods: {
       getF7(){
         return this.$f7;

@@ -56,9 +56,17 @@
     data() {
       return {
         config : config,
-        configDefault : configDefault  
+        configDefault : configDefault,
+        socketId: this.pSocketId        
       };
     },
+    props:{
+      pSocketId:{
+        type: String,
+        required : false,
+        default: "",
+      }
+    },     
     methods: {
       getF7(){
         return this.$f7;
