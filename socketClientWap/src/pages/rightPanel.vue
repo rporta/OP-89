@@ -126,8 +126,6 @@
           self.clients = clientsToArray;
           self.clients = data;
 
-          console.log(data);
-
         });
 
         setInterval(function() {
