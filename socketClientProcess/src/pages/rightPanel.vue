@@ -59,7 +59,7 @@
                   <f7-list-item @click="redirectTo('/socketClient/')" link="#" title="Conversar">
                     <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                   </f7-list-item>
-                  <f7-list-item link="#" title="Iniciar proceso URL">
+                  <f7-list-item @click="redirectTo('/processUrl/')" link="#" title="Iniciar proceso URL">
                     <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
                   </f7-list-item> 
                 </f7-accordion-content>

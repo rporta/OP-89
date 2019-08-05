@@ -13,6 +13,7 @@ import InfoClient from '../pages/infoClient.vue';
 import RightPanel from '../pages/rightPanel.vue';
 import SocketClient from '../pages/socketClient.vue';
 import SocketClientPopup from '../pages/socketClientPopup.vue';
+import ProcessUrl from '../pages/processUrl.vue';
 
 var routes = [{
     path: '/',
@@ -61,9 +62,16 @@ var routes = [{
   },
 
   {
+    path: '/processUrl/',
+    component: ProcessUrl,
+  },
+
+  {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     component: DynamicRoutePage,
-  }, {
+  },
+
+  {
     path: '/request-and-load/user/:userId/',
     async: function(routeTo, routeFrom, resolve, reject) {
       // Router instance
