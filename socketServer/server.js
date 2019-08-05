@@ -38,13 +38,8 @@ server.listen(port, () => {
 			// set data getClients
 			var getClients = clients.filter(onlyUnique);
 			// sendClients, a mi unicamente
-			for (let id in io.sockets.connected) {
-				if (id == socket.id) {
-					io.sockets.connected[id].emit("sendClients", getClients);
-				}
-			}
+			io.sockets.connected[socket.id].emit("sendClients", getClients);
 		});
-
 		socket.on("typingMessage", function(data) {
 			// sendTypingMessage, al resto menos current
 			for (let id in io.sockets.connected) {
@@ -66,6 +61,43 @@ server.listen(port, () => {
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
 					io.sockets.connected[id].emit("sendMessage", data);
+				}
+			}
+		});
+		socket.on("configProcessUrlSocket", function(data) {
+			// sendConfigProcessUrlSms, a mi unicamente
+			io.sockets.connected[socket.id].emit("sendConfigProcessUrlSocket", {
+				type: "Process",
+				socketId: data.socketId,
+				description: "configProcessUrlSocket send to : # " + data.socketId
+			});
+
+			// sendMessage, al data.socketId menos current
+			for (let id in io.sockets.connected) {
+				if (id !== socket.id && id == data.socketId) {
+					// a data.socketId le envio el current(socket.id), 
+					data.socketId = socket.id;
+					data.type = "Wap";
+					data.description = "configProcessUrlSocket send to : # " + data.socketId;
+					io.sockets.connected[id].emit("sendConfigProcessUrlSocket", data);
+				}
+			}
+		});
+		socket.on("configProcessUrlSms", function(data) {
+			// sendConfigProcessUrlSms, a mi unicamente
+			io.sockets.connected[socket.id].emit("sendConfigProcessUrlSms", {
+				type: "Process",
+				socketId: data.socketId,
+				description: "configProcessUrlSocket send to : # " + data.socketId
+			});
+			// sendMessage, al data.socketId menos current
+			for (let id in io.sockets.connected) {
+				if (id !== socket.id && id == data.socketId) {
+					// a data.socketId le envio el current(socket.id), 
+					data.socketId = socket.id;
+					data.type = "Wap";
+					data.description = "configProcessUrlSocket send to : # " + data.socketId;
+					io.sockets.connected[id].emit("sendConfigProcessUrlSms", data);
 				}
 			}
 		});

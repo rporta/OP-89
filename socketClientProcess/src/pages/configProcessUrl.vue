@@ -92,10 +92,23 @@
         this.config = configDefaultJSON;
       },
       resolverClickSocket(){
-        console.log("resolverClickSocket");
+        var configProcessUrl = this.$refs.configProcessUrl.$el;
+        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+        // Send socket
+        var self = this;      
+        socket.emit("configProcessUrlSocket", Object.assign({
+          socketId : self.socketId,
+        }, getDataForm));
       },
       resolverClickSms(){
-        console.log("resolverClickSms");
+        var configProcessUrl = this.$refs.configProcessUrl.$el;
+        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+        console.log(getDataForm);
+        // Send socket
+        var self = this;       
+        socket.emit("configProcessUrlSms", Object.assign({
+          socketId : self.socketId,
+        }, getDataForm));
       }
     },
     mounted() {
@@ -111,6 +124,13 @@
 
         // Set socket on
         var self = this;
+
+        socket.on("sendConfigProcessUrlSocket", function(data) {
+          console.log("sendConfigProcessUrlSocket", data);
+          if(data.type == config.type){
+            self.redirectTo('/sendProcessUrl/' + data.socketId);
+          }
+        });
 
       }); 
     },    

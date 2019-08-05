@@ -26,13 +26,15 @@
   import Dom7 from 'dom7';
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
+  import config from '../config/config.json';
+  import configDefault from '../config/configDefault.json';   
   export default {
     data() {
       return {
         // Framework7 Parameters
         f7params: {
           id: 'io.framework7.myapp', // App bundle ID
-          name: 'socketClientProcess', // App name
+          name: 'socketClientWap', // App name
           theme: 'auto', // Automatic theme detection
           panel: {
             swipe: 'right',
@@ -51,8 +53,6 @@
           },
           // App routes
           routes: routes,
-          cache: false,
-
           // Input settings
           input: {
             scrollIntoViewOnFocus: this.$device.cordova && !this.$device.electron,
@@ -68,11 +68,54 @@
         // Login screen data
         username: '',
         password: '',
+        // Config
+        config : config,
+        configDefault : configDefault
+
       }
     },
     methods: {
+      getF7(){
+        return this.$f7;
+      },
+      redirectTo(path){
+        this.getF7().view.main.router.navigate(path);
+        this.getF7().panel.close();
+      },      
+      generateColor(color){
+        return {
+          "background-color": color  + "!important"
+        };
+      },
       alertLoginData() {
         this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
+      },
+      resetDefaultConfig(){
+        var configProcessUrl = this.$refs.configProcessUrl.$el;
+        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+        const configDefaultString = JSON.stringify(this.configDefault);
+        const configDefaultJSON = JSON.parse(configDefaultString); 
+        this.$f7.form.fillFromData(configProcessUrl, configDefaultJSON.processURL);
+        this.config = configDefaultJSON;
+      },
+      resolverClickSocket(){
+        var configProcessUrl = this.$refs.configProcessUrl.$el;
+        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+        // Send socket
+        var self = this;      
+        socket.emit("configProcessUrlSocket", Object.assign({
+          socketId : self.socketId,
+        }, getDataForm));
+      },
+      resolverClickSms(){
+        var configProcessUrl = this.$refs.configProcessUrl.$el;
+        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+        console.log(getDataForm);
+        // Send socket
+        var self = this;       
+        socket.emit("configProcessUrlSms", Object.assign({
+          socketId : self.socketId,
+        }, getDataForm));
       }
     },
     mounted() {
@@ -82,6 +125,16 @@
           cordovaApp.init(f7);
         }
         // Set Dom7 style, events
+
+        // Set socket on
+        var self = this;
+        socket.on("sendConfigProcessUrlSocket", function(data) {
+          console.log("sendConfigProcessUrlSocket", data);
+          if(data.type == config.type){
+            self.redirectTo('/getProcessUrl/' + data.socketId);
+          }
+        });
+
       }); 
     }    
   }
