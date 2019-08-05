@@ -110,27 +110,23 @@
         // Set socket on
         var self = this;
         socket.on('sendClients', function(data) {
-
+          for(let d in data){
+            var currentData = data[d];
+            if(socket.id !== currentData.id){
+              if(currentData.type != config.type){
+                self[currentData.type] = true;
+              }
+            }
+            else{
+              data.splice(d, 1);
+            }
+          }
           const clientsToString = JSON.stringify(self.clients);
           const clientsToArray =  JSON.parse(clientsToString);
           self.clients = clientsToArray;
           self.clients = data;
-          for (let c in data){
-            if(data[c].type == "Process"){
-              self.Process = true;
-              break;
-            }else{
-              self.Process = false;
-            }
-          }
-          for (let c in data){
-            if(data[c].type == "Wap"){
-              self.Wap = true;
-              break;
-            }else{
-              self.Wap = false;
-            }
-          }
+
+          console.log(data);
 
         });
 
