@@ -254,7 +254,8 @@
 
         var initData = {
             id: socket.id,
-            driver:  this.getInfoDevice()
+            driver:  this.getInfoDevice(),
+            type: "Process"
         };
         socket.on('connect', function() {
             socket.emit("init", initData);

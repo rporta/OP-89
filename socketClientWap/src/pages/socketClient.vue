@@ -255,7 +255,8 @@
         var initData = {
             id: socket.id,
             wifi: "on",
-            driver:  this.getInfoDevice()
+            driver:  this.getInfoDevice(),
+            type: "Wap"
         };
         socket.on('connect', function() {
             socket.emit("init", initData);
