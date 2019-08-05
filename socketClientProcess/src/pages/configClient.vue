@@ -13,10 +13,12 @@
 </template>
 <script>
   import config from '../config/config.json';
+  import configDefault from '../config/configDefault.json';   
   export default {
     data() {
       return {
-        config : config
+        config : config,
+        configDefault : configDefault
       };
     }
   };

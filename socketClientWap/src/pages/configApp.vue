@@ -55,7 +55,7 @@
 <script>
   import config from '../config/config.json';
   import configDefault from '../config/configDefault.json';  
-  import Dom7 from 'dom7';
+  // import Dom7 from 'Dom7';
   export default {
     data() {
       return {

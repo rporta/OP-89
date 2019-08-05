@@ -8,5 +8,14 @@
   </f7-page>
 </template>
 <script>
-  export default {};
+  import config from '../config/config.json';
+  import configDefault from '../config/configDefault.json';   
+  export default {
+    data() {
+      return {
+        config : config,
+        configDefault : configDefault
+      };
+    }
+  };
 </script>

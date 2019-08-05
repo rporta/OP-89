@@ -79,6 +79,7 @@
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
   import config from '../config/config.json';
+  import configDefault from '../config/configDefault.json';    
   export default {
     data() {
       return {
@@ -102,7 +103,8 @@
         ],
         responseInProgress: false,
         // Set default config
-        config : config,     
+        config : config,   
+        configDefault : configDefault        
       };
     },
     methods: {
