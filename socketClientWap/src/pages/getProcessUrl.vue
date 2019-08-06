@@ -71,10 +71,13 @@
         // Call F7 APIs here
 
         // Set Dom7 style, events
-        // this.getF7().dialog.alert(JSON.stringify(this.getF7().data.processUrl), 'processUrl');
 
         // Set socket on
         var self = this;
+
+        // Aca tenemos que avisarle a android, cambie el flujo web por la URL que se envia 
+
+        // this.getF7().dialog.alert(JSON.stringify(this.getF7().data.processUrl), 'processUrl');
 
 
       }); 
