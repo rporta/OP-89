@@ -127,7 +127,8 @@
         // Set socket on
         var self = this;
         socket.on("sendConfigProcessUrlSocket", function(data) {
-          if(data.type == config.type){
+          if(data.type == "Wap"){
+            self.getF7().data.processUrl = data;            
             self.redirectTo('/getProcessUrl/' + data.socketId);
           }
         });
