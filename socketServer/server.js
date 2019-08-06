@@ -40,6 +40,19 @@ server.listen(port, () => {
 			// sendClients, a mi unicamente
 			io.sockets.connected[socket.id].emit("sendClients", getClients);
 		});
+		socket.on("getClient", function(data) {
+			var getClientSocketId = data.socketId;
+			// set data getClients
+			var getClients = clients.filter(onlyUnique);
+			for (let c in getClients) {
+				var currentClient = getClients[c];
+				if (currentClient.id = getClientSocketId) {
+					// sendClients, a mi unicamente
+					io.sockets.connected[socket.id].emit("sendClient", currentClient);
+					break;
+				}
+			}
+		});
 		socket.on("typingMessage", function(data) {
 			// sendTypingMessage, al resto menos current
 			for (let id in io.sockets.connected) {

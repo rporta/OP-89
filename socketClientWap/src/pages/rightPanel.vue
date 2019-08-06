@@ -14,7 +14,7 @@
       <f7-list-item  accordion-item title="Lista de clientes process">
         <f7-icon :text-color="Process ? 'green' : 'red'" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
         <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
-          <f7-list-item accordion-item v-show="client.type == 'Process' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id">
+          <f7-list-item accordion-item v-show="client.type == 'Process' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id + 'Process'">
             <f7-icon text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
               <f7-list-item link="#" @click="redirectTo('/infoClient/' + client.id)" title="Ver informacion">
@@ -41,7 +41,7 @@
       <f7-list-item  accordion-item title="Lista de clientes wap" >
         <f7-icon :text-color="Wap ? 'green' : 'red'" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
         <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
-          <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id">
+          <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id  + 'Wap'">
             <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
               <f7-list-item link="#" @click="redirectTo('/infoClient/'+ client.id )" title="Ver informacion">
