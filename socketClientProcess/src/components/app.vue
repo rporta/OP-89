@@ -44,9 +44,9 @@
           // App root data
           data: function () {
             return {
-              user: {
-                firstName: 'John',
-                lastName: 'Doe',
+              perfil: {
+                name: config.perfil.name,
+                abatar: config.perfil.avatar,
               },
 
             };
@@ -66,8 +66,6 @@
           },
         },
         // Login screen data
-        username: '',
-        password: '',
         // Config
         config : config,
         configDefault : configDefault

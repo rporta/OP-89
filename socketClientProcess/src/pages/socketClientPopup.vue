@@ -172,7 +172,7 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", config.perfil);
+            socket.emit("typingMessage", self.getF7().perfil);
           }
         }, 100);
       },
