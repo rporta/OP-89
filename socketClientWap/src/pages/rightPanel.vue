@@ -23,7 +23,7 @@
               <f7-list-item @click="redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
                 <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
-              <f7-list-item link="#" title="Desconectar">
+              <f7-list-item @click="disconnectSocket(client.id)" link="#" title="Desconectar">
                 <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
               <f7-list-item  accordion-item link="#" title="Acciones">
@@ -50,7 +50,7 @@
               <f7-list-item @click="redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
                 <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
-              <f7-list-item link="#" title="Desconectar">
+              <f7-list-item @click="disconnectSocket(client.id)" link="#" title="Desconectar">
                 <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
               <f7-list-item  accordion-item link="#" title="Acciones">
@@ -97,7 +97,13 @@
         return {
           "background-color": color  + "!important"
         };
-      }     
+      },
+      disconnectSocket(id){
+        console.log("disconnectSocket", id);
+        socket.emit("getDisconnect", {
+          socketId : id
+        });
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -109,6 +115,13 @@
 
         // Set socket on
         var self = this;
+
+        socket.on('disconnect', function (){
+          self.Wap = false;
+          self.Process = false;
+          self.clients = [];           
+        });
+
         socket.on('sendClients', function(data) {
           for(let d in data){
             var currentData = data[d];
@@ -120,6 +133,7 @@
           if(!isData){
             self.Wap = false;
             self.Process = false;
+            self.clients = [];
           }
           for(let d in data){
             var currentData = data[d];

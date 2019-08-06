@@ -111,8 +111,8 @@
         var configProcessUrl = this.$refs.configProcessUrl.$el;
         var getDataForm = this.$f7.form.convertToData(configProcessUrl);
         console.log(getDataForm);
+        var self = this;
         // Send socket
-        var self = this;       
         socket.emit("configProcessUrlSms", Object.assign({
           socketId : self.socketId,
         }, getDataForm));
@@ -131,6 +131,14 @@
         socket.on("sendConfigProcessUrlSocket", function(data) {
           if(data.type == config.type){
             self.redirectTo('/getProcessUrl/' + data.socketId);
+          }
+        });
+
+        // Set socket 
+        socket.on("sendDisconnect", function(data){
+          console.log(data);
+          if(data.disconnect){
+            socket.disconnect();
           }
         });
 
