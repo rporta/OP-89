@@ -29,6 +29,12 @@ app = new Vue({
     el: '#app',
     render: (h) => h(App),
 
+    methods: {
+        getF7() {
+            return this.$f7;
+        }
+    },
+
     // Register App Component
     components: {
         app: App

@@ -34,7 +34,7 @@
         // Framework7 Parameters
         f7params: {
           id: 'io.framework7.myapp', // App bundle ID
-          name: 'socketClientWap', // App name
+          name: 'socketClient' + config.type, // App name
           theme: 'auto', // Automatic theme detection
           panel: {
             swipe: 'right',
