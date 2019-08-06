@@ -89,6 +89,10 @@
       },
       socketConnect(){
         socket.connect();
+        var self = this;
+        setTimeout(function() {
+          self.socketId = socket.id;
+        }, 100);
       },
       socketDisconnect(){
         socket.disconnect();
