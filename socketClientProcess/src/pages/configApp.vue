@@ -1,11 +1,21 @@
 <template>
   <f7-page name="configApp">
     <f7-navbar title="Configuracion App" back-link="Back">
+      <f7-chip :text="socketTitle" :color="socketColor"></f7-chip>
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
-    <f7-block-title>Config socket </f7-block-title>
+    <f7-block-title>General : </f7-block-title>
+    <f7-list>
+      <f7-list-item :title="'Id : # ' + socketId">
+        <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+      </f7-list-item>
+      <f7-list-item :title="'Type : ' + config.type">
+        <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+      </f7-list-item>
+    </f7-list>
+    <f7-block-title>Config socket</f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configSocket">
       <f7-list-input
         label="Port"
@@ -32,14 +42,14 @@
                       <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
       </f7-list-input>      
     </f7-list>
-    <f7-block-title>Socket </f7-block-title>
+    <f7-block-title>Socket</f7-block-title>
     <f7-block>
       <f7-row>
         <f7-col>
-          <f7-button fill color="green">connect</f7-button>
+          <f7-button @click="socketConnect()" fill color="green">connect</f7-button>
         </f7-col>
         <f7-col>
-          <f7-button fill color="red">disconnect</f7-button>
+          <f7-button @click="socketDisconnect()" fill color="red">disconnect</f7-button>
         </f7-col>        
       </f7-row>      
     </f7-block>  
@@ -62,7 +72,10 @@
     data() {
       return {
         config : config,
-        configDefault : configDefault
+        configDefault : configDefault,
+        socketTitle: "Socket Offline",
+        socketColor: "red",
+        socketId: ""
       };
     },
     methods: {
@@ -73,6 +86,16 @@
         const configDefaultJSON = JSON.parse(configDefaultString); 
         this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
         this.config = configDefaultJSON;
+      },
+      socketConnect(){
+        socket.connect();
+        var self = this;
+        setTimeout(function() {
+          self.socketId = socket.id;
+        }, 100);
+      },
+      socketDisconnect(){
+        socket.disconnect();
       }
     },
     mounted() {
@@ -82,6 +105,21 @@
           cordovaApp.init(f7);
         }
         // Set Dom7 style, events
+
+
+        // Set data 
+        this.socketTitle = socket.connected ? "Socket Online" : "Socket Offline";
+        this.socketColor = socket.connected ? "green" : "red";
+        this.socketId = socket.id;
+
+        var self = this;
+
+        setInterval(function() {          
+          // Set data by setInterval
+          self.socketTitle = socket.connected ? "Socket Online" : "Socket Offline";
+          self.socketColor = socket.connected ? "green" : "red";
+        }, 500);
+
       }); 
     }
   };

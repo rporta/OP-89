@@ -23,6 +23,7 @@ server.listen(port, () => {
 		socket.on("init", function(data) {
 			// add client
 			clients.push(data);
+			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on('disconnect', function() {
 			// remove client
@@ -33,6 +34,7 @@ server.listen(port, () => {
 					clients.splice(c, 1);
 				}
 			}
+			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on("getClients", function(data) {
 			// set data getClients
@@ -40,11 +42,35 @@ server.listen(port, () => {
 			// sendClients, a mi unicamente
 			io.sockets.connected[socket.id].emit("sendClients", getClients);
 		});
+		socket.on("getClient", function(data) {
+			var getClientSocketId = data.socketId;
+			// set data getClients
+			var getClients = clients.filter(onlyUnique);
+			for (let c in getClients) {
+				var currentClient = getClients[c];
+				if (currentClient.id = getClientSocketId) {
+					// sendClients, a mi unicamente
+					io.sockets.connected[socket.id].emit("sendClient", currentClient);
+					break;
+				}
+			}
+		});
 		socket.on("typingMessage", function(data) {
 			// sendTypingMessage, al resto menos current
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
 					io.sockets.connected[id].emit("sendTypingMessage", data);
+				}
+			}
+		});
+		socket.on("getDisconnect", function(data) {
+			console.log(data);
+			// sendDisconnect, al resto menos current
+			for (let id in io.sockets.connected) {
+				if (id !== socket.id && id == data.socketId) {
+					io.sockets.connected[id].emit("sendDisconnect", {
+						disconnect: true
+					});
 				}
 			}
 		});
