@@ -1,7 +1,7 @@
 {
     "type": "Process",
     "api": {
-        "host": "localhost",
+        "host": "35.168.206.184",
         "port": "10000"
     },
     "perfil": {
