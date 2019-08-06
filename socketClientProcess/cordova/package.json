@@ -13,19 +13,24 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "dependencies": {
+    "com.darktalker.cordova.screenshot": "^0.1.6",
     "cordova-android": "^8.0.0",
     "cordova-electron": "^1.1.0",
     "cordova-ios": "^5.0.1",
+    "cordova-plugin-android-wifi-manager": "^1.2.1",
+    "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-keyboard": "^1.2.0",
     "cordova-plugin-media": "^5.0.3",
     "cordova-plugin-safariviewcontroller": "^1.6.0",
+    "cordova-plugin-smslog": "^1.1.1",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-wkwebview-engine": "^1.2.1",
-    "cordova-plugin-wkwebview-file-xhr": "^2.1.1"
+    "cordova-plugin-wkwebview-file-xhr": "^2.1.1",
+    "fr._46cl.focus": "git+https://github.com/46cl/cordova-android-focus-plugin.git"
   },
   "cordova": {
     "plugins": {
@@ -38,7 +43,11 @@
       "cordova-plugin-file": {},
       "cordova-plugin-media": {},
       "cordova-plugin-safariviewcontroller": {},
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "fr._46cl.focus": {},
+      "cordova-plugin-smslog": {},
+      "com.darktalker.cordova.screenshot": {},
+      "cordova-plugin-android-wifi-manager": {}
     },
     "platforms": [
       "ios",
