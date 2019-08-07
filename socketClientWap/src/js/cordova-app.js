@@ -1,3 +1,13 @@
+//RAMIRO PORTAS DEFINO UNICA FUNCION PARA QUE EL MODULO APP(JAVA), SE PUEDA COMUNICAR CON EL FLUJO WEB
+var appJava = {
+  mensaje: ""
+}
+var java = {
+  send: function(arg) {
+    appJava = arg;
+  }
+};
+
 var cordovaApp = {
   f7: null,
   /*
@@ -14,11 +24,11 @@ var cordovaApp = {
   This method prevents back button tap to exit from app on android.
   And allows to exit app on backbutton double tap
   */
-  handleAndroidBackButton: function () {
+  handleAndroidBackButton: function() {
     var f7 = cordovaApp.f7;
     if (f7.device.electron) return;
     cordovaApp.backButtonTimestamp = new Date().getTime();
-    document.addEventListener('backbutton', function (e) {
+    document.addEventListener('backbutton', function(e) {
       if (new Date().getTime() - cordovaApp.backButtonTimestamp < 250) {
         cordovaApp.backButtonTimestamp = new Date().getTime();
         if (window.navigator.app && window.navigator.app.exitApp) {
@@ -36,7 +46,7 @@ var cordovaApp = {
     - provides cross-platform view "shrinking" on keyboard open/close
     - hides keyboard accessory bar for all inputs except where it required
   */
-  handleKeyboard: function () {
+  handleKeyboard: function() {
     var f7 = cordovaApp.f7;
     if (!window.Keyboard || !window.Keyboard.shrinkView || f7.device.electron) return;
     var $ = f7.$;
@@ -68,7 +78,7 @@ var cordovaApp = {
       }
 
     });
-    $(document).on('touchstart', 'input, textarea, select', function (e) {
+    $(document).on('touchstart', 'input, textarea, select', function(e) {
       var nodeName = e.target.nodeName.toLowerCase();
       var type = e.target.type;
       var showForTypes = ['datetime-local', 'time', 'date', 'datetime'];
@@ -79,7 +89,7 @@ var cordovaApp = {
       }
     }, true);
   },
-  init: function (f7) {
+  init: function(f7) {
     // Save f7 instance
     cordovaApp.f7 = f7;
 

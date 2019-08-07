@@ -37,12 +37,14 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on("getClients", function(data) {
+			console.log(data);
 			// set data getClients
 			var getClients = clients.filter(onlyUnique);
 			// sendClients, a mi unicamente
 			io.sockets.connected[socket.id].emit("sendClients", getClients);
 		});
 		socket.on("getClient", function(data) {
+			console.log(data);
 			var getClientSocketId = data.socketId;
 			// set data getClients
 			var getClients = clients.filter(onlyUnique);
@@ -56,6 +58,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("typingMessage", function(data) {
+			console.log(data);
 			// sendTypingMessage, al resto menos current
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
@@ -75,6 +78,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("offTypingMessage", function(data) {
+			console.log(data);
 			// sendOffTypingMessage, al resto menos current
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
@@ -83,6 +87,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("message", function(data) {
+			console.log(data);
 			// sendMessage, al resto menos current
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
