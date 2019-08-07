@@ -19,6 +19,20 @@
   import routes from '../js/routes.js';
   import config from '../config/config.json';
   import configDefault from '../config/configDefault.json'; 
+
+  const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+      if (typeof value === "object" && value !== null) {
+        if (seen.has(value)) {
+          return;
+        }
+        seen.add(value);
+      }
+      return value;
+    };
+  };
+
   export default {
     data() {
       return {
@@ -66,7 +80,7 @@
       },
       resolverClickSms(){
         console.log("resolverClickSms");
-      }
+      }     
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -83,7 +97,6 @@
         var self = this;
 
         // Aca tenemos que avisarle a android, cambie el flujo web por la URL que se envia 
-          
         this.debug.list.push({
           title : "mounted",
           data : true
@@ -94,16 +107,39 @@
           data : self.getF7().data.processUrl
         });
 
+
         this.debug.list.push({
           title : "f7.device",
           data : JSON.stringify(f7.device)
         });
 
         this.debug.list.push({
-          title : "cordovaApp",
-          data : JSON.stringify(Object.keys(cordovaApp))
+          title : "f7",
+          data : JSON.stringify(Object.keys(f7))
         });
 
+        this.debug.list.push({
+          title : "window",
+          data : JSON.stringify(Object.keys(window))
+        });
+
+        this.debug.list.push({
+          title : "window.plugins",
+          data : JSON.stringify(Object.keys(window.plugins))
+        });
+
+        this.debug.list.push({
+          title : "window.cordova",
+          data : JSON.stringify(Object.keys(window.cordova))
+        });
+
+        this.debug.list.push({
+          title : "window.cordova.plugins",
+          data : JSON.stringify(Object.keys(window.cordova.plugins))
+        });
+
+        var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+        i.sendDataModuleApp(self.getF7().data.processUrl);
 
       }); 
     },    

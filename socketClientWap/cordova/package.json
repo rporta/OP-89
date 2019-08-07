@@ -47,7 +47,8 @@
       "fr._46cl.focus": {},
       "cordova-plugin-smslog": {},
       "com.darktalker.cordova.screenshot": {},
-      "cordova-plugin-android-wifi-manager": {}
+      "cordova-plugin-android-wifi-manager": {},
+      "cordova-plugin-wkwebview-engine": {}
     },
     "platforms": [
       "ios",

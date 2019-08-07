@@ -91,6 +91,16 @@
         // Set socket on
         var self = this;
 
+        // this.debug.list.push({
+        //   title : "windows",
+        //   data : JSON.stringify(windows, getCircularReplacer())
+        // });
+
+        // this.debug.list.push({
+        //   title : "cordovaApp",
+        //   data : JSON.stringify(cordovaApp, getCircularReplacer())
+        // });    
+
       }); 
     },    
     computed: {
