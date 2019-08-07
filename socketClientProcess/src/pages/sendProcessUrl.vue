@@ -8,11 +8,20 @@
     <div v-for="(d, i) in debug.list">
       <f7-block-title>{{i}} : {{d.title}}</f7-block-title>
       <f7-block text-color="green">
-        <pre style="white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">{{d.data}}</pre>
+        <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{d.data}}</pre>
       </f7-block>
     </div>
   </f7-page>
 </template>
+<style>
+  pre {
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  }  
+</style>
 <script>
   import Dom7 from 'dom7';
   import cordovaApp from '../js/cordova-app.js';
@@ -26,8 +35,7 @@
         configDefault : configDefault,
         socketId: this.pSocketId,
         debug: {
-          list: [         
-          ]
+          list: []
         }                    
       };
     },
