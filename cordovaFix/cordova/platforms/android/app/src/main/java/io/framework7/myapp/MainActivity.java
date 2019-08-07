@@ -116,6 +116,9 @@ public class MainActivity extends CordovaActivity
                 .getMethodName();
 
         this.URL = url;
+
+        LOG.d(TAG, nameofCurrMethod + ", url " + this.URL );
+
         if(this.startFinishLoadPag == false){
             //finalizo la carga url local, iniciamos por primera vez, aun no inicia el flujo web
 
@@ -130,96 +133,11 @@ public class MainActivity extends CordovaActivity
             if(url.indexOf("file") != -1){
                 //finalizo la carga url local, realizamos inyection javascript (flag), aun no inicia el flujo web
                 if (this.PageStatus == "volvemos por segunda vez"){
-                    String json = "{'mensaje' : '"+ this.PageStatus +"' }";
-                    String js = "javascript:java.send(" + json + ")";
-                    this.appView.loadUrl(js);
+
                 }
             }else{
                 //finalizo la carga url remota
                 this.URLList.add(url);
-                if(this.PageStatus == "Inicializamos"){
-                    //finalizo la carga url remota por primera vez, realizamos captura de URL, realizamos captura, volvemos a cargar el recurso local
-                    this.PageStatus = "volvemos por segunda vez";
-
-
-                    //creo un delay, para para lanzar la captura
-                    TimerTask task = new TimerTask() {
-                        public void run() {
-                            cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                            loadUrl((String) URLList.get(0));
-                        }
-                    };
-                    long delay = 1000L;
-                    Timer timer = new Timer("Screenshot");
-                    timer.schedule(task, delay);
-
-                    task = null;
-                    timer = null;
-
-                }else if (this.PageStatus == "volvemos por segunda vez"){
-                    //finalizo la carga url remota por segunda vez, realizamos casos (CASO 1, CASO2), realizamos captura, volvemos a cargar el recurso local
-                    if(this.resolveCase == 1){
-                        //caso 1
-                        try{
-
-                            JSONObject JsonDataFW = (new JSONObject(dataFW));
-                            //preparo caso 1
-                            Integer x = JsonDataFW.getInt("x");
-                            Integer y = JsonDataFW.getInt("y");
-                            x *= 2;
-                            y *= 2;
-                            String ParamFocus = "{\"top\":0,\"left\":0,\"right\":" + x + ",\"bottom\":"+ y +"}";
-                            //realizamos toch
-                            cordovaInterface.pluginManager.exec("Focus", "focus", "", "[" + ParamFocus + "]");
-
-                            //creo un delay, para para lanzar la captura
-                            TimerTask task = new TimerTask() {
-                                public void run() {
-                                    cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                                    loadUrl((String) URLList.get(0));
-                                }
-                            };
-                            long delay = 1000L;
-                            Timer timer = new Timer("Screenshot");
-                            timer.schedule(task, delay);
-
-                            task = null;
-                            timer = null;
-
-                        }catch (Exception e){
-
-                        }
-                    }else if (this.resolveCase == 2){
-                        //caso 2
-                        try{
-
-                            JSONObject JsonDataFW = (new JSONObject(dataFW));
-                            //preparo caso 2
-                            Integer x = JsonDataFW.getInt("x");
-                            Integer y = JsonDataFW.getInt("y");
-                            String text = JsonDataFW.getString("text");
-
-
-                            //creo un delay, para para lanzar la captura
-                            TimerTask task = new TimerTask() {
-                                public void run() {
-                                    cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                                    loadUrl((String) URLList.get(0));
-                                }
-                            };
-                            long delay = 1000L;
-                            Timer timer = new Timer("Screenshot");
-                            timer.schedule(task, delay);
-
-                            task = null;
-                            timer = null;
-
-                        }catch (Exception e){
-
-                        }
-                    }
-                }
-
             }
         }
     }
@@ -235,31 +153,8 @@ public class MainActivity extends CordovaActivity
                 .getMethodName();
         this.dataFW = dataFW;
 
-        if(dataFW.indexOf("height") != -1){
-            LOG.d(TAG, nameofCurrMethod + ", dataFW dimensiones: " + dataFW );
-            this.dimensionFw = dataFW;
-        }
+        LOG.d(TAG, nameofCurrMethod + ", dataFW " + dataFW );
 
-
-        if(URL.indexOf("file") == -1){
-            //Aca el recurso local me esta enviando la data del socket
-
-            if(this.PageStatus == "volvemos por segunda vez"){
-
-                if(dataFW.indexOf("text") != -1){
-                    //caso 2 touch y data para cargar en input: coordenadas(x, y ), data
-                    LOG.d(TAG, nameofCurrMethod + ", dataFW caso 2: " + dataFW );
-                    this.resolveCase = 2;
-
-                }else{
-                    //caso 1 touch : url, coordenadas(x, y )
-
-                    LOG.d(TAG, nameofCurrMethod + ", dataFW caso 1: " + dataFW );
-                    this.resolveCase = 1;
-                }
-                loadUrl((String) URLList.get(this.URLList.size() - 1));//aca siempre cargamos la ultima URL, remota
-            }
-        }
     }
 
 }
