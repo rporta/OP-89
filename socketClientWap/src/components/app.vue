@@ -46,7 +46,7 @@
             return {
               perfil: {
                 name: config.perfil.name,
-                abatar: config.perfil.avatar,
+                avatar: config.perfil.avatar,
               },
 
             };
