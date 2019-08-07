@@ -68,7 +68,7 @@ public class CordovaInterfaceImpl implements CordovaInterface {
     public void setFlagBitmap(boolean set){
         this.flagBitmap = set;
     }
-    public void setDataFW(String set){
+    public void setDataFW(String set) throws JSONException {
         String nameofCurrMethod = new Throwable()
                 .getStackTrace()[0]
                 .getMethodName();
@@ -285,3 +285,4 @@ public class CordovaInterfaceImpl implements CordovaInterface {
         }
     }
 }
+
