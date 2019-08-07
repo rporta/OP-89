@@ -131,7 +131,7 @@ public class MainActivity extends CordovaActivity
             if(url.indexOf("file") != -1){
                 //finalizo la carga url local
                 if (this.PageStatus == "remote"){//<-vengo de remote
-
+                    this.PageStatus = "local";
                 }
             }else{
                 //finalizo la carga url remota
@@ -144,20 +144,10 @@ public class MainActivity extends CordovaActivity
                     //creo un delay, para para lanzar la captura
                     TimerTask task = new TimerTask() {
                         public void run() {
+                            LOG.d(TAG, nameofCurrMethod + ", saveScreenshot");
                             cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                            LOG.d(TAG, nameofCurrMethod + "saveScreenshot");
-                            TimerTask task2 = new TimerTask() {
-                                public void run() {
-                                    LOG.d(TAG, nameofCurrMethod + "loadUrl local");
-                                    loadUrl((String) URLList.get(0));
-                                }
-                            };
-                            long delay2 = 1000L;
-                            Timer timer2 = new Timer("Screenshot");
-                            timer2.schedule(task2, delay2);
-
-                            task2 = null;
-                            timer2 = null;
+                            LOG.d(TAG, nameofCurrMethod + ", loadUrl local");
+                            loadUrl((String) URLList.get(0));
                         }
                     };
                     long delay = 1000L;
@@ -212,3 +202,4 @@ public class MainActivity extends CordovaActivity
     }
 
 }
+
