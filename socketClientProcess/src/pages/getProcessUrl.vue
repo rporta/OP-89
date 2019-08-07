@@ -5,8 +5,12 @@
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
-
-
+    <div v-for="(d, i) in debug.list">
+      <f7-block-title>{{i}} : {{d.title}}</f7-block-title>
+      <f7-block text-color="green">
+        <pre style="white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">{{d.data}}</pre>
+      </f7-block>
+    </div>
   </f7-page>
 </template>
 <script>
@@ -20,7 +24,15 @@
       return {
         config : config,
         configDefault : configDefault,
-        socketId: this.pSocketId          
+        socketId: this.pSocketId,          
+        debug: {
+          list: [
+            {
+              title : "debug-test",
+              data : "data-test"
+            }
+          ]
+        }        
       };
     },
     props:{
@@ -71,11 +83,31 @@
         // Call F7 APIs here
 
         // Set Dom7 style, events
-        // this.getF7().dialog.alert(JSON.stringify(this.getF7().data.processUrl), 'processUrl');
 
         // Set socket on
         var self = this;
 
+        // Aca tenemos que avisarle a android, cambie el flujo web por la URL que se envia 
+          
+        this.debug.list.push({
+          title : "mounted",
+          data : true
+        });
+
+        this.debug.list.push({
+          title : "processUrl",
+          data : self.getF7().data.processUrl
+        });
+
+        this.debug.list.push({
+          title : "cordovaApp",
+          data : JSON.stringify(cordovaApp)
+        });
+
+        this.debug.list.push({
+          title : "f7.device.cordova",
+          data : JSON.stringify(f7.device.cordova)
+        });
 
       }); 
     },    

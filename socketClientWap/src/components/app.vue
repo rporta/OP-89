@@ -48,7 +48,7 @@
                 name: config.perfil.name,
                 avatar: config.perfil.avatar,
               },
-
+              processUrl: null
             };
           },
           // App routes

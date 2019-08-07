@@ -5,8 +5,12 @@
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
-
-
+    <div v-for="(d, i) in debug.list">
+      <f7-block-title>{{i}} : {{d.title}}</f7-block-title>
+      <f7-block text-color="green">
+        <pre style="white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">{{d.data}}</pre>
+      </f7-block>
+    </div>
   </f7-page>
 </template>
 <script>
@@ -20,7 +24,11 @@
       return {
         config : config,
         configDefault : configDefault,
-        socketId: this.pSocketId          
+        socketId: this.pSocketId,
+        debug: {
+          list: [         
+          ]
+        }                    
       };
     },
     props:{
