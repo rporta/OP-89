@@ -21,9 +21,7 @@ package io.framework7.myapp;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
-
-import org.json.JSONObject;
-
+import org.json.*;
 import java.lang.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -147,13 +145,38 @@ public class MainActivity extends CordovaActivity
      * */
 
     @Override
-    public void onDataFW(String dataFW){
+    public void onDataFW(String dataFW) {
         String nameofCurrMethod = new Throwable()
                 .getStackTrace()[0]
                 .getMethodName();
         this.dataFW = dataFW;
 
-        LOG.d(TAG, nameofCurrMethod + ", dataFW " + dataFW );
+
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject(dataFW);
+            String pageUrl = obj.getString("url");
+//        String pageUrl = obj.getJSONObject("url").getString("pageName");
+            LOG.d(TAG, nameofCurrMethod + ", pageUrl : " + pageUrl);
+
+
+            //creo un delay, para para lanzar la captura
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    loadUrl(pageUrl);
+                }
+            };
+            long delay = 1000L;
+            Timer timer = new Timer("loadUrl");
+            timer.schedule(task, delay);
+
+            task = null;
+            timer = null;
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
