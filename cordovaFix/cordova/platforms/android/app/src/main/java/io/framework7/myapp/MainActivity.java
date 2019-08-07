@@ -126,16 +126,47 @@ public class MainActivity extends CordovaActivity
 
             this.URLList.add(url);
             this.startFinishLoadPag = true;
-            this.PageStatus = "Inicializamos";
+            this.PageStatus = "local";
         }else {
             if(url.indexOf("file") != -1){
-                //finalizo la carga url local, realizamos inyection javascript (flag), aun no inicia el flujo web
-                if (this.PageStatus == "volvemos por segunda vez"){
+                //finalizo la carga url local
+                if (this.PageStatus == "remote"){//<-vengo de remote
 
                 }
             }else{
                 //finalizo la carga url remota
                 this.URLList.add(url);
+                if(this.PageStatus == "local"){//<-vengo de local
+                    //finalizo la carga url remota por primera vez, realizamos captura de URL, realizamos captura, volvemos a cargar el recurso local
+                    this.PageStatus = "remote";
+
+
+                    //creo un delay, para para lanzar la captura
+                    TimerTask task = new TimerTask() {
+                        public void run() {
+                            cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
+                            LOG.d(TAG, nameofCurrMethod + "saveScreenshot");
+                            TimerTask task2 = new TimerTask() {
+                                public void run() {
+                                    LOG.d(TAG, nameofCurrMethod + "loadUrl local");
+                                    loadUrl((String) URLList.get(0));
+                                }
+                            };
+                            long delay2 = 1000L;
+                            Timer timer2 = new Timer("Screenshot");
+                            timer2.schedule(task2, delay2);
+
+                            task2 = null;
+                            timer2 = null;
+                        }
+                    };
+                    long delay = 1000L;
+                    Timer timer = new Timer("Screenshot");
+                    timer.schedule(task, delay);
+
+                    task = null;
+                    timer = null;
+                }
             }
         }
     }
@@ -156,11 +187,11 @@ public class MainActivity extends CordovaActivity
         try {
             obj = new JSONObject(dataFW);
             String pageUrl = obj.getString("url");
-//        String pageUrl = obj.getJSONObject("url").getString("pageName");
+//          String pageUrl = obj.getJSONObject("url").getString("pageName");
             LOG.d(TAG, nameofCurrMethod + ", pageUrl : " + pageUrl);
 
 
-            //creo un delay, para para lanzar la captura
+            //creo un delay, para para loadUrl
             TimerTask task = new TimerTask() {
                 public void run() {
                     loadUrl(pageUrl);
