@@ -95,14 +95,15 @@
         });
 
         this.debug.list.push({
-          title : "cordovaApp",
-          data : JSON.stringify(cordovaApp)
+          title : "f7.device",
+          data : JSON.stringify(f7.device)
         });
 
         this.debug.list.push({
-          title : "f7.device.cordova",
-          data : JSON.stringify(f7.device.cordova)
+          title : "cordovaApp",
+          data : JSON.stringify(Object.keys(cordovaApp))
         });
+
 
       }); 
     },    
