@@ -173,3 +173,14 @@ framework7 generate-assets --ui
 
 Love Framework7? Support project by donating or pledging on patreon:
 https://patreon.com/vladimirkharlampidi
+
+## Indicaciones Cordova
+
+* Modificar archivo gradle.porperties y eliminar 'android.useDeprecatedNdk=true'
+
+# Requerimientos 
+
+* build-cordova-android-dev
+* cordovaFix
+* androidStudios import project (GRADLE, Eclipse ADT, etc.)
+
