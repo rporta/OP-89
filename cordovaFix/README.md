@@ -4,8 +4,8 @@ Este fix se debe aplicar solo al path de socketClientWap,
 
 ## Requerimientos
 
- * platform android
- * build android
+ * cordova add platform android
+ * cordova build android
 
 ## Pasos para realizar cordovaFix
 
@@ -20,8 +20,8 @@ que van acompañados de #cordovaFix.
 
 ## Requerimientos
 
- * platform android
- * build android
+ * cordova add platform android
+ * cordova build android 
 
 ## Pasos para realizar www 
 
@@ -37,7 +37,7 @@ var java = {
   }
 };
 ```
-
+* en android studios realizar build android
 
 ROUTE : cordova/platforms/android/app/src/main/assets/www
 ROUTE2 : socketClientWap/src/js
