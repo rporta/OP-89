@@ -122,14 +122,14 @@ public class MainActivity extends CordovaActivity
 
             Integer w = this.appView.getView().getWidth();
             Integer h = this.appView.getView().getHeight();
-            LOG.d(TAG, ", appView getWidth : " + w + ", appView getHeight : " + h);
+            LOG.d(TAG, nameofCurrMethod + ", appView getWidth : " + w + ", appView getHeight : " + h);
 
             this.URLList.add(url);
             this.startFinishLoadPag = true;
             this.PageStatus = "local";
+
         }else {
-            if(url.indexOf("file") != -1){
-                //finalizo la carga url local
+            if(url.indexOf("file") != -1){            
                 if (this.PageStatus == "remote"){//<-vengo de remote
                     this.PageStatus = "local";
                 }
@@ -172,7 +172,6 @@ public class MainActivity extends CordovaActivity
                 .getMethodName();
         this.dataFW = dataFW;
 
-
         JSONObject obj = null;
         try {
             obj = new JSONObject(dataFW);
@@ -196,9 +195,21 @@ public class MainActivity extends CordovaActivity
 
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            LOG.d(TAG, nameofCurrMethod + ", no vino pageUrl");
         }
 
+        try{
+            obj = new JSONObject(dataFW);
+            Boolean cordovaInit = obj.getBoolean("cordovaInit");
+            LOG.d(TAG, nameofCurrMethod + ", cordovaInit:" + cordovaInit);
+
+            //finalizo la carga url local
+            String json = "{'mensaje' : '"+ this.PageStatus +"' }";
+            String js = "javascript:alert(123)";
+            this.appView.loadUrl(js);
+        } catch (JSONException e) {
+            LOG.d(TAG, nameofCurrMethod + ", no vino cordovaInit");
+        }
     }
 
 }
