@@ -39,5 +39,14 @@ var java = {
 ```
 * en android studios realizar build android
 
+# Problemas con Gradle version
+
+Si por casualidad falla al realizar cordova build android
+la solucion es exportar una variable de entorno en ROTE3, en mi caso me solicito la version gradle-5.1.1-all.zip
+```bashrc add
+export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL="https\\://services.gradle.org/distributions/gradle-5.1.1-all.zip"
+```
+
 ROUTE : cordova/platforms/android/app/src/main/assets/www
 ROUTE2 : socketClientWap/src/js
+ROTE3 : ~/.bashrc
