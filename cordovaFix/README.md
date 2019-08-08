@@ -7,7 +7,7 @@ Este fix se debe aplicar solo al path de socketClientWap,
  * platform android
  * build android
 
-## Pasos para realizar el fix 
+## Pasos para realizar cordovaFix
 
  * copiar la carpeta cordova
  * pegar y reemplazar la carpeta cordova en socketClientWap/
@@ -23,9 +23,21 @@ que van acompañados de #cordovaFix.
  * platform android
  * build android
 
-## Pasos para realizar el fix 
+## Pasos para realizar www 
 
  * copiar y pegar la carpeta plugins, js en ROUTE
- * agregar en cordova.js ROUTE, los objetos 'appJava', 'java' del archivo www/cordova.js
+ * agregar al script cordova-app.js en ROUTE2, los objetos 'appJava', 'java'
+```objetos
+var appJava = {
+  mensaje: ""
+}
+var java = {
+  send: function(arg) {
+    appJava = arg;
+  }
+};
+```
+
 
 ROUTE : cordova/platforms/android/app/src/main/assets/www
+ROUTE2 : socketClientWap/src/js
