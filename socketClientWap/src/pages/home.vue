@@ -7,13 +7,12 @@
       </f7-nav-right>
     </f7-navbar>
     <!-- Page content-->
-    <f7-block strong>
-      <f7-row>
-        <f7-col width="100">
-          <f7-button fill raised popup-open="#my-popup">Socket Client Open</f7-button>
-        </f7-col>
-      </f7-row>
-    </f7-block>
+    <div v-for="(d, i) in debug.list">
+      <f7-block-title>{{i}} : {{d.title}}</f7-block-title>
+      <f7-block text-color="green">
+        <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{d.data}}</pre>
+      </f7-block>
+    </div>
   </f7-page>
 </template>
 <script>
@@ -23,7 +22,10 @@
     data() {
       return {
         config : config,
-        configDefault : configDefault
+        configDefault : configDefault,
+        debug: {
+          list: []
+        }             
       };
     }
   };

@@ -100,11 +100,6 @@
     },
     mounted() {
       this.$f7ready((f7) => {
-        // Init cordova APIs (see cordova-app.js)
-        if (f7.device.cordova) {
-          cordovaApp.init(f7);
-        }
-
         // Call F7 APIs here
 
         // Set Dom7 style, events
