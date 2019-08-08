@@ -132,6 +132,9 @@ server.listen(port, () => {
 				}
 			}
 		});
+		socket.on("sendCapture", function(data) {
+			console.log(data);
+		});
 	});
 });
 
