@@ -37,7 +37,7 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on("getClients", function(data) {
-			console.log(data);
+			// console.log(data);
 			// set data getClients
 			var getClients = clients.filter(onlyUnique);
 			// sendClients, a mi unicamente

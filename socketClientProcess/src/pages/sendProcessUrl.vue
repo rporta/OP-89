@@ -91,6 +91,13 @@
         // Set socket on
         var self = this;
 
+        socket.on("getCapture", function(data){
+          self.debug.list.push({
+            title: "getCapture",
+            data: JSON.stringify(data, getCircularReplacer())
+          });
+        });
+
         // this.debug.list.push({
         //   title : "windows",
         //   data : JSON.stringify(windows, getCircularReplacer())
