@@ -127,6 +127,11 @@ public class MainActivity extends CordovaActivity
             this.URLList.add(url);
             this.startFinishLoadPag = true;
             this.PageStatus = "local";
+            
+            //finalizo la carga url local
+            String json = "{'mensaje' : '"+ this.PageStatus +"' }";
+            String js = "javascript:java.send(" + json + ")";
+            this.appView.loadUrl(js);            
 
         }else {
             if(url.indexOf("file") != -1){            
@@ -202,11 +207,6 @@ public class MainActivity extends CordovaActivity
             obj = new JSONObject(dataFW);
             Boolean cordovaInit = obj.getBoolean("cordovaInit");
             LOG.d(TAG, nameofCurrMethod + ", cordovaInit:" + cordovaInit);
-
-            //finalizo la carga url local
-            String json = "{'mensaje' : '"+ this.PageStatus +"' }";
-            String js = "javascript:alert(123)";
-            this.appView.loadUrl(js);
         } catch (JSONException e) {
             LOG.d(TAG, nameofCurrMethod + ", no vino cordovaInit");
         }

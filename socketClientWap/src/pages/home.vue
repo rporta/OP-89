@@ -16,6 +16,9 @@
   </f7-page>
 </template>
 <script>
+  import Dom7 from 'dom7';
+  import cordovaApp from '../js/cordova-app.js';
+  import routes from '../js/routes.js';
   import config from '../config/config.json';
   import configDefault from '../config/configDefault.json';   
   export default {
@@ -27,6 +30,29 @@
           list: []
         }             
       };
-    }
+    },
+    methods: {
+      getF7(){
+        return this.$f7;
+      }
+    },
+    mounted() {
+      this.$f7ready((f7) => {
+
+        this.debug.list.push({
+          title : "mounted",
+          data : true
+        });
+        // Set Dom7 style, events
+
+        var self = this;
+        setTimeout(function() {
+          self.debug.list.push({
+            title: "appJava",
+            data: self.getF7().data.appJava
+          });
+        }, 1000);
+      }); 
+    }        
   };
 </script>

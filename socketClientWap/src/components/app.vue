@@ -48,7 +48,8 @@
                 name: config.perfil.name,
                 avatar: config.perfil.avatar,
               },
-              processUrl: null
+              processUrl: null,
+              appJava: null
             };
           },
           // App routes
@@ -121,6 +122,15 @@
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
+
+          //le aviso a java que en el flujo web cordova ya esta disponible
+          setTimeout(function() {          
+            var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+            i.sendDataModuleApp({
+              "cordovaInit": true 
+            });
+          }, 3000);
+
         }
         // Set Dom7 style, events
 
