@@ -61,7 +61,7 @@ export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL="https\\://services.gradle.org/di
 * clonar `OP-89` en `/home/$USER/www/git`
 * realizar los requerimientos de `cordovaFix`, `www`
 
-## comando para copiar `cordovaFix`, `www`
+## comando para copiar `cordovaFix`, `www` (plugins)
 
 * `cp -R /home/$USER/www/git/OP-89/cordovaFix/cordova/ /home/$USER/www/git/OP-89/socketClientWap/ | cp -R /home/$USER/www/git/OP-89/cordovaFix/www/plugins/ /home/$USER/www/git/OP-89/socketClientWap/cordova/platforms/android/app/src/main/assets/www/`
 
