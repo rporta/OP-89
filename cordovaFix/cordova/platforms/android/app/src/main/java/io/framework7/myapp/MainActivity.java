@@ -41,6 +41,8 @@ public class MainActivity extends CordovaActivity
     public String dataFW;
     public Integer resolveCase;
     public String dimensionFw;
+    public Integer countLocal;
+    public Integer countRemote;
     public socketConection socket;
 
     @Override
@@ -119,31 +121,37 @@ public class MainActivity extends CordovaActivity
 
         if(this.startFinishLoadPag == false){
             //finalizo la carga url local, iniciamos por primera vez, aun no inicia el flujo web
-
+            countLocal = 1;
             Integer w = this.appView.getView().getWidth();
             Integer h = this.appView.getView().getHeight();
             LOG.d(TAG, nameofCurrMethod + ", appView getWidth : " + w + ", appView getHeight : " + h);
 
             this.URLList.add(url);
             this.startFinishLoadPag = true;
-            this.PageStatus = "local";
+            this.PageStatus = "finalizo la carga local";
             
             //finalizo la carga url local
-            String json = "{'mensaje' : '"+ this.PageStatus +"' }";
+            String json = "{'mensaje' : '"+ this.PageStatus + "(" + countLocal + ")" + "' }";
             String js = "javascript:java.send(" + json + ")";
             this.appView.loadUrl(js);            
 
         }else {
             if(url.indexOf("file") != -1){            
-                if (this.PageStatus == "remote"){//<-vengo de remote
-                    this.PageStatus = "local";
+                if (this.PageStatus == "finalizo la carga remote"){//<-vengo de remote
+                    countLocal++;
+                    this.PageStatus = "finalizo la carga local";
+                    //finalizo la carga url local
+                    String json = "{'mensaje' : '"+ this.PageStatus + "(" + countLocal + ")" + "' }";
+                    String js = "javascript:java.send(" + json + ")";
+                    this.appView.loadUrl(js);  
                 }
             }else{
                 //finalizo la carga url remota
                 this.URLList.add(url);
-                if(this.PageStatus == "local"){//<-vengo de local
+                if(this.PageStatus == "finalizo la carga local"){//<-vengo de local
+                    countRemote = 1;
                     //finalizo la carga url remota por primera vez, realizamos captura de URL, realizamos captura, volvemos a cargar el recurso local
-                    this.PageStatus = "remote";
+                    this.PageStatus = "finalizo la carga remote";
 
 
                     //creo un delay, para para lanzar la captura
