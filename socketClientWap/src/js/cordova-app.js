@@ -51,41 +51,57 @@ var cordovaApp = {
     });
 
     window.broadcaster.addEventListener('onDataModuleJava', (data) => {
-      if (data.isTrusted) {
+      if ("isTrusted" in data) {
         delete data.isTrusted;
       }
       alert(JSON.stringify(data));
       if (data.type = "socket") {
         switch (data.event) {
           case "sendConfigProcessUrlSocket":
-            // statements_1
+            f7.data.sendConfigProcessUrlSocket = data.data;
+            f7.emit(data.event, f7.data.sendConfigProcessUrlSocket);
             break;
           case "sendClient":
-            // statements_1
+            f7.data.sendClient = data.data;
+            f7.emit(data.event, f7.data.sendClient);
             break;
           case "disconnect":
-            // statements_1
+            f7.data.disconnect = data.data;
+            f7.emit(data.event, f7.data.disconnect);
             break;
           case "sendClients":
-            // statements_1
+            f7.data.sendClients = data.data;
+            f7.emit(data.event, f7.data.sendClients);
             break;
           case "sendTypingMessage":
-            // statements_1
+            f7.data.sendTypingMessage = data.data;
+            f7.emit(data.event, f7.data.sendTypingMessage);
             break;
           case "sendOffTypingMessage":
-            // statements_1
+            f7.data.sendOffTypingMessage = data.data;
+            f7.emit(data.event, f7.data.sendOffTypingMessage);
             break;
           case "connect":
-            // statements_1
+            f7.data.connect = data.data;
+            f7.emit(data.event, f7.data.connect);
             break;
           case "sendMessage":
-            // statements_1
+            f7.data.sendMessage = data.data;
+            f7.emit(data.event, f7.data.sendMessage);
             break;
         }
+      } else if (data.type = "img") {
+        if (data.event = "onImg") {
+          f7.data.img = data.img;
+          f7.emit(data.event, f7.data.img);
+        }
+      } else if (data.type = "data") {
+        if (data.event = "onData") {
+          f7.data.appJava = data.data;
+          f7.emit(data.event, f7.data.appJava);
+        }
       }
-      f7.data.appJava = data.data;
     }, true);
-
 
     window.addEventListener('keyboardDidHide', () => {
       if (document.activeElement && $(document.activeElement).parents('.messagebar').length) {

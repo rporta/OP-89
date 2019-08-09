@@ -89,3 +89,58 @@ Para resolver este problema existen 1 vias
 
     LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
 ```
+
+#Problemas de comunicacion con componentes
+
+##Solucion :
+
+Para resolver este problema existen multiples vias, la mejor forma de resolverlo es crear data en f7, y trabajar con los eventos on, emit en los componentes desde la instancia f7, 
+
+* `f7.emit(String, mix)`
+* `f7.on(String, callback)`
+
+```f7 example
+f7.on('onFafa', function (data) {
+  console.log(data); // {fafa: fafa}
+})
+
+// emit event
+f7.emit('onFafa', {fafa: fafa});
+```
+#Modelo de datos con comunicacion f7 APP(JAVA)
+
+##Modelo de datos a enviar APP(JAVA)->f7:
+
+```modelo de datos
+{
+    type: String, 
+    event: String,
+    data: mix
+}
+```
+
+##Valores de datos para los campos type socket
+
+```type socket
+{
+    type: [socket]
+    event: [sendConfigProcessUrlSocket,sendClient,disconnect,sendClients,sendTypingMessage,sendOffTypingMessage,connect,sendMessage]
+}
+```
+
+##Valores de datos para los campos type data
+
+```type data
+{
+    type: [data]
+    event: [onData]
+}
+```
+##Valores de datos para los campos type img
+
+```type img
+{
+    type: [img]
+    event: [onImg]
+}
+```

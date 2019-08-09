@@ -50,7 +50,17 @@
               },
               config : config,
               processUrl: null,
-              appJava: null
+              appJava: null,
+              sendConfigProcessUrlSocket: null,
+              sendClient: null,
+              disconnect: null,
+              sendClients: null,
+              sendTypingMessage: null,
+              sendOffTypingMessage: null,
+              connect: null,
+              sendMessage: null,
+              img : null,
+              appJava : null
             };
           },
           // App routes
@@ -103,9 +113,10 @@
         var getDataForm = this.$f7.form.convertToData(configProcessUrl);
         // Send socket
         var self = this;      
-        socket.emit("configProcessUrlSocket", Object.assign({
-          socketId : self.socketId,
-        }, getDataForm));
+        // socket.emit("configProcessUrlSocket", Object.assign({
+        //   socketId : self.socketId,
+        // }, getDataForm));//<- no va, porque :
+        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
       },
       resolverClickSms(){
         var configProcessUrl = this.$refs.configProcessUrl.$el;
@@ -113,9 +124,10 @@
         console.log(getDataForm);
         var self = this;
         // Send socket
-        socket.emit("configProcessUrlSms", Object.assign({
-          socketId : self.socketId,
-        }, getDataForm));
+        // socket.emit("configProcessUrlSms", Object.assign({
+        //   socketId : self.socketId,
+        // }, getDataForm));//<- no va, porque :
+        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
       },
       getInfoDevice(){
         var device = this.getF7().device;
@@ -145,20 +157,22 @@
           // sendDataModuleApp: socket init 
           var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
           i.sendDataModuleApp({
-              id: "",
-              chanel: "socket",
+              type: "socket",
               event: "init",
-              host: self.getF7().data.config.api.host,
-              port: self.getF7().data.config.api.port,
-              type: self.config.type,
-              wifi: "on",
-              driver:  self.getInfoDevice()
+              data : {
+                id: "",
+                host: self.getF7().data.config.api.host,
+                port: self.getF7().data.config.api.port,
+                type: self.config.type,
+                wifi: "on",
+                driver:  self.getInfoDevice()
+              }
           });
         }
         // Set Dom7 style, events
 
         // Set socket on
-        socket.on("sendConfigProcessUrlSocket", function(data) {
+        this.getF7().on("sendConfigProcessUrlSocket", function(data) {
           if(data.type == "Wap"){
             self.getF7().data.processUrl = data;            
             self.redirectTo('/getProcessUrl/' + data.socketId);
@@ -166,7 +180,7 @@
         });
 
         // Set socket 
-        socket.on("sendDisconnect", function(data){
+        this.getF7().on("sendDisconnect", function(data){
           console.log(data);
           if(data.disconnect){
             socket.disconnect();

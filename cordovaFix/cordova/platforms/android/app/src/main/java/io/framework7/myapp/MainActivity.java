@@ -229,7 +229,6 @@ public class MainActivity extends CordovaActivity
                         timer = null;
                         break;
                 }
-
             }
         } catch (JSONException e) {
             LOG.d(TAG, nameofCurrMethod + ", JSONException");

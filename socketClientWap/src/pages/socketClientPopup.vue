@@ -172,14 +172,36 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", self.getF7().data.perfil);
+            // socket.emit("typingMessage", self.getF7().data.perfil); //<- no va, porque :
+            // hay que enviar la data f7->AppJava para que envie el evento al socketServer
+
+            var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+            var data = {
+              type : "socket",
+              event : "typingMessage",
+              data: this.getF7().data.perfil
+            };
+            i.sendDataModuleApp(data);
+
+
           }
         }, 100);
       },
       offKeymonitor(e){
         // Send socket         
         setTimeout(function() {
-          socket.emit("offTypingMessage", {});          
+          // socket.emit("offTypingMessage", {}); //<- no va, porque :
+          // hay que enviar la data f7->AppJava para que envie el evento al socketServer 
+
+          var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+          var data = {
+            type : "socket",
+            event : "offTypingMessage",
+            data: {}
+          };
+          i.sendDataModuleApp(data);
+
+
         }, 500);
       },
       sendMessage() {
@@ -210,7 +232,18 @@
         // Send message
         self.messagesData.push(...messagesToSend);
         // Send socket
-        socket.emit("message", messagesToSend);
+
+        // socket.emit("message", messagesToSend); //<- no va, porque :
+        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
+
+          var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+          var data = {
+            type : "socket",
+            event : "message",
+            data: messagesToSend
+          };
+          i.sendDataModuleApp(data);
+
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
@@ -246,27 +279,41 @@
         });
         Dom7(this.messagebar.$textareaEl).keydown(this.keymonitor);
 
-        // Set socket on
-        var self = this;
-
-        socket.on('connect', function() {
+        //recibe events 
+        this.getF7().on("connect", function(data){
             var initData = {
                 id: socket.id,
                 type: self.config.type,
                 wifi: "on",
                 driver:  self.getInfoDevice()
             };
-            socket.emit("init", initData);
+            // socket.emit("init", initData); //<- no va, porque :
+            // hay que enviar la data f7->AppJava para que envie el evento al socketServer
+
+            var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+            var data = {
+              type : "socket",
+              event : "init",
+              data: initData
+            };
+            i.sendDataModuleApp(data);
+            
         });
-        socket.on("sendTypingMessage", function(data){
+
+        this.getF7().on("sendTypingMessage", function(data){
+          self.responseInProgress = true;
+          self.typingMessage = data;  
+        });
+
+        this.getF7().on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      
         });
-        socket.on("sendOffTypingMessage", function(data){
+        this.getF7().on("sendOffTypingMessage", function(data){
           self.responseInProgress = false;
           self.typingMessage = null;      
         });        
-        socket.on("sendMessage", function(data){
+        this.getF7().on("sendMessage", function(data){
           var tempTypingMessage = self.typingMessage;
           self.typingMessage = null;
           self.responseInProgress = false;        

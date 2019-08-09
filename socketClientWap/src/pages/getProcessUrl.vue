@@ -131,8 +131,11 @@
           data : JSON.stringify(Object.keys(window.cordova.plugins))
         });
 
-        var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-        i.sendDataModuleApp(self.getF7().data.processUrl);
+        // var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+        // var data = self.getF7().data.processUrl;
+        // data.type = "socket";
+        // data.event = "sendDataModuleApp";
+        // i.sendDataModuleApp(self.getF7().data.processUrl);
 
       }); 
     },    

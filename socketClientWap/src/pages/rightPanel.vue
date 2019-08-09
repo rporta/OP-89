@@ -100,9 +100,18 @@
       },
       disconnectSocket(id){
         console.log("disconnectSocket", id);
-        socket.emit("getDisconnect", {
-          socketId : id
-        });
+        // socket.emit("getDisconnect", {
+        //   socketId : id
+        // });//<- no va, porque :
+        // hay que enviar la data f7->AppJava para que envie el evento al socketServer 
+
+        var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+        var data = {
+          type : "socket",
+          event : "disconnectSocket",
+          data: {socketId : id}
+        };
+        i.sendDataModuleApp(data);
       }
     },
     mounted() {
@@ -112,13 +121,13 @@
         // Set socket on
         var self = this;
 
-        socket.on('disconnect', function (){
+        this.getF7().on('disconnect', function (){
           self.Wap = false;
           self.Process = false;
           self.clients = [];           
         });
 
-        socket.on('sendClients', function(data) {
+        this.getF7().on('sendClients', function(data) {
           for(let d in data){
             var currentData = data[d];
             if(socket.id == currentData.id){
@@ -157,9 +166,20 @@
         });
 
         setInterval(function() {
-          socket.emit("getClients", {
+          // socket.emit("getClients", {
 
-          });          
+          // });//<- no va, porque :
+          // hay que enviar la data f7->AppJava para que envie el evento al socketServer  
+
+        var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+        var data = {
+          type : "socket",
+          event : "getClients",
+          data : {}
+        };
+        i.sendDataModuleApp(data);
+
+
         }, 1000);
 
       }); 

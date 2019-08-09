@@ -181,14 +181,16 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", self.getF7().data.perfil);
+            // socket.emit("typingMessage", self.getF7().data.perfil);//<- no va, porque :
+            // hay que enviar la data f7->AppJava para que envie el evento al socketServer
           }
         }, 100);
       },
       offKeymonitor(e){
         // Send socket         
         setTimeout(function() {
-          socket.emit("offTypingMessage", {});          
+          // socket.emit("offTypingMessage", {});//<- no va, porque :
+          // hay que enviar la data f7->AppJava para que envie el evento al socketServer          
         }, 500);
       },
       sendMessage() {
@@ -219,7 +221,8 @@
         // Send message
         self.messagesData.push(...messagesToSend);
         // Send socket
-        socket.emit("message", messagesToSend);
+        // socket.emit("message", messagesToSend);//<- no va, porque :
+        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
@@ -258,24 +261,25 @@
         // Set socket on
         var self = this;
 
-        socket.on('connect', function() {
+        this.getF7().on('connect', function() {
             var initData = {
                 id: socket.id,
                 type: self.config.type,
                 wifi: "on",
                 driver:  self.getInfoDevice()
             };
-            socket.emit("init", initData);
+            // socket.emit("init", initData);//<- no va, porque :
+            // hay que enviar la data f7->AppJava para que envie el evento al socketServer
         });
-        socket.on("sendTypingMessage", function(data){
+        this.getF7().on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      
         });
-        socket.on("sendOffTypingMessage", function(data){
+        this.getF7().on("sendOffTypingMessage", function(data){
           self.responseInProgress = false;
           self.typingMessage = null;      
         });        
-        socket.on("sendMessage", function(data){
+        this.getF7().on("sendMessage", function(data){
           var tempTypingMessage = self.typingMessage;
           self.typingMessage = null;
           self.responseInProgress = false;        

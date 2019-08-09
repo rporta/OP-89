@@ -47,15 +47,29 @@
         required : false,
         default: "",
       }
+    },
+    methods: {
+      getF7(){
+        return this.$f7;
+      }
     }, 
     mounted() {
       this.$f7ready((f7) => {
         // Set socket
         var self = this;
-        socket.emit("getClient", {
-          socketId: self.socketId
-        });
-        socket.on("sendClient", function(client){
+        // socket.emit("getClient", {
+        //   socketId: self.socketId
+        // });//<- no va, porque :
+        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
+        var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+        var data = {
+          type : "socket",
+          event : "disconnectSocket",
+          data: {socketId : self.socketId}
+        };
+        i.sendDataModuleApp(data);
+
+        this.getF7().on("sendClient", function(client){
           self.infoClient = client;
         });
       }); 

@@ -46,12 +46,12 @@
         // Set Dom7 style, events
 
         var self = this;
-        setTimeout(function() {
+        this.getF7().on("onData", function(data){
           self.debug.list.push({
             title: "appJava",
-            data: JSON.stringify(self.getF7().data.appJava)
+            data: JSON.stringify(data)
           });
-        }, 1000);
+        });
       }); 
     }        
   };
