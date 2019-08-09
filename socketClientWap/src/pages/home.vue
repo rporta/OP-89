@@ -49,7 +49,7 @@
         setTimeout(function() {
           self.debug.list.push({
             title: "appJava",
-            data: self.getF7().data.appJava
+            data: JSON.stringify(self.getF7().data.appJava)
           });
         }, 1000);
       }); 

@@ -51,7 +51,39 @@ var cordovaApp = {
     });
 
     window.broadcaster.addEventListener('onDataModuleJava', (data) => {
+      if (data.isTrusted) {
+        delete data.isTrusted;
+      }
       alert(JSON.stringify(data));
+      if (data.type = "socket") {
+        switch (data.event) {
+          case "sendConfigProcessUrlSocket":
+            // statements_1
+            break;
+          case "sendClient":
+            // statements_1
+            break;
+          case "disconnect":
+            // statements_1
+            break;
+          case "sendClients":
+            // statements_1
+            break;
+          case "sendTypingMessage":
+            // statements_1
+            break;
+          case "sendOffTypingMessage":
+            // statements_1
+            break;
+          case "connect":
+            // statements_1
+            break;
+          case "sendMessage":
+            // statements_1
+            break;
+        }
+      }
+      f7.data.appJava = data.data;
     }, true);
 
 
