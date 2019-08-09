@@ -18,8 +18,8 @@
         type="text"
         placeholder="Your name"
         clear-button
-        :value="config.perfil.name" 
-        @input="config.perfil.name = $event.target.value"
+        :value="getF7().data.perfil.name" 
+        @input="getF7().data.perfil.name = $event.target.value"
       >
                       <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
       </f7-list-input>
@@ -31,8 +31,8 @@
         type="text"
         placeholder="Your URL avatar"
         clear-button
-        :value="config.perfil.avatar" 
-        @input="config.perfil.avatar = $event.target.value"
+        :value="getF7().data.perfil.avatar" 
+        @input="getF7().data.perfil.avatar = $event.target.value"
       >
                       <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
       </f7-list-input>      
@@ -78,14 +78,13 @@
         const configDefaultJSON = JSON.parse(configDefaultString); 
         this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
         this.config = configDefaultJSON;
-      }
+      },
+      getF7(){
+        return this.$f7;
+      },
     },
     mounted() {
       this.$f7ready((f7) => {
-        // Init cordova APIs (see cordova-app.js)
-        if (f7.device.cordova) {
-          cordovaApp.init(f7);
-        }
         // Set Dom7 style, events
       }); 
     } 
