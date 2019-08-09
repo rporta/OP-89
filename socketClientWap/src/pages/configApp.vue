@@ -93,7 +93,7 @@
         var self = this;
         setTimeout(function() {
           self.socketId = socket.id;
-        }, 100);
+        }, 500);
       },
       socketDisconnect(){
         socket.disconnect();

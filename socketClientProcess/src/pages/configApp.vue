@@ -88,12 +88,12 @@
         this.config = configDefaultJSON;
       },
       socketConnect(){
-        socket.io.uri = "http://" + this.config.api.host + ":" + this.config.api.port;
+        socket.io.uri = "http://" + this.config.api.host + ":" + this.config.api.port;        
         socket.connect();
         var self = this;
         setTimeout(function() {
           self.socketId = socket.id;
-        }, 100);
+        }, 500);
       },
       socketDisconnect(){
         socket.disconnect();
@@ -101,10 +101,6 @@
     },
     mounted() {
       this.$f7ready((f7) => {
-        // Init cordova APIs (see cordova-app.js)
-        if (f7.device.cordova) {
-          cordovaApp.init(f7);
-        }
         // Set Dom7 style, events
 
 
