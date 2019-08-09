@@ -29,3 +29,63 @@
 * En socketClientWap/src/: f7, crear pagina, que cargue los componente processURLConsole, processURLPanel, processURLForm
 * En socketClientWap/src/: f7, agregar a la pagina PanelMenu:Principal, los links a los componentes processURLConsole, processURLPanel, processURLForm
 * Implementar la funcionalidad de envio de sms 
+
+
+#Problemas de comunicacion f7 APP(JAVA)
+
+##Problemas con comunicacion f7->APP(JAVA)
+
+Para resolver este problema existen 2 vias
+
+* cordova-broadcaster
+: para utlizar cordova-broadcaster, se debe realizar modificaciones en f7 y APP(JAVA)
+```f7
+window.broadcaster.fireNativeEvent( "test.event", { item:'test data' }, function() {
+    console.log( "event fired!" );
+    } );
+```
+```APP(JAVA)
+final BroadcastReceiver receiver = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String data = intent.getExtras().getString("data");
+
+        Log.d("CDVBroadcaster",
+                String.format("Native event [%s] received with data [%s]", intent.getAction(), data));
+
+    }
+};
+LocalBroadcastManager.getInstance(this)
+            .registerReceiver(receiver, new IntentFilter("test.event"));
+}
+```
+* cordova-plugin-inappbrowser
+: para utlizar cordova-broadcaster, se debe realizar modificaciones en f7, en APP(JAVA) se recibe por onDataFW()
+```f7
+
+var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+i.sendDataModuleApp({
+  mensaje: "hola",
+});
+```
+
+##Problemas con comunicacion APP(JAVA)->F7
+
+Para resolver este problema existen 1 vias
+
+* cordova-broadcaster
+: para utlizar cordova-broadcaster, se debe realizar modificaciones en f7(`cordova-app.js`) y APP(JAVA)
+```f7(cordova-app.js)
+    window.broadcaster.addEventListener('onDataModuleJava', (data) => {
+      alert(JSON.stringify(data));
+    }, true);
+```
+```APP(JAVA)
+    final Intent intent = new Intent("onDataModuleJava");
+
+    Bundle b = new Bundle();
+    b.putString( "mensaje", "hola" );
+    intent.putExtras( b);
+
+    LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+```

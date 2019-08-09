@@ -82,7 +82,6 @@ public class socketConection {
         try {
             this.setSocket(IO.socket("http://" + this.getHost() + ":" + this.getPort()));
             this.connect();
-            this.listeningOnEvents();
         } catch (URISyntaxException e) {
 
         }

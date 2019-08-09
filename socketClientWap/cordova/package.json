@@ -19,6 +19,7 @@
     "cordova-ios": "^5.0.1",
     "cordova-plugin-android-wifi-manager": "^1.2.1",
     "cordova-plugin-background-mode": "^0.7.2",
+    "cordova-plugin-broadcaster": "^3.1.1",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-inappbrowser": "^3.1.0",
@@ -30,7 +31,8 @@
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-wkwebview-engine": "^1.2.1",
     "cordova-plugin-wkwebview-file-xhr": "^2.1.1",
-    "fr._46cl.focus": "git+https://github.com/46cl/cordova-android-focus-plugin.git"
+    "fr._46cl.focus": "git+https://github.com/46cl/cordova-android-focus-plugin.git",
+    "phonegap-plugin-multiview": "^1.0.0"
   },
   "cordova": {
     "plugins": {
@@ -48,12 +50,14 @@
       "cordova-plugin-smslog": {},
       "com.darktalker.cordova.screenshot": {},
       "cordova-plugin-android-wifi-manager": {},
-      "cordova-plugin-wkwebview-engine": {}
+      "cordova-plugin-wkwebview-engine": {},
+      "phonegap-plugin-multiview": {},
+      "cordova-plugin-broadcaster": {}
     },
     "platforms": [
       "ios",
-      "android",
-      "electron"
+      "electron",
+      "android"
     ]
   },
   "devDependencies": {

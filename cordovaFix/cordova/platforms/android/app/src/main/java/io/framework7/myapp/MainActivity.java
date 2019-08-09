@@ -19,6 +19,7 @@
 
 package io.framework7.myapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import org.apache.cordova.*;
 import org.json.*;
@@ -30,6 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import com.emulate.ProcessKey;
 import com.socketImplement.socketConection;
+import android.support.v4.content.LocalBroadcastManager;
 
 public class MainActivity extends CordovaActivity
 {
@@ -194,21 +196,34 @@ public class MainActivity extends CordovaActivity
                         this.setSocket(s);
                         this.getSocket().init();
 
+
+
+
                         //creo un delay, para enviar data a socketServer
                         TimerTask task = new TimerTask() {
                             public void run() {
                                 try {
                                     self.dataFW.put("id", self.getSocket().getSocket().id());
-                                    self.dataFW.put("id2", self.getSocket().getSocket().id());
                                 } catch (JSONException e) {
                                     LOG.d(TAG, nameofCurrMethod + ", id");
                                 }
                                 self.getSocket().sendEvent(event, self.dataFW);
                                 LOG.d(TAG, nameofCurrMethod + ", obj : " + self.dataFW);
+
+                                String json = "{'mensaje' : '"+ "'(socket) :" + self.getSocket().getSocket().id() + "'"+"' }";
+
+                                final Intent intent = new Intent("onDataModuleJava");
+
+                                Bundle b = new Bundle();
+                                b.putString( "data", "test" );
+                                intent.putExtras( b);
+
+                                LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+
                             }
                         };
                         long delay = 1000L;
-                        Timer timer = new Timer("Screenshot");
+                        Timer timer = new Timer("enviarDataSocketServer");
                         timer.schedule(task, delay);
                         task = null;
                         timer = null;

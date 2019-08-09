@@ -48,6 +48,7 @@
                 name: config.perfil.name,
                 avatar: config.perfil.avatar,
               },
+              config : config,
               processUrl: null,
               appJava: null
             };
@@ -115,27 +116,48 @@
         socket.emit("configProcessUrlSms", Object.assign({
           socketId : self.socketId,
         }, getDataForm));
-      }
+      },
+      getInfoDevice(){
+        var device = this.getF7().device;
+        var data = {};
+        for(let key in device){
+          if(key != "pixelRatio"){          
+            var currentValue = device[key];
+            if(typeof currentValue === "boolean"){
+              if(currentValue){
+                data[key] = currentValue;
+              }
+            }else{
+              data[key] = currentValue;
+            }
+          }
+        }
+        return data;
+      }      
     },
     mounted() {
       this.$f7ready((f7) => {
+        var self = this;
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
 
-          //le aviso a java que en el flujo web cordova ya esta disponible
-          setTimeout(function() {          
-            var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-            i.sendDataModuleApp({
-              "cordovaInit": true 
-            });
-          }, 3000);
-
+          // sendDataModuleApp: socket init 
+          var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
+          i.sendDataModuleApp({
+              id: "",
+              chanel: "socket",
+              event: "init",
+              host: self.getF7().data.config.api.host,
+              port: self.getF7().data.config.api.port,
+              type: self.config.type,
+              wifi: "on",
+              driver:  self.getInfoDevice()
+          });
         }
         // Set Dom7 style, events
 
         // Set socket on
-        var self = this;
         socket.on("sendConfigProcessUrlSocket", function(data) {
           if(data.type == "Wap"){
             self.getF7().data.processUrl = data;            

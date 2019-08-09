@@ -49,6 +49,12 @@ var cordovaApp = {
     window.addEventListener('keyboardDidShow', () => {
       f7.input.scrollIntoView(document.activeElement, 0, true, true);
     });
+
+    window.broadcaster.addEventListener('onDataModuleJava', (data) => {
+      alert(JSON.stringify(data));
+    }, true);
+
+
     window.addEventListener('keyboardDidHide', () => {
       if (document.activeElement && $(document.activeElement).parents('.messagebar').length) {
         return;
