@@ -23,6 +23,7 @@ server.listen(port, () => {
 		socket.on("init", function(data) {
 			// add client
 			clients.push(data);
+			console.log(data);
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on('disconnect', function() {
