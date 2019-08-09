@@ -22,6 +22,7 @@ server.listen(port, () => {
 
 		socket.on("init", function(data) {
 			// add client
+			data.id = socket.id;
 			clients.push(data);
 			console.log(data);
 			console.log("Cantidad de clientes " + clients.length);
