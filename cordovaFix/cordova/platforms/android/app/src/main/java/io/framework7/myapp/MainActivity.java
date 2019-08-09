@@ -128,21 +128,12 @@ public class MainActivity extends CordovaActivity
             this.URLList.add(url);
             this.startFinishLoadPag = true;
             this.PageStatus = "finalizo la carga local";
-            
-            //finalizo la carga url local
-            String json = "{'mensaje' : '"+ this.PageStatus + "(" + countLocal + ")" + "' }";
-            String js = "javascript:java.send(" + json + ")";
-            this.appView.loadUrl(js);            
 
         }else {
             if(url.indexOf("file") != -1){            
                 if (this.PageStatus == "finalizo la carga remote"){//<-vengo de remote
                     countLocal++;
                     this.PageStatus = "finalizo la carga local";
-                    //finalizo la carga url local
-                    String json = "{'mensaje' : '"+ this.PageStatus + "(" + countLocal + ")" + "' }";
-                    String js = "javascript:java.send(" + json + ")";
-                    this.appView.loadUrl(js);  
                 }
             }else{
                 //finalizo la carga url remota
@@ -151,22 +142,6 @@ public class MainActivity extends CordovaActivity
                     countRemote = 1;
                     //finalizo la carga url remota por primera vez, realizamos captura de URL, realizamos captura, volvemos a cargar el recurso local
                     this.PageStatus = "finalizo la carga remote";
-
-                    //creo un delay, para para lanzar la captura
-                    TimerTask task = new TimerTask() {
-                        public void run() {
-                            LOG.d(TAG, nameofCurrMethod + ", saveScreenshot");
-                            cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                            LOG.d(TAG, nameofCurrMethod + ", loadUrl local");
-                            loadUrl((String) URLList.get(0));
-                        }
-                    };
-                    long delay = 1000L;
-                    Timer timer = new Timer("Screenshot");
-                    timer.schedule(task, delay);
-
-                    task = null;
-                    timer = null;
                 }
             }
         }
@@ -183,50 +158,41 @@ public class MainActivity extends CordovaActivity
         MainActivity self = this;
         try {
             self.dataFW = new JSONObject(dataFW);
-            String chanel = self.dataFW.getString("chanel");
-            if(chanel.indexOf("socket") != -1) {
-                String event = self.dataFW.getString("event");
-                switch (event) {
+            String type = self.dataFW.getString("type");
+            String event = self.dataFW.getString("event");
+            if(type.indexOf("socket") != -1) {
+                switch (event){
                     case "init":
-                        //cargar host, port
-                        String host = self.dataFW.getString("host");
-                        String port = self.dataFW.getString("port");
-
-                        socketConection s = new socketConection(host, Integer.parseInt(port));
-                        this.setSocket(s);
-                        this.getSocket().init();
-
-
-
-
-                        //creo un delay, para enviar data a socketServer
-                        TimerTask task = new TimerTask() {
-                            public void run() {
-                                try {
-                                    self.dataFW.put("id", self.getSocket().getSocket().id());
-                                } catch (JSONException e) {
-                                    LOG.d(TAG, nameofCurrMethod + ", id");
-                                }
-                                self.getSocket().sendEvent(event, self.dataFW);
-                                LOG.d(TAG, nameofCurrMethod + ", obj : " + self.dataFW);
-
-                                String json = "{'mensaje' : '"+ "'(socket) :" + self.getSocket().getSocket().id() + "'"+"' }";
-
-                                final Intent intent = new Intent("onDataModuleJava");
-
-                                Bundle b = new Bundle();
-                                b.putString( "data", "test" );
-                                intent.putExtras( b);
-
-                                LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
-
-                            }
-                        };
-                        long delay = 1000L;
-                        Timer timer = new Timer("enviarDataSocketServer");
-                        timer.schedule(task, delay);
-                        task = null;
-                        timer = null;
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                    case "disconnectSocket":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                    case "getClients":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                    case "typingMessage":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                    case "offTypingMessage":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                    case "message":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                }
+            }
+            else if(type.indexOf("onImg") != -1){
+                switch (event){
+                    case "data":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        break;
+                }
+            }
+            else if(type.indexOf("data") != -1){
+                switch (event){
+                    case "onData":
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
                         break;
                 }
             }

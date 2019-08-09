@@ -79,6 +79,9 @@
       };
     },
     methods: {
+      getF7(){
+        return this.$f7;
+      },      
       resetDefaultConfig(){
         var formConfigPerfil = this.$refs.configSocket.$el;
         var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
