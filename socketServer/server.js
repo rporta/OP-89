@@ -25,7 +25,7 @@ server.listen(port, () => {
 			// add client
 			data.id = socket.id;
 			clients.push(data);
-			console.log(data);
+			console.log(JSON.stringify(data, getCircularReplacer()));
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on('disconnect', function() {
@@ -195,3 +195,16 @@ server.listen(port, () => {
 function onlyUnique(value, index, self) {
 	return self.indexOf(value) === index;
 }
+
+function getCircularReplacer() {
+	const seen = new WeakSet();
+	return (key, value) => {
+		if (typeof value === "object" && value !== null) {
+			if (seen.has(value)) {
+				return;
+			}
+			seen.add(value);
+		}
+		return value;
+	};
+};
