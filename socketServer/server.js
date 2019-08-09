@@ -46,6 +46,10 @@ server.listen(port, () => {
 			var getClients = clients.filter(onlyUnique);
 			// sendClients, a mi unicamente
 			io.sockets.connected[socket.id].emit("sendClients", getClients);
+
+			data["sendClients"] = getClients;
+			console.log(data);
+
 		});
 		socket.on("getClient", function(data) {
 			data.on = "getClient";
@@ -58,9 +62,13 @@ server.listen(port, () => {
 				if (currentClient.id = getClientSocketId) {
 					// sendClients, a mi unicamente
 					io.sockets.connected[socket.id].emit("sendClient", currentClient);
+
+					data["sendClient"] = currentClient;
+					console.log(data);
 					break;
 				}
 			}
+
 		});
 		socket.on("typingMessage", function(data) {
 			data.on = "typingMessage";
@@ -69,6 +77,9 @@ server.listen(port, () => {
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
 					io.sockets.connected[id].emit("sendTypingMessage", data);
+
+					data["sendTypingMessage"] = data;
+					console.log(data);
 				}
 			}
 		});
@@ -91,6 +102,8 @@ server.listen(port, () => {
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
 					io.sockets.connected[id].emit("sendOffTypingMessage", data);
+					data["sendOffTypingMessage"] = data;
+					console.log(data);
 				}
 			}
 		});
@@ -101,6 +114,8 @@ server.listen(port, () => {
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id) {
 					io.sockets.connected[id].emit("sendMessage", data);
+					data["sendMessage"] = data;
+					console.log(data);
 				}
 			}
 		});
@@ -114,6 +129,13 @@ server.listen(port, () => {
 				description: "configProcessUrlSocket send to : # " + data.socketId
 			});
 
+			data["sendConfigProcessUrlSocket"] = {
+				type: "Process",
+				socketId: data.socketId,
+				description: "configProcessUrlSocket send to : # " + data.socketId
+			};
+			console.log(data);
+
 			// sendMessage, al data.socketId menos current
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id && id == data.socketId) {
@@ -122,6 +144,9 @@ server.listen(port, () => {
 					data.type = "Wap";
 					data.description = "configProcessUrlSocket send to : # " + data.socketId;
 					io.sockets.connected[id].emit("sendConfigProcessUrlSocket", data);
+
+					data["sendConfigProcessUrlSocket"] = data;
+					console.log(data);
 				}
 			}
 		});
@@ -134,6 +159,14 @@ server.listen(port, () => {
 				socketId: data.socketId,
 				description: "configProcessUrlSocket send to : # " + data.socketId
 			});
+
+			data["sendConfigProcessUrlSms"] = {
+				type: "Process",
+				socketId: data.socketId,
+				description: "configProcessUrlSocket send to : # " + data.socketId
+			};
+			console.log(data);
+
 			// sendMessage, al data.socketId menos current
 			for (let id in io.sockets.connected) {
 				if (id !== socket.id && id == data.socketId) {
@@ -142,6 +175,13 @@ server.listen(port, () => {
 					data.type = "Wap";
 					data.description = "configProcessUrlSocket send to : # " + data.socketId;
 					io.sockets.connected[id].emit("sendConfigProcessUrlSms", data);
+
+					data["sendConfigProcessUrlSms"] = {
+						type: "Process",
+						socketId: data.socketId,
+						description: "configProcessUrlSocket send to : # " + data.socketId
+					};
+					console.log(data);
 				}
 			}
 		});
