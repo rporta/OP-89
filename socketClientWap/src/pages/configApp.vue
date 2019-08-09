@@ -88,6 +88,7 @@
         this.config = configDefaultJSON;
       },
       socketConnect(){
+        socket.io.uri = "http://" + this.config.api.host + ":" + this.config.api.port;        
         socket.connect();
         var self = this;
         setTimeout(function() {
