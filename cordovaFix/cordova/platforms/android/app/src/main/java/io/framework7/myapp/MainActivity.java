@@ -207,11 +207,14 @@ public class MainActivity extends CordovaActivity
                         //cargar host, port
                         String host = obj.getString("host");
                         String port = obj.getString("port");
-
+                        obj.remove("host");
+                        obj.remove("port");
+                        obj.remove("event");
+                        obj.remove("chanel");
                         socketConection s = new socketConection(host, Integer.parseInt(port));
                         this.setSocket(s);
                         this.getSocket().init();
-                        this.getSocket().sendEvent(event, "{\"id\":\"\",\"chanel\":\"socket\",\"event\":\"init\",\"host\":\"35.168.206.184\",\"port\":\"10000\",\"type\":\"Wap\",\"wifi\":\"on\",\"driver\":{\"android\":true,\"androidChrome\":true,\"cordova\":true,\"phonegap\":true,\"os\":\"android\",\"osVersion\":\"8.0.0\"}}");
+                        this.getSocket().sendEvent(event, obj);
                         break;
                 }
             }
