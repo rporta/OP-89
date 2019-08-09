@@ -130,7 +130,7 @@ public class MainActivity extends CordovaActivity
             this.PageStatus = "finalizo la carga local";
 
         }else {
-            if(url.indexOf("file") != -1){            
+            if(url.indexOf("file") != -1){
                 if (this.PageStatus == "finalizo la carga remote"){//<-vengo de remote
                     countLocal++;
                     this.PageStatus = "finalizo la carga local";
@@ -160,39 +160,51 @@ public class MainActivity extends CordovaActivity
             self.dataFW = new JSONObject(dataFW);
             String type = self.dataFW.getString("type");
             String event = self.dataFW.getString("event");
+            String host = self.dataFW.getJSONObject("data").getString("host");
+            String port = self.dataFW.getJSONObject("data").getString("port");
+            socketConection s = new socketConection(host, Integer.parseInt(port));
+            this.setSocket(s);
+            this.getSocket().init();
+
             if(type.indexOf("socket") != -1) {
                 switch (event){
                     case "init":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
                         break;
                     case "disconnectSocket":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
                         break;
                     case "getClients":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
                         break;
                     case "typingMessage":
                         LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
                         break;
                     case "offTypingMessage":
                         LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
                         break;
                     case "message":
                         LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
                         break;
                 }
             }
             else if(type.indexOf("onImg") != -1){
                 switch (event){
                     case "data":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
                         break;
                 }
             }
             else if(type.indexOf("data") != -1){
                 switch (event){
                     case "onData":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
                         break;
                 }
             }

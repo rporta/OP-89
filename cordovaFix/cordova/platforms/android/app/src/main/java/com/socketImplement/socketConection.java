@@ -80,6 +80,7 @@ public class socketConection {
                 .getStackTrace()[0]
                 .getMethodName();
         try {
+            LOG.d(TAG,  nameofCurrMethod + ", http://" + this.getHost() + ":" + this.getPort());
             this.setSocket(IO.socket("http://" + this.getHost() + ":" + this.getPort()));
             this.connect();
         } catch (URISyntaxException e) {
