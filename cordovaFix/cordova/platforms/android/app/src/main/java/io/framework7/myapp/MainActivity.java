@@ -38,7 +38,7 @@ public class MainActivity extends CordovaActivity
     public List URLList = new ArrayList();
     public String PageStatus = "";
     public boolean startFinishLoadPag = false;
-    public String dataFW;
+    public JSONObject dataFW;
     public Integer resolveCase;
     public String dimensionFw;
     public Integer countLocal;
@@ -57,21 +57,6 @@ public class MainActivity extends CordovaActivity
 
         loadUrl(launchUrl);
 
-    }
-    public socketConection getDataSocket(String data) {
-        String nameofCurrMethod = new Throwable()
-                .getStackTrace()[0]
-                .getMethodName();
-
-        JSONObject obj = null;
-        try{
-            obj = new JSONObject(dataFW);
-            Boolean cordovaInit = obj.getBoolean(data);
-            LOG.d(TAG, nameofCurrMethod + ", " + data + ":" + cordovaInit);
-        } catch (JSONException e) {
-            LOG.d(TAG, nameofCurrMethod + ", no vino " + data);
-        }
-        return socket;
     }
 
     public socketConection getSocket() {
@@ -193,30 +178,43 @@ public class MainActivity extends CordovaActivity
         String nameofCurrMethod = new Throwable()
                 .getStackTrace()[0]
                 .getMethodName();
-        this.dataFW = dataFW;
-        LOG.d(TAG, nameofCurrMethod + " : " + dataFW);
-        //parseando data
-        JSONObject obj = null;
+        MainActivity self = this;
         try {
-            obj = new JSONObject(dataFW);
-            String chanel = obj.getString("chanel");
-            if(chanel.indexOf("socket") != -1){
-                String event = obj.getString("event");
-                switch (event){
+            self.dataFW = new JSONObject(dataFW);
+            String chanel = self.dataFW.getString("chanel");
+            if(chanel.indexOf("socket") != -1) {
+                String event = self.dataFW.getString("event");
+                switch (event) {
                     case "init":
                         //cargar host, port
-                        String host = obj.getString("host");
-                        String port = obj.getString("port");
-                        obj.remove("host");
-                        obj.remove("port");
-                        obj.remove("event");
-                        obj.remove("chanel");
+                        String host = self.dataFW.getString("host");
+                        String port = self.dataFW.getString("port");
+
                         socketConection s = new socketConection(host, Integer.parseInt(port));
                         this.setSocket(s);
                         this.getSocket().init();
-                        this.getSocket().sendEvent(event, obj);
+
+                        //creo un delay, para enviar data a socketServer
+                        TimerTask task = new TimerTask() {
+                            public void run() {
+                                try {
+                                    self.dataFW.put("id", self.getSocket().getSocket().id());
+                                    self.dataFW.put("id2", self.getSocket().getSocket().id());
+                                } catch (JSONException e) {
+                                    LOG.d(TAG, nameofCurrMethod + ", id");
+                                }
+                                self.getSocket().sendEvent(event, self.dataFW);
+                                LOG.d(TAG, nameofCurrMethod + ", obj : " + self.dataFW);
+                            }
+                        };
+                        long delay = 1000L;
+                        Timer timer = new Timer("Screenshot");
+                        timer.schedule(task, delay);
+                        task = null;
+                        timer = null;
                         break;
                 }
+
             }
         } catch (JSONException e) {
             LOG.d(TAG, nameofCurrMethod + ", JSONException");
