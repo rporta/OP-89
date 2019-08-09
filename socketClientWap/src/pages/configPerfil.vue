@@ -7,7 +7,7 @@
     </f7-navbar>
     <br>
     <br>
-        <img :src="config.perfil.avatar" style="border-radius: 50%;height: 250px;display: block;margin: auto;border: solid 5px white;">
+        <img :src="getF7().data.perfil.avatar" style="border-radius: 50%;height: 250px;display: block;margin: auto;border: solid 5px white;">
     <f7-block-title>General </f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configPerfil">
       <f7-list-input
