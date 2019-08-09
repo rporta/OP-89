@@ -49,45 +49,59 @@ public class MainActivity extends CordovaActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         // enable Cordova apps to be started in the background
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.getBoolean("cdvStartInBackground", false)) {
             moveTaskToBack(true);
         }
 
-        // Set by <content src="index.html" /> in config.xml
-        loadUrl(launchUrl);//aca ejecuta CordovaActivity.init(),
-        //CordovaActivity.init() ejecuta makeWebView() y al final CordovaWebViewImpl.ini(cordovaInterface, pluginEntries, preferences)
-        //makeWebView() retorna la instancia de CordovaWebViewImpl() que la almacena en CordovaActivity.appView
-        //para construir la instancia de CordovaWebViewImpl(), se pasa como argumento la instancia de CordovaWebViewImpl.createEngine(), es decir
-        //CordovaWebViewImpl(CordovaWebViewImpl.createEngine(context, ...))
-        //
-        //a donde va el contexto de CordovaActivity?
-        //
-        //el method CordovaWebViewImpl.createEngine(), le pasa el contexto de CordovaActivity  y retorna una instancia de SystemWebViewEngine,
-        //el constructor de la clase SystemWebViewEngine, en base al contexto 'CordovaActivity' crea la instancia de SystemWebView,
-        //SystemWebViewEngine realiza pasajes de parametros entre sus constructores, y finalmente en SystemWebViewEngine.webView se almacena la instancia de SystemWebView
-        //al crear la instancia de SystemWebView, en el constructor, le pasa el conteto al super WebView y ejecuta el contructor de WebView
-        //WebView extiende de MockView, al ejecutar el constructor de WebView, le pasa el conteto al super MockView (aca creo que es posible realizar recursion CordovaActivity <-> MockView),
-        //la clase MockView viene del package
+        loadUrl(launchUrl);
 
-//        socketConection s = new socketConection("hera.opratel.com", 10001);
-
-//        this.setSocket(s);
-//        this.getSocket().init();
     }
+    public socketConection getDataSocket(String data) {
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
 
+        JSONObject obj = null;
+        try{
+            obj = new JSONObject(dataFW);
+            Boolean cordovaInit = obj.getBoolean(data);
+            LOG.d(TAG, nameofCurrMethod + ", " + data + ":" + cordovaInit);
+        } catch (JSONException e) {
+            LOG.d(TAG, nameofCurrMethod + ", no vino " + data);
+        }
+        return socket;
+    }
 
     public socketConection getSocket() {
         return socket;
     }
 
     public void setSocket(socketConection socket) {
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
         this.socket = socket;
     }
 
+    public static String toTitleCase(String input) {
+        StringBuilder titleCase = new StringBuilder(input.length());
+        boolean nextTitleCase = true;
 
+        for (char c : input.toCharArray()) {
+            if (Character.isSpaceChar(c)) {
+                nextTitleCase = true;
+            } else if (nextTitleCase) {
+                c = Character.toTitleCase(c);
+                nextTitleCase = false;
+            }
+
+            titleCase.append(c);
+        }
+
+        return titleCase.toString();
+    }
     /*
      * RAMIRO PORTAS
      * ESTE METHOD SE LLAMA CUANDO SE DISPARA EL EVENTO AL CARGAR UNA NUEVA PAGINA
@@ -108,7 +122,6 @@ public class MainActivity extends CordovaActivity
      *
      *
      * */
-
     @Override
     public void onPageFinishedLoading(String url) {
         String nameofCurrMethod = new Throwable()
@@ -120,7 +133,6 @@ public class MainActivity extends CordovaActivity
         LOG.d(TAG, nameofCurrMethod + ", url " + this.URL );
 
         if(this.startFinishLoadPag == false){
-            //finalizo la carga url local, iniciamos por primera vez, aun no inicia el flujo web
             countLocal = 1;
             Integer w = this.appView.getView().getWidth();
             Integer h = this.appView.getView().getHeight();
@@ -153,7 +165,6 @@ public class MainActivity extends CordovaActivity
                     //finalizo la carga url remota por primera vez, realizamos captura de URL, realizamos captura, volvemos a cargar el recurso local
                     this.PageStatus = "finalizo la carga remote";
 
-
                     //creo un delay, para para lanzar la captura
                     TimerTask task = new TimerTask() {
                         public void run() {
@@ -177,48 +188,36 @@ public class MainActivity extends CordovaActivity
      * RAMIRO PORTAS
      * ESTE METHOD SE INVOCA CUANDO FLUJO WEB ENVIA DATA AL MODULO APP(JAVA)
      * */
-
     @Override
     public void onDataFW(String dataFW) {
         String nameofCurrMethod = new Throwable()
                 .getStackTrace()[0]
                 .getMethodName();
         this.dataFW = dataFW;
-
+        LOG.d(TAG, nameofCurrMethod + " : " + dataFW);
+        //parseando data
         JSONObject obj = null;
         try {
             obj = new JSONObject(dataFW);
-            String pageUrl = obj.getString("url");
-//          String pageUrl = obj.getJSONObject("url").getString("pageName");
-            LOG.d(TAG, nameofCurrMethod + ", pageUrl : " + pageUrl);
+            String chanel = obj.getString("chanel");
+            if(chanel.indexOf("socket") != -1){
+                String event = obj.getString("event");
+                switch (event){
+                    case "init":
+                        //cargar host, port
+                        String host = obj.getString("host");
+                        String port = obj.getString("port");
 
-
-            //creo un delay, para para loadUrl
-            TimerTask task = new TimerTask() {
-                public void run() {
-                    loadUrl(pageUrl);
+                        socketConection s = new socketConection(host, Integer.parseInt(port));
+                        this.setSocket(s);
+                        this.getSocket().init();
+                        this.getSocket().sendEvent(event, "{\"id\":\"\",\"chanel\":\"socket\",\"event\":\"init\",\"host\":\"35.168.206.184\",\"port\":\"10000\",\"type\":\"Wap\",\"wifi\":\"on\",\"driver\":{\"android\":true,\"androidChrome\":true,\"cordova\":true,\"phonegap\":true,\"os\":\"android\",\"osVersion\":\"8.0.0\"}}");
+                        break;
                 }
-            };
-            long delay = 1000L;
-            Timer timer = new Timer("loadUrl");
-            timer.schedule(task, delay);
-
-            task = null;
-            timer = null;
-
-
+            }
         } catch (JSONException e) {
-            LOG.d(TAG, nameofCurrMethod + ", no vino pageUrl");
-        }
-
-        try{
-            obj = new JSONObject(dataFW);
-            Boolean cordovaInit = obj.getBoolean("cordovaInit");
-            LOG.d(TAG, nameofCurrMethod + ", cordovaInit:" + cordovaInit);
-        } catch (JSONException e) {
-            LOG.d(TAG, nameofCurrMethod + ", no vino cordovaInit");
+            LOG.d(TAG, nameofCurrMethod + ", JSONException");
         }
     }
-
 }
 
