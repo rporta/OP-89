@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.emulate.ProcessKey;
+import com.github.nkzawa.emitter.Emitter;
 import com.socketImplement.socketConection;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -46,6 +47,7 @@ public class MainActivity extends CordovaActivity
     public Integer countLocal;
     public Integer countRemote;
     public socketConection socket;
+    public boolean socketOn = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -156,41 +158,150 @@ public class MainActivity extends CordovaActivity
                 .getStackTrace()[0]
                 .getMethodName();
         MainActivity self = this;
+
+        try {
+            self.dataFW = new JSONObject(dataFW);
+            LOG.d(TAG, nameofCurrMethod + ", dataFW : " +  self.dataFW);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         try {
             self.dataFW = new JSONObject(dataFW);
             String type = self.dataFW.getString("type");
             String event = self.dataFW.getString("event");
-            String host = self.dataFW.getJSONObject("data").getString("host");
-            String port = self.dataFW.getJSONObject("data").getString("port");
-            socketConection s = new socketConection(host, Integer.parseInt(port));
-            this.setSocket(s);
-            this.getSocket().init();
+            JSONObject data = self.dataFW.getJSONObject("data");
+
+            if(!self.socketOn){
+                String host = self.dataFW.getJSONObject("data").getString("host");
+                String port = self.dataFW.getJSONObject("data").getString("port");
+                socketConection s = new socketConection(host, Integer.parseInt(port));
+                this.setSocket(s);
+                this.getSocket().init();
+
+                self.socketOn = !self.socketOn;
+            }
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    self.getSocket().getSocket().on("init", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject) args[0];
+                            LOG.d(TAG, "init" + data);
+
+                            final Intent intent = new Intent("onDataModuleJava");
+                            Bundle b = new Bundle();
+                            b.putString("type", "socket");
+                            b.putString("event", "init");
+                            b.putString("data", data.toString());
+                            intent.putExtras(b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+                        }
+                    });
+                    self.getSocket().getSocket().on("disconnectSocket", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject) args[0];
+                            LOG.d(TAG, "disconnectSocket" + data);
+
+                            final Intent intent = new Intent("onDataModuleJava");
+                            Bundle b = new Bundle();
+                            b.putString("type", "socket");
+                            b.putString("event", "disconnectSocket");
+                            b.putString("data", data.toString());
+                            intent.putExtras( b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+                        }
+                    });
+                    self.getSocket().getSocket().on("getClients", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject) args[0];
+                            LOG.d(TAG, "getClients" + data);
+
+                            final Intent intent = new Intent("onDataModuleJava");
+                            Bundle b = new Bundle();
+                            b.putString("type", "socket");
+                            b.putString("event", "getClients");
+                            b.putString("data", data.toString());
+                            intent.putExtras( b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+                        }
+                    });
+                    self.getSocket().getSocket().on("typingMessage", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject) args[0];
+                            LOG.d(TAG, "typingMessage" + data);
+
+                            final Intent intent = new Intent("onDataModuleJava");
+                            Bundle b = new Bundle();
+                            b.putString("type", "socket");
+                            b.putString("event", "typingMessage");
+                            b.putString("data", data.toString());
+                            intent.putExtras( b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+                        }
+                    });
+                    self.getSocket().getSocket().on("offTypingMessage", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject) args[0];
+                            LOG.d(TAG, "offTypingMessage" + data);
+
+                            final Intent intent = new Intent("onDataModuleJava");
+                            Bundle b = new Bundle();
+                            b.putString("type", "socket");
+                            b.putString("event", "offTypingMessage");
+                            b.putString("data", data.toString());
+                            intent.putExtras( b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+                        }
+                    });
+                    self.getSocket().getSocket().on("message", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject) args[0];
+                            LOG.d(TAG, "message" + data);
+
+                            final Intent intent = new Intent("onDataModuleJava");
+                            Bundle b = new Bundle();
+                            b.putString("type", "socket");
+                            b.putString("event", "offTypingMessage");
+                            b.putString("data", data.toString());
+                            intent.putExtras( b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent);
+                        }
+                    });
+                }
+            });
+
 
             if(type.indexOf("socket") != -1) {
                 switch (event){
                     case "init":
                         LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
-                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, data);
                         break;
                     case "disconnectSocket":
                         LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
-                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, data);
                         break;
                     case "getClients":
                         LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
-                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, data);
                         break;
                     case "typingMessage":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
-                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, data);
                         break;
                     case "offTypingMessage":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
-                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, data);
                         break;
                     case "message":
-                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  dataFW);
-                        this.getSocket().sendEvent(event, self.dataFW.getJSONObject("data"));
+                        LOG.d(TAG, nameofCurrMethod + ", type ( "+ type +" ), event( "+event+" ), dataFull : " +  self.dataFW.getJSONObject("data"));
+                        this.getSocket().sendEvent(event, data);
                         break;
                 }
             }
