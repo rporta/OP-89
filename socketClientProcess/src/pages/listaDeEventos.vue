@@ -27,10 +27,10 @@
   <br>
 
   <f7-toolbar bottom-md style="background-color: #1a1a1ad4;">
-    <f7-link @click="modificarPosicion()" sortable-toggle=".sortable" >modificar posicion</f7-link>
-    <f7-link @click="truncateList()">limpiar listas</f7-link>
-    <f7-link @click="deleteIndex()">borrar</f7-link>
-    <f7-link @click="sendListEvent()">enviar</f7-link>
+    <f7-link @click="modificarPosicion()" sortable-toggle=".sortable" >Modificar posicion</f7-link>
+    <f7-link @click="truncateList()">Limpiar listas</f7-link>
+    <f7-link @click="deleteIndex()">Borrar</f7-link>
+    <f7-link @click="sendListEvent()">Enviar</f7-link>
   </f7-toolbar>    
 </f7-page>
 </template>
