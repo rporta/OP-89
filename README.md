@@ -48,23 +48,26 @@ debe mostrar los datos que salen por socket y los que llegan, tambien los datos 
 * implementar google + API, (load perfil, configApp.vue)
 * implementar chat individual(socketClientWap <-> socketClientProcess), la interfaz esta lista, solo hay que trabajar socket en los clientes y server.
 * implementar intercambio de configApp (socketClientWap <-> socketClientProcess), la interfaz esta lista, solo hay que trabajar socket en los clientes y server.
-* En socketClientWap/src/: f7, crear vista, 
-* En socketClientWap/src/: f7, crear componente, processURLConsole
-* En socketClientWap/src/: f7, crear componente, processURLPanel
-* En socketClientWap/src/: f7, crear componente, processURLForm
-: En la Pagina processURLForm, implementar los methods :
-* mover item (realizar click y mantener, para mover la posicion del item sobre la lista)
-* borrar item 
-* agragar item
-* modificar text item
-* modificar click (reacer click regenerar data x y)
-* enviar formulario
-* truncar formulario
-* implementar socket.emit data processURLForm al socketClientWap, por medio de socketServer
-: ^ fin implementacion methods 
-* En socketClientWap/src/: f7, crear pagina, que cargue los componente processURLConsole, processURLPanel, processURLForm
-* En socketClientWap/src/: f7, agregar a la pagina PanelMenu:Principal, los links a los componentes processURLConsole, processURLPanel, processURLForm
 * Implementar la funcionalidad de envio de sms 
+
+#Mejoras 
+
+##Menu
+
+* el menu izquierdo (Process), solo se debe visualizar o estar disponible unicamente cuando se inicio una sesion de procesamiento con un client Wap
+* se le puede meter tabs para entender los niveles de jerarquia en los item del menu
+* al menu izquierdo (Process), para el item lista de eventos, se le puede agreagr un acordeon, 
+que tenga las siguientes opciones, 
+* ver lista
+* ver multiple lista de eventos( para este item, es necesario tener un form de json con las mismas posibilidades funcionales que Lista de eventos)
+* enviar lista
+* enviar multiple lista de eventos
+* cargar lista de eventos, json()
+: ^ para este item, se requiere modificar el campo de data especial en f7, ademas se debe crear una vista para cargar un json, al final antes de confirmar save, debe consultar en que lista va a almacenar, si va a ser en la multiple lista de eventos, o pisar la lista de eventos.
+
+
+
+
 
 
 #Problemas de comunicacion f7 APP(JAVA)
