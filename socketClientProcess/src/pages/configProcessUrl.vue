@@ -10,41 +10,41 @@
     <f7-block-title>Set URL </f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configProcessUrl">
       <f7-list-input
-        label="URL"
-        floating-label
-        type="text"
-        name="url"
-        placeholder="Your URL"
-        clear-button
-        :value="config.processURL.url" 
-        @input="config.processURL.url = $event.target.value"        
+      label="URL"
+      floating-label
+      type="text"
+      name="url"
+      placeholder="Your URL"
+      clear-button
+      :value="config.processURL.url" 
+      @input="config.processURL.url = $event.target.value"        
       >
-                      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-input>   
-    </f7-list>
-    <f7-block-title>Iniciar Proceso via </f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col>
-          <f7-button @click="resolverClickSocket()" fill color="green">SOCKET</f7-button>
-        </f7-col>
-        <f7-col>
-          <f7-button @click="resolverClickSms()" fill color="green">SMS</f7-button>
-        </f7-col>        
-      </f7-row>      
-    </f7-block>  
+      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+    </f7-list-input>   
+  </f7-list>
+  <f7-block-title>Iniciar Proceso via </f7-block-title>
+  <f7-block>
+    <f7-row>
+      <f7-col>
+        <f7-button @click="resolverClickSocket()" fill color="green">SOCKET</f7-button>
+      </f7-col>
+      <f7-col>
+        <f7-button @click="resolverClickSms()" fill color="green">SMS</f7-button>
+      </f7-col>        
+    </f7-row>      
+  </f7-block>  
 
-    <f7-block-title>Set default config </f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col>
-          <f7-button @click="resetDefaultConfig()" fill color="red">reset</f7-button>
-        </f7-col>       
-      </f7-row>      
-    </f7-block>     
+  <f7-block-title>Set default config </f7-block-title>
+  <f7-block>
+    <f7-row>
+      <f7-col>
+        <f7-button @click="resetDefaultConfig()" fill color="red">reset</f7-button>
+      </f7-col>       
+    </f7-row>      
+  </f7-block>     
 
 
-  </f7-page>
+</f7-page>
 </template>
 <script>
   import Dom7 from 'dom7';

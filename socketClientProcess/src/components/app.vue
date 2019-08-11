@@ -1,20 +1,24 @@
 <template>
-<f7-app :params="f7params" theme-dark>
-  <!-- Status bar overlay for fullscreen mode-->
-  <f7-statusbar></f7-statusbar>
-  <!-- Right panel with reveal effect-->
-  <f7-panel>
-    <f7-view url="/rightPanel/">
-    </f7-view>
-  </f7-panel>
-  <!-- Your main view, should have "view-main" class -->
-  <f7-view main class="safe-areas" url="/"></f7-view>
-  <!-- Popup -->
-  <f7-popup id="my-popup">
-    <f7-view url="/socketClientPopup/">
-    </f7-view>
-  </f7-popup>
-</f7-app>
+  <f7-app :params="f7params" theme-dark>
+    <!-- Status bar overlay for fullscreen mode-->
+    <f7-statusbar></f7-statusbar>
+    <!-- Right panel with reveal effect-->
+    <f7-panel right swipe>
+      <f7-view url="/rightPanel/">
+      </f7-view>
+    </f7-panel>  
+    <f7-panel left >
+      <f7-view url="/leftPanel/">
+      </f7-view>
+    </f7-panel>  
+    <!-- Your main view, should have "view-main" class -->
+    <f7-view main class="safe-areas" url="/"></f7-view>
+    <!-- Popup -->
+    <f7-popup id="my-popup">
+      <f7-view url="/socketClientPopup/">
+      </f7-view>
+    </f7-popup>
+  </f7-app>
 </template>
 <style>
 .panel {
@@ -37,9 +41,9 @@
           name: 'socketClient' + config.type, // App name
           theme: 'auto', // Automatic theme detection
           panel: {
-            swipe: 'right',
+            swipe: "left",
             effect: 'reveal',
-            leftBreakpoint: 800,
+            // leftBreakpoint: 800,
           },   
           // App root data
           data: function () {

@@ -1,6 +1,6 @@
 <template>
-  <f7-page name="rightPanel">
-  <f7-navbar title="Menu"></f7-navbar>
+  <f7-page name="leftPanel">
+    <f7-navbar title="Menu"></f7-navbar>
     <f7-list>
       <f7-list-item @click="redirectTo('/')" link="#" title="Inicio">
         <f7-icon text-color="white" slot="media" ios="f7:home" aurora="f7:home" md="material:home"></f7-icon>
@@ -35,7 +35,7 @@
                 </f7-accordion-content>
               </f7-list-item>
             </f7-accordion-content>
-            </f7-list-item>
+          </f7-list-item>
         </f7-accordion-content>
       </f7-list-item>
       <f7-list-item  accordion-item title="Lista de clientes wap" >

@@ -18,51 +18,51 @@
     <f7-block-title>Config socket</f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configSocket">
       <f7-list-input
-        label="Port"
-        floating-label
-        type="text"
-        name="port"
-        placeholder="Your Port"
-        clear-button
-        :value="config.api.port" 
-        @input="config.api.port = $event.target.value"        
+      label="Port"
+      floating-label
+      type="text"
+      name="port"
+      placeholder="Your Port"
+      clear-button
+      :value="config.api.port" 
+      @input="config.api.port = $event.target.value"        
       >
-                      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-input>
-      <f7-list-input
-        label="Host"
-        floating-label
-        type="text"
-        name="host"
-        placeholder="Your URL Host"
-        clear-button
-        :value="config.api.host" 
-        @input="config.api.host = $event.target.value"   
-      >
-                      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-input>      
-    </f7-list>
-    <f7-block-title>Socket</f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col>
-          <f7-button @click="socketConnect()" fill color="green">connect</f7-button>
-        </f7-col>
-        <f7-col>
-          <f7-button @click="socketDisconnect()" fill color="red">disconnect</f7-button>
-        </f7-col>        
-      </f7-row>      
-    </f7-block>  
+      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+    </f7-list-input>
+    <f7-list-input
+    label="Host"
+    floating-label
+    type="text"
+    name="host"
+    placeholder="Your URL Host"
+    clear-button
+    :value="config.api.host" 
+    @input="config.api.host = $event.target.value"   
+    >
+    <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+  </f7-list-input>      
+</f7-list>
+<f7-block-title>Socket</f7-block-title>
+<f7-block>
+  <f7-row>
+    <f7-col>
+      <f7-button @click="socketConnect()" fill color="green">connect</f7-button>
+    </f7-col>
+    <f7-col>
+      <f7-button @click="socketDisconnect()" fill color="red">disconnect</f7-button>
+    </f7-col>        
+  </f7-row>      
+</f7-block>  
 
-    <f7-block-title>Set default config </f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col>
-          <f7-button @click="resetDefaultConfig()" fill color="red">reset</f7-button>
-        </f7-col>       
-      </f7-row>      
-    </f7-block>     
-  </f7-page>
+<f7-block-title>Set default config </f7-block-title>
+<f7-block>
+  <f7-row>
+    <f7-col>
+      <f7-button @click="resetDefaultConfig()" fill color="red">reset</f7-button>
+    </f7-col>       
+  </f7-row>      
+</f7-block>     
+</f7-page>
 </template>
 <script>
   import config from '../config/config.json';

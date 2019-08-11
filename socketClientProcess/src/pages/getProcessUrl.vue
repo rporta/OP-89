@@ -83,7 +83,7 @@
         var self = this;
 
         // Aca tenemos que avisarle a android, cambie el flujo web por la URL que se envia 
-          
+        
         this.debug.list.push({
           title : "mounted",
           data : true

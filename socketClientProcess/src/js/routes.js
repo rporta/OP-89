@@ -5,15 +5,22 @@ import ConfigPerfil from '../pages/configPerfil.vue';
 import ConfigClient from '../pages/configClient.vue';
 import InfoClient from '../pages/infoClient.vue';
 import RightPanel from '../pages/rightPanel.vue';
+import LeftPanel from '../pages/leftPanel.vue';
 import SocketClient from '../pages/socketClient.vue';
 import SocketClientPopup from '../pages/socketClientPopup.vue';
 import ConfigProcessUrl from '../pages/configProcessUrl.vue';
 import SendProcessUrl from '../pages/sendProcessUrl.vue';
 import GetProcessUrl from '../pages/getProcessUrl.vue';
 import FormProcessUrl from '../pages/formProcessUrl.vue';
+import Terminal from '../pages/terminal.vue';
+import Captura from '../pages/captura.vue';
+import ListaDeEventos from '../pages/listaDeEventos.vue';
+import VistaDesktop from '../pages/vistaDesktop.vue';
 import NotFoundPage from '../pages/404.vue';
 
-var routes = [{
+var routes = [
+
+  {
     path: '/',
     component: HomePage,
   },
@@ -49,6 +56,11 @@ var routes = [{
   },
 
   {
+    path: '/leftPanel/',
+    component: LeftPanel,
+  },
+
+  {
     path: '/socketClient/:pSocketId',
     component: SocketClient,
   },
@@ -76,6 +88,26 @@ var routes = [{
   {
     path: '/formProcessUrl/:pSocketId',
     component: FormProcessUrl,
+  },
+
+  {
+    path: '/terminal/:pSocketId',
+    component: Terminal,
+  },
+
+  {
+    path: '/captura/:pSocketId',
+    component: Captura,
+  },
+
+  {
+    path: '/listaDeEventos/:pSocketId',
+    component: ListaDeEventos,
+  },
+
+  {
+    path: '/vistaDesktop/:pSocketId',
+    component: VistaDesktop,
   },
 
   {

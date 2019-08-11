@@ -1,78 +1,78 @@
 <template>
   <f7-page name="socketClient">
-        <f7-navbar :title="'Conversar con :' + ' # ' + socketId">
-          <f7-nav-right>
-            <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
-          </f7-nav-right>
-        </f7-navbar>
+    <f7-navbar :title="'Conversar con :' + ' # ' + socketId">
+      <f7-nav-right>
+        <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
+      </f7-nav-right>
+    </f7-navbar>
 
-        <f7-messagebar
-          :placeholder="placeholder"
-          ref="messagebar"
-          :attachments-visible="attachmentsVisible"
-          :sheet-visible="sheetVisible"
-        >
-          <f7-link
-            ref="camera"
-            icon-ios="f7:camera_fill"
-            icon-aurora="f7:camera_fill"
-            icon-md="material:camera_alt"
-            slot="inner-start"
-            @click="clickCamera()"
-          ></f7-link>
-          <f7-link
-            icon-ios="f7:arrow_up_fill"
-            icon-aurora="f7:arrow_up_fill"
-            icon-md="material:send"
-            slot="inner-end"
-            @click="sendMessage"
+    <f7-messagebar
+    :placeholder="placeholder"
+    ref="messagebar"
+    :attachments-visible="attachmentsVisible"
+    :sheet-visible="sheetVisible"
+    >
+    <f7-link
+    ref="camera"
+    icon-ios="f7:camera_fill"
+    icon-aurora="f7:camera_fill"
+    icon-md="material:camera_alt"
+    slot="inner-start"
+    @click="clickCamera()"
+    ></f7-link>
+    <f7-link
+    icon-ios="f7:arrow_up_fill"
+    icon-aurora="f7:arrow_up_fill"
+    icon-md="material:send"
+    slot="inner-end"
+    @click="sendMessage"
 
-          ></f7-link>
-          <f7-messagebar-attachments>
-            <f7-messagebar-attachment
-              v-for="(image, index) in attachments"
-              :key="index"
-              :image="image"
-              @attachment:delete="deleteAttachment(image)"
-            ></f7-messagebar-attachment>
-          </f7-messagebar-attachments>
-          <f7-messagebar-sheet>
-            <f7-messagebar-sheet-image
-              v-for="(image, index) in images"
-              :key="index"
-              :image="image"
-              :checked="attachments.indexOf(image) >= 0"
-              @change="handleAttachment"
-            ></f7-messagebar-sheet-image>
-          </f7-messagebar-sheet>
-        </f7-messagebar>
+    ></f7-link>
+    <f7-messagebar-attachments>
+      <f7-messagebar-attachment
+      v-for="(image, index) in attachments"
+      :key="index"
+      :image="image"
+      @attachment:delete="deleteAttachment(image)"
+      ></f7-messagebar-attachment>
+    </f7-messagebar-attachments>
+    <f7-messagebar-sheet>
+      <f7-messagebar-sheet-image
+      v-for="(image, index) in images"
+      :key="index"
+      :image="image"
+      :checked="attachments.indexOf(image) >= 0"
+      @change="handleAttachment"
+      ></f7-messagebar-sheet-image>
+    </f7-messagebar-sheet>
+  </f7-messagebar>
 
-        <f7-messages ref="messages" >
-          <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
-          <f7-message
-            v-for="(message, index) in messagesData"
-            :key="index"
-            :type="message.type"
-            :image="message.image"
-            :name="message.name"
-            :avatar="message.avatar"
-            :first="isFirstMessage(message, index)"
-            :last="isLastMessage(message, index)"
-            :tail="isTailMessage(message, index)"
-          >
-            <span slot="text" v-if="message.text" v-html="message.text"></span>
-          </f7-message>
-          <f7-message v-if="typingMessage"
-            type="received"
-            :typing="true"
-            :first="true"
-            :last="true"
-            :tail="true"
-            :header="`${typingMessage.name} is typing`"
-            :avatar="typingMessage.avatar"
-          ></f7-message>
-        </f7-messages>
-  </f7-page>
+  <f7-messages ref="messages" >
+    <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
+    <f7-message
+    v-for="(message, index) in messagesData"
+    :key="index"
+    :type="message.type"
+    :image="message.image"
+    :name="message.name"
+    :avatar="message.avatar"
+    :first="isFirstMessage(message, index)"
+    :last="isLastMessage(message, index)"
+    :tail="isTailMessage(message, index)"
+    >
+    <span slot="text" v-if="message.text" v-html="message.text"></span>
+  </f7-message>
+  <f7-message v-if="typingMessage"
+  type="received"
+  :typing="true"
+  :first="true"
+  :last="true"
+  :tail="true"
+  :header="`${typingMessage.name} is typing`"
+  :avatar="typingMessage.avatar"
+  ></f7-message>
+</f7-messages>
+</f7-page>
 </template>
 <script>
   import Dom7 from 'dom7';
@@ -90,16 +90,16 @@
         messagesData: [
         ],
         images: [
-          'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
-          'https://cdn.framework7.io/placeholder/cats-200x300-2.jpg',
-          'https://cdn.framework7.io/placeholder/cats-400x300-3.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x150-4.jpg',
-          'https://cdn.framework7.io/placeholder/cats-150x300-5.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x300-6.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x300-7.jpg',
-          'https://cdn.framework7.io/placeholder/cats-200x300-8.jpg',
-          'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
+        'https://cdn.framework7.io/placeholder/cats-200x300-2.jpg',
+        'https://cdn.framework7.io/placeholder/cats-400x300-3.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x150-4.jpg',
+        'https://cdn.framework7.io/placeholder/cats-150x300-5.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x300-6.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x300-7.jpg',
+        'https://cdn.framework7.io/placeholder/cats-200x300-8.jpg',
+        'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
         ],
         responseInProgress: false,
         // Set default config
@@ -264,13 +264,13 @@
         var self = this;
 
         socket.on('connect', function() {
-            var initData = {
-                id: socket.id,
-                type: self.config.type,
-                wifi: "on",
-                driver:  self.getInfoDevice()
-            };
-            socket.emit("init", initData);
+          var initData = {
+            id: socket.id,
+            type: self.config.type,
+            wifi: "on",
+            driver:  self.getInfoDevice()
+          };
+          socket.emit("init", initData);
         });
         socket.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
