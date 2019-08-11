@@ -67,13 +67,27 @@
         var calculateRoundResolutionY = Math.round(calculeY);
 
         // Envio alerta al usuario para que tenga la posibilidad de agregar un dato 
+
+        var self = this;
+
         this.getF7().dialog.prompt("Ingrese un valor", "Evento { x : " + calculateRoundResolutionX +", y : " + calculateRoundResolutionY +" }", 
           (data)=>{
-            console.log(data)
+            // ok ..
+            self.getF7().data.listaDeEventos.push({
+              x: calculateRoundResolutionX,
+              y: calculateRoundResolutionY,
+              data : data
+            });
+
           }, (data)=>{
-            console.log(data)
+            // cancel ..
+            self.getF7().data.listaDeEventos.push({
+              x: calculateRoundResolutionX,
+              y: calculateRoundResolutionY,
+              data : null
+            });
           }, 
-          "");
+          null);
       }
     },
     props:{
