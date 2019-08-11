@@ -19,7 +19,7 @@
         <f7-button @click="setY(index, currentEvent)" fill style="display: inline-block; margin: 0px 15px;">y : {{currentEvent.y}}</f7-button>
         <f7-button @click="setData(index, currentEvent)" fill style="display: inline-block; margin: 0px 15px;">data</f7-button>
         <p style="display: inline-block;">{{currentEvent.data}}</p>
-      </div>
+      </div>{{index + 1 }}
       <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
     </f7-list-item>
   </f7-list>
