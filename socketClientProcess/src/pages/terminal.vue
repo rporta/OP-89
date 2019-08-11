@@ -1,6 +1,10 @@
 <template>
   <f7-page>
-    <f7-navbar title="Terminal" back-link="Back"></f7-navbar>
+    <f7-navbar title="Terminal" back-link="Back">
+      <f7-nav-right>
+        <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
+      </f7-nav-right>
+    </f7-navbar>
     <f7-block text-color="green">
       <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{test}}</pre>
     </f7-block>    

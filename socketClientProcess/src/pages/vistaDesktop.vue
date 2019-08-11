@@ -31,6 +31,7 @@
 </template>
 <style>
 .c1rama {
+  /*  padding: 0px;  */
   box-sizing: border-box;
   position: absolute;
   left: 0;
@@ -42,6 +43,7 @@
   z-index: 1;
 }
 .c2rama {
+  /*padding: 0px;  */
   box-sizing: border-box;
   position: absolute;
   left: 50%;
@@ -53,6 +55,7 @@
   z-index: 1;
 }
 .r2rama {
+  padding: 0px;  
   box-sizing: border-box;
   position: absolute;
   left: 0;
