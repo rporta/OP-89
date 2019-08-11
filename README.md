@@ -1,3 +1,39 @@
+# Vistas socketClientProcess
+
+## captura
+
+la vista debe recibir el evento click, dispara un alert y solicitar x y, dentro de f7.data.listaDeEventosProcess: array, realizar un push con un objeto de estas caracteristicas
+```Object
+{
+    x:int, 
+    y:int, 
+    data:string
+}
+```
+
+
+## lista de eventos
+
+esta vista se debe cargar con la lista de eventos de f7.data.listaDeEventosProcess, se debe realziar methods para truncar, borrar, enviar process Socket, 
+
+la vista en la parte superior debe tener la lista de eventos, compuesto por 3 input text (x, y , data) y un checkbox para indicar si se debe borrar, con capacidad de modificar el orden de los elementos
+
+la vista en la parte inferior debe tener 3 botones truncar, borrar, enviar,
+
+```Object
+{
+    x:int, 
+    y:int, 
+    data:string
+}
+```
+
+## terminal
+
+debe mostrar los datos que salen por socket y los que llegan, tambien los datos que se envian a la App(Java), y los datos que llegan de la App(Java)
+
+
+
 ## Puntos pendientes a realizar
 
 * Mover implementacion socketClientWap al package (Java) com.socketImplement.socketConection
