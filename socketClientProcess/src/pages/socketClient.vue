@@ -201,23 +201,6 @@
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
-      },
-      getInfoDevice(){
-        var device = this.$f7.device;
-        var data = {};
-        for(let key in device){
-          if(key != "pixelRatio"){          
-            var currentValue = device[key];
-            if(typeof currentValue === "boolean"){
-              if(currentValue){
-                data[key] = currentValue;
-              }
-            }else{
-              data[key] = currentValue;
-            }
-          }
-        }
-        return data;
       }
     },
     mounted() {
@@ -240,16 +223,6 @@
 
         // Set socket on
         var self = this;
-
-        socket.on('connect', function() {
-          var initData = {
-            id: socket.id,
-            type: f7.data.config.type,
-            wifi: "on",
-            driver:  self.getInfoDevice()
-          };
-          socket.emit("init", initData);
-        });
         socket.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      

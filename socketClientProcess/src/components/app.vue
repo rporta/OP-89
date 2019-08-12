@@ -70,7 +70,23 @@
       }
     },
     methods: {
-
+      getInfoDevice(){
+        var device = this.$f7.device;
+        var data = {};
+        for(let key in device){
+          if(key != "pixelRatio"){          
+            var currentValue = device[key];
+            if(typeof currentValue === "boolean"){
+              if(currentValue){
+                data[key] = currentValue;
+              }
+            }else{
+              data[key] = currentValue;
+            }
+          }
+        }
+        return data;
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
@@ -89,6 +105,18 @@
 
         // Set socket on
         var self = this;
+
+        socket.on('connect', function() {
+          var initData = {
+            id: socket.id,
+            type: f7.data.config.type,
+            wifi: "on",
+            driver:  self.getInfoDevice()
+          };
+          socket.emit("init", initData);
+        });
+
+
         socket.on("sendConfigProcessUrlSocket", function(data) {
           if(data.type == "Wap"){
             f7.data.processUrl = data;            
