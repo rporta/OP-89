@@ -11,7 +11,6 @@ import SocketClientPopup from '../pages/socketClientPopup.vue';
 import ConfigProcessUrl from '../pages/configProcessUrl.vue';
 import SendProcessUrl from '../pages/sendProcessUrl.vue';
 import GetProcessUrl from '../pages/getProcessUrl.vue';
-import FormProcessUrl from '../pages/formProcessUrl.vue';
 import Terminal from '../pages/terminal.vue';
 import Captura from '../pages/captura.vue';
 import ListaDeEventos from '../pages/listaDeEventos.vue';
@@ -83,11 +82,6 @@ var routes = [
   {
     path: '/getProcessUrl/:pSocketId',
     component: GetProcessUrl,
-  },
-
-  {
-    path: '/formProcessUrl/:pSocketId',
-    component: FormProcessUrl,
   },
 
   {
