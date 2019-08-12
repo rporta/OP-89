@@ -76,12 +76,12 @@ public class MainActivity extends CordovaActivity
             public void onReceive(Context context, Intent intent) {
                 String data = intent.getExtras().getString("data");
                 try {
-                    JSONObject dataJson  = new JSONObject(data);
-                    String host = dataJson.getString("host");
-                    String port = dataJson.getString("port");
-                    String type = dataJson.getString("type");
-                    String wifi = dataJson.getString("wifi");
-                    String driver = dataJson.getJSONObject("driver").toString();
+                    self.dataFW = new JSONObject(data);
+                    String host = self.dataFW.getString("host");
+                    String port = self.dataFW.getString("port");
+                    String type = self.dataFW.getString("type");
+                    String wifi = self.dataFW.getString("wifi");
+                    String driver = self.dataFW.getJSONObject("driver").toString();
 
                     LOG.d(TAG, nameofCurrMethod +
                             ", f7 -> App(Java) : initSocket, host : " + host +
@@ -97,6 +97,46 @@ public class MainActivity extends CordovaActivity
                         self.getSocket().init();
                         self.socketOn = !self.socketOn;
                     }
+
+                    // creo un delay, para socket On
+                    TimerTask task = new TimerTask() {
+                        public void run() {
+                            // Test socket On
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    try {
+                                        self.getSocket().getSocket().on("connect", new Emitter.Listener() {
+                                            @Override
+                                            public void call(Object... args) {
+                                                LOG.d(TAG, nameofCurrMethod +
+                                                        ", socket.on(connect)"
+                                                );
+
+                                                String event = "init";
+                                                self.getSocket().sendEvent(event, self.dataFW);
+
+                                            }
+                                        });
+                                    }catch (Exception e){
+                                        LOG.d(TAG, nameofCurrMethod +
+                                                ", catch socket.on(connect)"
+                                        );
+                                    }
+
+                                }
+                            });
+                            // Fin ^ Test socket On
+                        }
+                    };
+                    long delay = 100L;
+                    Timer timer = new Timer("socketOn");
+                    timer.schedule(task, delay);
+
+                    task = null;
+                    timer = null;
+
+                    // fin ^ delay
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -194,6 +234,7 @@ public class MainActivity extends CordovaActivity
         };
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(init, new IntentFilter("init"));
+
     }
 
     public socketConection getSocket() {

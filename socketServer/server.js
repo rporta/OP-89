@@ -25,6 +25,7 @@ server.listen(port, () => {
 				data = {};
 			}
 			if (typeof data == "string") {
+				console.log("data : string");
 				data = JSON.parse(data);
 			}
 
