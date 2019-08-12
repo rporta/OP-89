@@ -21,6 +21,10 @@ server.listen(port, () => {
 		console.log(`client: ${socket.id}`);
 
 		socket.on("init", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
+
 			data.on = "init";
 			// add client
 			data.id = socket.id;
@@ -29,6 +33,10 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on('disconnect', function() {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
+
 			// remove client
 			var socketIdDisconnect = socket.id;
 			for (let c in clients) {
@@ -40,6 +48,10 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on("getClients", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
+
 			data.on = "getClients";
 			console.log(data);
 			// set data getClients
@@ -52,6 +64,10 @@ server.listen(port, () => {
 
 		});
 		socket.on("getClient", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
+
 			data.on = "getClient";
 			console.log(data);
 			var getClientSocketId = data.socketId;
@@ -71,6 +87,9 @@ server.listen(port, () => {
 
 		});
 		socket.on("typingMessage", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
 			data.on = "typingMessage";
 			console.log(data);
 			// sendTypingMessage, al resto menos current
@@ -84,6 +103,10 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("getDisconnect", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
+
 			data.on = "getDisconnect";
 			console.log(data);
 			// sendDisconnect, al resto menos current
@@ -96,6 +119,10 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("offTypingMessage", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
+
 			data.on = "offTypingMessage";
 			console.log(data);
 			// sendOffTypingMessage, al resto menos current
@@ -108,6 +135,9 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("message", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
 			data.on = "message";
 			console.log(data);
 			// sendMessage, al resto menos current
@@ -120,6 +150,9 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("configProcessUrlSocket", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
 			data.on = "configProcessUrlSocket";
 			console.log(data);
 			// sendConfigProcessUrlSms, a mi unicamente
@@ -151,6 +184,9 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("configProcessUrlSms", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
 			data.on = "configProcessUrlSms";
 			console.log(data);
 			// sendConfigProcessUrlSms, a mi unicamente
@@ -186,6 +222,9 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("sendCapture", function(data) {
+			if (!isObjectEmpty(obj)) {
+				data = {};
+			}
 			data.on = "sendCapture";
 			console.log(data);
 		});
@@ -208,3 +247,7 @@ function getCircularReplacer() {
 		return value;
 	};
 };
+
+function isObjectEmpty(obj) {
+	return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
