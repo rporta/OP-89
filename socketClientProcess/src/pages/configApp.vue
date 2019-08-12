@@ -11,7 +11,7 @@
       <f7-list-item :title="'Id : # ' + socketId">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
-      <f7-list-item :title="'Type : ' + config.type">
+      <f7-list-item :title="'Type : ' + $f7.data.config.type">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
     </f7-list>
@@ -24,8 +24,8 @@
       name="port"
       placeholder="Your Port"
       clear-button
-      :value="config.api.port" 
-      @input="config.api.port = $event.target.value"        
+      :value="$f7.data.config.api.port" 
+      @input="$f7.data.config.api.port = $event.target.value"        
       >
       <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
     </f7-list-input>
@@ -36,8 +36,8 @@
     name="host"
     placeholder="Your URL Host"
     clear-button
-    :value="config.api.host" 
-    @input="config.api.host = $event.target.value"   
+    :value="$f7.data.config.api.host" 
+    @input="$f7.data.config.api.host = $event.target.value"   
     >
     <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
   </f7-list-input>      
@@ -65,14 +65,12 @@
 </f7-page>
 </template>
 <script>
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';  
+  import Dom7 from 'dom7';
+  import routes from '../js/routes.js';
   // import Dom7 from 'Dom7';
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketTitle: "Socket Offline",
         socketColor: "red",
         socketId: ""
@@ -82,13 +80,13 @@
       resetDefaultConfig(){
         var formConfigPerfil = this.$refs.configSocket.$el;
         var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
-        const configDefaultString = JSON.stringify(this.configDefault);
+        const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
         const configDefaultJSON = JSON.parse(configDefaultString); 
         this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
-        this.config = configDefaultJSON;
+        this.$f7.data.config = configDefaultJSON;
       },
       socketConnect(){
-        socket.io.uri = "http://" + this.config.api.host + ":" + this.config.api.port;        
+        socket.io.uri = "http://" + this.$f7.data.config.api.host + ":" + this.$f7.data.config.api.port;        
         socket.connect();
         var self = this;
         setTimeout(function() {
@@ -101,6 +99,11 @@
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+
+        }
+        
         // Set Dom7 style, events
 
 

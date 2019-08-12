@@ -76,10 +76,7 @@
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
-  import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';    
+  import routes from '../js/routes.js';  
   export default {
     data() {
       return {
@@ -101,28 +98,10 @@
         'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
         'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
         ],
-        responseInProgress: false,
-        // Set default config
-        config : config,   
-        configDefault : configDefault        
+        responseInProgress: false,    
       };
     },
-    methods: {
-      getF7(){
-        return this.$f7;
-      },
-      redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },      
-      generateColor(color){
-        return {
-          "background-color": color  + "!important"
-        };
-      },
-      alertLoginData() {
-        this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
-      },
+    methods: {     
       isFirstMessage(message, index) {
         const self = this;
         const previousMessage = self.messagesData[index - 1];
@@ -172,7 +151,7 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", self.getF7().data.perfil);
+            socket.emit("typingMessage", self.$f7.data.perfil);
           }
         }, 100);
       },
@@ -216,7 +195,7 @@
         this.sheetVisible = !this.sheetVisible;
       },
       getInfoDevice(){
-        var device = this.getF7().device;
+        var device = this.$f7.device;
         var data = {};
         for(let key in device){
           if(key != "pixelRatio"){          
@@ -237,7 +216,7 @@
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
-          cordovaApp.init(f7);
+          
         }
 
         // Call F7 APIs here
@@ -257,7 +236,7 @@
         socket.on('connect', function() {
           var initData = {
             id: socket.id,
-            type: self.config.type,
+            type: f7.data.config.type,
             wifi: "on",
             driver:  self.getInfoDevice()
           };

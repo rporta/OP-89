@@ -24,15 +24,10 @@ pre {
 </style>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json'; 
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketId: this.pSocketId,
         debug: {
           list: []
@@ -47,35 +42,7 @@ pre {
       }
     },     
     methods: {
-      getF7(){
-        return this.$f7;
-      },
-      redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },      
-      generateColor(color){
-        return {
-          "background-color": color  + "!important"
-        };
-      },
-      alertLoginData() {
-        this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
-      },
-      resetDefaultConfig(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        const configDefaultString = JSON.stringify(this.configDefault);
-        const configDefaultJSON = JSON.parse(configDefaultString); 
-        this.$f7.form.fillFromData(configProcessUrl, configDefaultJSON.processURL);
-        this.config = configDefaultJSON;
-      },
-      resolverClickSocket(){
-        console.log("resolverClickSocket");
-      },
-      resolverClickSms(){
-        console.log("resolverClickSms");
-      }
+
     },
     mounted() {
       this.$f7ready((f7) => {

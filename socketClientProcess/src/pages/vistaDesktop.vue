@@ -66,20 +66,14 @@
   background-color: var(--f7-page-bg-color);
   z-index: 1;
 }
-
 </style>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-
   export default {
     data() {
       return {
-        config : config,
-        socketId: this.pSocketId,
-        test: config     
+        socketId: this.pSocketId
       };
     },
     props:{
@@ -90,23 +84,9 @@
       }
     }, 
     methods: {
-      getF7(){
-        return this.$f7;
-      },
       redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },
-      generateColor(color){
-        return {
-          "background-color": color  + "!important"
-        };
-      },
-      disconnectSocket(id){
-        console.log("disconnectSocket", id);
-        socket.emit("getDisconnect", {
-          socketId : id
-        });
+        this.$f7.view.main.router.navigate(path);
+        this.$f7.panel.close();
       }
     },
     mounted() {
@@ -116,7 +96,6 @@
 
         }
       }); 
-      // console.log(this);
     }    
   };
 </script>

@@ -20,15 +20,12 @@ pre {
 }  
 </style>
 <script>
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';   
+  import Dom7 from 'dom7';
+  import routes from '../js/routes.js'; 
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
-        socketId: this.pSocketId,
-        test: config     
+        test: this.$f7.data.config     
       };
     },
     props:{
@@ -37,14 +34,16 @@ pre {
         required : false,
         default: "",
       }
-    }, 
+    },
+    methods: {
+
+    },
     mounted() {
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
 
         }
-        this.test.type = "Test-Terminal";
       });    
     }    
   };

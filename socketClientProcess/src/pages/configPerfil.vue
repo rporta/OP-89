@@ -7,7 +7,7 @@
     </f7-navbar>
     <br>
     <br>
-    <img :src="getF7().data.perfil.avatar" style="border-radius: 50%;height: 250px;display: block;margin: auto;border: solid 5px white;">
+    <img :src="$f7.data.config.perfil.avatar" style="border-radius: 50%;height: 250px;display: block;margin: auto;border: solid 5px white;">
     <f7-block-title>General </f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configPerfil">
       <f7-list-input
@@ -18,8 +18,8 @@
       type="text"
       placeholder="Your name"
       clear-button
-      :value="getF7().data.perfil.name" 
-      @input="getF7().data.perfil.name = $event.target.value"
+      :value="$f7.data.config.perfil.name" 
+      @input="$f7.data.config.perfil.name = $event.target.value"
       >
       <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
     </f7-list-input>
@@ -31,8 +31,8 @@
     type="text"
     placeholder="Your URL avatar"
     clear-button
-    :value="getF7().data.perfil.avatar" 
-    @input="getF7().data.perfil.avatar = $event.target.value"
+    :value="$f7.data.config.perfil.avatar" 
+    @input="$f7.data.config.perfil.avatar = $event.target.value"
     >
     <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
   </f7-list-input>      
@@ -60,32 +60,36 @@
 </f7-page>
 </template>
 <script>
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';  
   import Dom7 from 'dom7';
+  import routes from '../js/routes.js';
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault
+
       };
     },
     methods: {
       resetDefaultConfig(){
         var formConfigPerfil = this.$refs.configPerfil.$el;
         var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
-        const configDefaultString = JSON.stringify(this.configDefault);
+        const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
         const configDefaultJSON = JSON.parse(configDefaultString); 
         this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
-        this.config = configDefaultJSON;
-      },
-      getF7(){
-        return this.$f7;
-      },
+        this.$f7.data.config = configDefaultJSON;
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+
+        }
+        // Call F7 APIs here
+
         // Set Dom7 style, events
+
+        // Set socket on
+        var self = this;
       }); 
     } 
   };

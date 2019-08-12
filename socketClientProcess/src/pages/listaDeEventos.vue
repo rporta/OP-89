@@ -8,7 +8,7 @@
 
 
     <f7-list form ref="listEventProcessUrl" sortable @sortable:sort="onSort">
-      <f7-list-item v-for="(currentEvent, index) in this.getF7().data.listaDeEventos"
+      <f7-list-item v-for="(currentEvent, index) in this.$f7.data.listaDeEventos"
       >
       <div>
         <input :name="'x_'+ index" type="hidden" :value="currentEvent.x">
@@ -36,28 +36,16 @@
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';   
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketId: this.pSocketId,
         borrar: false,     
         isModificarPosicion: false,         
       };
     },
     methods: {
-      getF7(){
-        return this.$f7;
-      },
-      redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },
       deleteIndex(){
         this.borrar = !this.borrar;
         if(!this.borrar){
@@ -70,16 +58,16 @@
               }
             }
           }
-          if(indexDelete.length > 0 && this.getF7().data.listaDeEventos.length > 0 ){
+          if(indexDelete.length > 0 && this.$f7.data.listaDeEventos.length > 0 ){
             for(let del in indexDelete){
               var currentIndexDelete = indexDelete[del];
-              this.getF7().data.listaDeEventos.splice(currentIndexDelete, 1);
+              this.$f7.data.listaDeEventos.splice(currentIndexDelete, 1);
             }
           }
         }
       },
       truncateList(){
-        this.getF7().data.listaDeEventos = [];
+        this.$f7.data.listaDeEventos = [];
       },
       modificarPosicion(){
         this.isModificarPosicion = !this.isModificarPosicion;
@@ -122,19 +110,19 @@
           console.log(newDataJSON);
 
 
-          const listaDeEventosString = JSON.stringify(this.getF7().data.listaDeEventos);
+          const listaDeEventosString = JSON.stringify(this.$f7.data.listaDeEventos);
           const listaDeEventosStringJSON = JSON.parse(listaDeEventosString); 
 
           var self = this;
           this.truncateList()
           setTimeout(function() {
-            self.getF7().data.listaDeEventos = newDataJSON;
+            self.$f7.data.listaDeEventos = newDataJSON;
           }, 1);
 
         }
       },
       sendListEvent(){
-        this.getF7().dialog.confirm(null, "Desea enviar lista de procesamiento?", 
+        this.$f7.dialog.confirm(null, "Desea enviar lista de procesamiento?", 
           (data)=>{
             // ok ..
           }, (data)=>{
@@ -145,10 +133,10 @@
       setX(index, currentEvent){
         var self = this;
 
-        this.getF7().dialog.prompt("Ingrese un valor", "Set X " + currentEvent.x + " : ", 
+        this.$f7.dialog.prompt("Ingrese un valor", "Set X " + currentEvent.x + " : ", 
           (data)=>{
             // ok ..
-            this.getF7().data.listaDeEventos[index].x = data;
+            this.$f7.data.listaDeEventos[index].x = data;
 
           }, (data)=>{
             // cancel ..
@@ -159,10 +147,10 @@
       setY(index, currentEvent){
         var self = this;
 
-        this.getF7().dialog.prompt("Ingrese un valor", "Set Y "+ currentEvent.y + ": ", 
+        this.$f7.dialog.prompt("Ingrese un valor", "Set Y "+ currentEvent.y + ": ", 
           (data)=>{
             // ok ..
-            this.getF7().data.listaDeEventos[index].y = data;
+            this.$f7.data.listaDeEventos[index].y = data;
           }, (data)=>{
             // cancel ..
 
@@ -172,10 +160,10 @@
       setData(index, currentEvent){
         var self = this;
 
-        this.getF7().dialog.prompt("Ingrese un valor", "Set data : ", 
+        this.$f7.dialog.prompt("Ingrese un valor", "Set data : ", 
           (data)=>{
             // ok ..
-            this.getF7().data.listaDeEventos[index].data = data;
+            this.$f7.data.listaDeEventos[index].data = data;
 
           }, (data)=>{
             // cancel ..
@@ -203,6 +191,20 @@
         required : false,
         default: "",
       }
-    }, 
+    },
+    mounted() {
+      this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+          
+        }
+        // Call F7 APIs here
+
+        // Set Dom7 style, events
+
+        // Set socket on
+        var self = this;
+      }); 
+    } 
   };
 </script>

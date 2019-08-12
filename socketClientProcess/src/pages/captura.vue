@@ -22,23 +22,18 @@
 }
 </style>
 <script>
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';   
+  import Dom7 from 'dom7';
+  import routes from '../js/routes.js';
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketId: this.pSocketId        
       };
     },
     methods:{
-      getF7(){
-        return this.$f7;
-      },
       redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
+        this.$f7.view.main.router.navigate(path);
+        this.$f7.panel.close();
       },
       generateColor(color){
         return {
@@ -70,10 +65,10 @@
 
         var self = this;
 
-        this.getF7().dialog.prompt("Ingrese un valor", "Evento { x : " + calculateRoundResolutionX +", y : " + calculateRoundResolutionY +" }", 
+        this.$f7.dialog.prompt("Ingrese un valor", "Evento { x : " + calculateRoundResolutionX +", y : " + calculateRoundResolutionY +" }", 
           (data)=>{
             // ok ..
-            self.getF7().data.listaDeEventos.push({
+            self.$f7.data.listaDeEventos.push({
               x: calculateRoundResolutionX,
               y: calculateRoundResolutionY,
               data : data
@@ -81,7 +76,7 @@
 
           }, (data)=>{
             // cancel ..
-            self.getF7().data.listaDeEventos.push({
+            self.$f7.data.listaDeEventos.push({
               x: calculateRoundResolutionX,
               y: calculateRoundResolutionY,
               data : null
@@ -96,6 +91,14 @@
         required : false,
         default: "",
       }
-    }, 
+    },
+    mounted() {
+      this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+          
+        }
+      });
+    }
   };
 </script>

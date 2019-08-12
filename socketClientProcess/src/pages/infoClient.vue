@@ -24,15 +24,10 @@
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';    
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketId: this.pSocketId,
         infoClient : {
           id:"",
@@ -52,7 +47,7 @@
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
-          cordovaApp.init(f7);
+
         }
 
         // // Set socket
