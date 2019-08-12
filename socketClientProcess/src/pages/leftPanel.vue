@@ -1,5 +1,5 @@
 <template>
-  <f7-page name="rightPanel">
+  <f7-page name="leftPanel">
     <f7-navbar title="Menu proceso URL"></f7-navbar>
     <f7-list>
       <f7-list-item @click="$f7.redirectTo('/terminal/1')" link="#" title="Terminal">

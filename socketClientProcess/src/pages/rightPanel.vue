@@ -1,5 +1,5 @@
 <template>
-  <f7-page name="leftPanel">
+  <f7-page name="rightPanel">
     <f7-navbar title="Menu"></f7-navbar>
     <f7-list>
       <f7-list-item @click="$f7.redirectTo('/')" link="#" title="Inicio">
