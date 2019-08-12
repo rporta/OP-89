@@ -81,6 +81,10 @@ public class MainActivity extends CordovaActivity
                 String pepe2 = intent.getExtras().toString();
                 LOG.d(TAG, nameofCurrMethod + ", event : " + event + ", pepe : " + pepe2);
 
+
+
+
+
                 //intento App(java) -> f7
                 final Intent intent2 = new Intent("onDataModuleJava");
 
