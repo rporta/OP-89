@@ -21,7 +21,7 @@ server.listen(port, () => {
 		console.log(`client: ${socket.id}`);
 
 		socket.on("init", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 
@@ -32,8 +32,8 @@ server.listen(port, () => {
 			console.log(JSON.stringify(data, getCircularReplacer()));
 			console.log("Cantidad de clientes " + clients.length);
 		});
-		socket.on('disconnect', function() {
-			if (!isObjectEmpty(obj)) {
+		socket.on('disconnect', function(data) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 
@@ -48,7 +48,7 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on("getClients", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 
@@ -64,7 +64,7 @@ server.listen(port, () => {
 
 		});
 		socket.on("getClient", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 
@@ -87,7 +87,7 @@ server.listen(port, () => {
 
 		});
 		socket.on("typingMessage", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 			data.on = "typingMessage";
@@ -103,7 +103,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("getDisconnect", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 
@@ -119,7 +119,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("offTypingMessage", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 
@@ -135,7 +135,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("message", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 			data.on = "message";
@@ -150,7 +150,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("configProcessUrlSocket", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 			data.on = "configProcessUrlSocket";
@@ -184,7 +184,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("configProcessUrlSms", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 			data.on = "configProcessUrlSms";
@@ -222,7 +222,7 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("sendCapture", function(data) {
-			if (!isObjectEmpty(obj)) {
+			if (!isObjectEmpty(data)) {
 				data = {};
 			}
 			data.on = "sendCapture";
