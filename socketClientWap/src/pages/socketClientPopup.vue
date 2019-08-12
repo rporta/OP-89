@@ -151,7 +151,7 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", self.$f7.data.perfil);
+            socket.emit("typingMessage", self.$f7.data.config.perfil);
           }
         }, 100);
       },

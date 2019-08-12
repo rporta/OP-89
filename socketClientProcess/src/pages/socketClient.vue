@@ -159,7 +159,7 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", self.$f7.data.perfil);
+            socket.emit("typingMessage", self.$f7.data.config.perfil);
           }
         }, 100);
       },
@@ -224,7 +224,7 @@
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
-          
+
         }
 
         // Call F7 APIs here
