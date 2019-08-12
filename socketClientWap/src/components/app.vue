@@ -92,11 +92,10 @@
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
-
           //f7 -> App(Java) : event "initSocket"
           var sendData = {
-            "host": f7.data.api.host, 
-            "port": f7.data.api.port
+            "host": f7.data.config.api.host, 
+            "port": f7.data.config.api.port
           };
           window.broadcaster.fireNativeEvent( 
             "initSocket", sendData);
