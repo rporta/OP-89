@@ -87,6 +87,7 @@ server.listen(port, () => {
 
 		});
 		socket.on("typingMessage", function(data) {
+			console.log(data);
 			if (!isObjectEmpty(data)) {
 				data = {};
 			}
