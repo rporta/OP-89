@@ -249,5 +249,7 @@ function getCircularReplacer() {
 };
 
 function isObjectEmpty(obj) {
-	return Object.keys(obj).length === 0 && obj.constructor === Object;
+	if (typeof obj !== "undefined") {
+		return Object.keys(obj).length === 0 && obj.constructor === Object;
+	}
 }
