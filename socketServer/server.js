@@ -21,27 +21,27 @@ server.listen(port, () => {
 		console.log(`client: ${socket.id}`);
 
 		socket.on("init", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				console.log("data : string");
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 
 			data.on = "init";
 			// add client
 			data.id = socket.id;
 			clients.push(data);
-			console.log(JSON.stringify(data, getCircularReplacer()));
+			console.log(data);
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on('disconnect', function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 
 			// remove client
@@ -55,11 +55,11 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on("getClients", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 
 			data.on = "getClients";
@@ -74,11 +74,11 @@ server.listen(port, () => {
 
 		});
 		socket.on("getClient", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 
 			data.on = "getClient";
@@ -100,11 +100,11 @@ server.listen(port, () => {
 
 		});
 		socket.on("typingMessage", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 			data.on = "typingMessage";
 			console.log(data);
@@ -119,11 +119,11 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("getDisconnect", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 
 			data.on = "getDisconnect";
@@ -138,11 +138,11 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("offTypingMessage", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 
 			data.on = "offTypingMessage";
@@ -157,11 +157,11 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("message", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 			data.on = "message";
 			console.log(data);
@@ -175,11 +175,11 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("configProcessUrlSocket", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 			data.on = "configProcessUrlSocket";
 			console.log(data);
@@ -212,11 +212,11 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("configProcessUrlSms", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 			data.on = "configProcessUrlSms";
 			console.log(data);
@@ -253,11 +253,11 @@ server.listen(port, () => {
 			}
 		});
 		socket.on("sendCapture", function(data) {
-			if (!data) {
-				data = {};
-			}
 			if (typeof data == "string") {
 				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
 			}
 			data.on = "sendCapture";
 			console.log(data);
