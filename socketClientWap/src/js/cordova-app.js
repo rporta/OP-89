@@ -58,36 +58,36 @@ var cordovaApp = {
       if (data.type = "socket") {
         switch (data.event) {
           case "sendConfigProcessUrlSocket":
-            f7.data.sendConfigProcessUrlSocket = data.data;
-            f7.emit(data.event, f7.data.sendConfigProcessUrlSocket);
+            f7.data.socket.sendConfigProcessUrlSocket = data.data;
+            f7.emit(data.event, f7.data.socket.sendConfigProcessUrlSocket);
             break;
           case "sendClient":
-            f7.data.sendClient = data.data;
-            f7.emit(data.event, f7.data.sendClient);
+            f7.data.socket.sendClient = data.data;
+            f7.emit(data.event, f7.data.socket.sendClient);
             break;
           case "disconnect":
-            f7.data.disconnect = data.data;
-            f7.emit(data.event, f7.data.disconnect);
+            f7.data.socket.disconnect = data.data;
+            f7.emit(data.event, f7.data.socket.disconnect);
             break;
           case "sendClients":
-            f7.data.sendClients = data.data;
-            f7.emit(data.event, f7.data.sendClients);
+            f7.data.socket.sendClients = data.data;
+            f7.emit(data.event, f7.data.socket.sendClients);
             break;
           case "sendTypingMessage":
-            f7.data.sendTypingMessage = data.data;
-            f7.emit(data.event, f7.data.sendTypingMessage);
+            f7.data.socket.sendTypingMessage = data.data;
+            f7.emit(data.event, f7.data.socket.sendTypingMessage);
             break;
           case "sendOffTypingMessage":
-            f7.data.sendOffTypingMessage = data.data;
-            f7.emit(data.event, f7.data.sendOffTypingMessage);
+            f7.data.socket.sendOffTypingMessage = data.data;
+            f7.emit(data.event, f7.data.socket.sendOffTypingMessage);
             break;
           case "connect":
-            f7.data.connect = data.data;
-            f7.emit(data.event, f7.data.connect);
+            f7.data.socket.connect = data.data;
+            f7.emit(data.event, f7.data.socket.connect);
             break;
           case "sendMessage":
-            f7.data.sendMessage = data.data;
-            f7.emit(data.event, f7.data.sendMessage);
+            f7.data.socket.sendMessage = data.data;
+            f7.emit(data.event, f7.data.socket.sendMessage);
             break;
         }
       } else if (data.type = "img") {

@@ -47,6 +47,18 @@
               historyListaDeEventos: [],
               loadListaDeEventosJson: [],
               loadArrayListaDeEventosJson: [],
+              socket:{
+                sendConfigProcessUrlSocket: null,
+                sendClient: null,
+                disconnect: null,
+                sendClients: null,
+                sendTypingMessage: null,
+                sendOffTypingMessage: null,
+                connect: null,
+                sendMessage: null
+              }
+              img:null,
+              appJava:null
             };
           },
           // App routes
