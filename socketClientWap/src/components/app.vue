@@ -56,7 +56,7 @@
                 sendOffTypingMessage: null,
                 connect: null,
                 sendMessage: null
-              }
+              },
               img:null,
               appJava:null
             };
