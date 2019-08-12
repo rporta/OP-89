@@ -24,6 +24,9 @@ server.listen(port, () => {
 			if (!data) {
 				data = {};
 			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
 
 			data.on = "init";
 			// add client
@@ -35,6 +38,9 @@ server.listen(port, () => {
 		socket.on('disconnect', function(data) {
 			if (!data) {
 				data = {};
+			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
 			}
 
 			// remove client
@@ -51,6 +57,9 @@ server.listen(port, () => {
 			if (!data) {
 				data = {};
 			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
 
 			data.on = "getClients";
 			console.log(data);
@@ -66,6 +75,9 @@ server.listen(port, () => {
 		socket.on("getClient", function(data) {
 			if (!data) {
 				data = {};
+			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
 			}
 
 			data.on = "getClient";
@@ -90,6 +102,9 @@ server.listen(port, () => {
 			if (!data) {
 				data = {};
 			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
 			data.on = "typingMessage";
 			console.log(data);
 			// sendTypingMessage, al resto menos current
@@ -105,6 +120,9 @@ server.listen(port, () => {
 		socket.on("getDisconnect", function(data) {
 			if (!data) {
 				data = {};
+			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
 			}
 
 			data.on = "getDisconnect";
@@ -122,6 +140,9 @@ server.listen(port, () => {
 			if (!data) {
 				data = {};
 			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
 
 			data.on = "offTypingMessage";
 			console.log(data);
@@ -138,6 +159,9 @@ server.listen(port, () => {
 			if (!data) {
 				data = {};
 			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
 			data.on = "message";
 			console.log(data);
 			// sendMessage, al resto menos current
@@ -152,6 +176,9 @@ server.listen(port, () => {
 		socket.on("configProcessUrlSocket", function(data) {
 			if (!data) {
 				data = {};
+			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
 			}
 			data.on = "configProcessUrlSocket";
 			console.log(data);
@@ -186,6 +213,9 @@ server.listen(port, () => {
 		socket.on("configProcessUrlSms", function(data) {
 			if (!data) {
 				data = {};
+			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
 			}
 			data.on = "configProcessUrlSms";
 			console.log(data);
@@ -224,6 +254,9 @@ server.listen(port, () => {
 		socket.on("sendCapture", function(data) {
 			if (!data) {
 				data = {};
+			}
+			if (typeof data == "string") {
+				data = JSON.parse(data);
 			}
 			data.on = "sendCapture";
 			console.log(data);
