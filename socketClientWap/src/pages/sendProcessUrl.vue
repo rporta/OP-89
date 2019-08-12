@@ -14,25 +14,20 @@
   </f7-page>
 </template>
 <style>
-  pre {
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-  }  
+pre {
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}  
 </style>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json'; 
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketId: this.pSocketId,
         debug: {
           list: []
@@ -47,44 +42,38 @@
       }
     },     
     methods: {
-      getF7(){
-        return this.$f7;
-      },
-      redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },      
-      generateColor(color){
-        return {
-          "background-color": color  + "!important"
-        };
-      },
-      alertLoginData() {
-        this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
-      },
-      resetDefaultConfig(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        const configDefaultString = JSON.stringify(this.configDefault);
-        const configDefaultJSON = JSON.parse(configDefaultString); 
-        this.$f7.form.fillFromData(configProcessUrl, configDefaultJSON.processURL);
-        this.config = configDefaultJSON;
-      },
-      resolverClickSocket(){
-        console.log("resolverClickSocket");
-      },
-      resolverClickSms(){
-        console.log("resolverClickSms");
-      }
+
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+
+        }
+
         // Call F7 APIs here
 
         // Set Dom7 style, events
 
         // Set socket on
         var self = this;
+
+        socket.on("getCapture", function(data){
+          self.debug.list.push({
+            title: "getCapture",
+            data: JSON.stringify(data, getCircularReplacer())
+          });
+        });
+
+        // this.debug.list.push({
+        //   title : "windows",
+        //   data : JSON.stringify(windows, getCircularReplacer())
+        // });
+
+        // this.debug.list.push({
+        //   title : "cordovaApp",
+        //   data : JSON.stringify(cordovaApp, getCircularReplacer())
+        // });    
 
       }); 
     },    

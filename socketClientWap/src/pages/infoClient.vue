@@ -24,15 +24,10 @@
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';    
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketId: this.pSocketId,
         infoClient : {
           id:"",
@@ -47,29 +42,20 @@
         required : false,
         default: "",
       }
-    },
-    methods: {
-      getF7(){
-        return this.$f7;
-      }
     }, 
     mounted() {
       this.$f7ready((f7) => {
-        // Set socket
-        var self = this;
-        // socket.emit("getClient", {
-        //   socketId: self.socketId
-        // });//<- no va, porque :
-        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
-        var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-        var data = {
-          type : "socket",
-          event : "disconnectSocket",
-          data: {socketId : self.socketId}
-        };
-        i.sendDataModuleApp(data);
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
 
-        this.getF7().on("sendClient", function(client){
+        }
+
+        // // Set socket
+        var self = this;
+        socket.emit("getClient", {
+          socketId: self.socketId
+        });
+        socket.on("sendClient", function(client){
           self.infoClient = client;
         });
       }); 

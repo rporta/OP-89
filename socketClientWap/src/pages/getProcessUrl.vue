@@ -15,24 +15,7 @@
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json'; 
-
-  const getCircularReplacer = () => {
-    const seen = new WeakSet();
-    return (key, value) => {
-      if (typeof value === "object" && value !== null) {
-        if (seen.has(value)) {
-          return;
-        }
-        seen.add(value);
-      }
-      return value;
-    };
-  };
-
   export default {
     data() {
       return {
@@ -51,45 +34,25 @@
         default: "",
       }
     },     
-    methods: {
-      getF7(){
-        return this.$f7;
-      },
-      redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },      
-      generateColor(color){
-        return {
-          "background-color": color  + "!important"
-        };
-      },
-      alertLoginData() {
-        this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
-      },
-      resetDefaultConfig(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        const configDefaultString = JSON.stringify(this.configDefault);
-        const configDefaultJSON = JSON.parse(configDefaultString); 
-        this.$f7.form.fillFromData(configProcessUrl, configDefaultJSON.processURL);
-        this.config = configDefaultJSON;
-      },
-      resolverClickSocket(){
-        console.log("resolverClickSocket");
-      },
-      resolverClickSms(){
-        console.log("resolverClickSms");
-      }     
+    methods: {      
+
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+          
+        }
+
+        // Call F7 APIs here
+
         // Set Dom7 style, events
 
         // Set socket on
         var self = this;
 
         // Aca tenemos que avisarle a android, cambie el flujo web por la URL que se envia 
+        
         this.debug.list.push({
           title : "mounted",
           data : true
@@ -97,9 +60,8 @@
 
         this.debug.list.push({
           title : "processUrl",
-          data : self.getF7().data.processUrl
+          data : f7.data.processUrl
         });
-
 
         this.debug.list.push({
           title : "f7.device",
@@ -107,35 +69,10 @@
         });
 
         this.debug.list.push({
-          title : "f7",
-          data : JSON.stringify(Object.keys(f7))
+          title : "cordovaApp",
+          data : JSON.stringify(Object.keys(cordovaApp))
         });
 
-        this.debug.list.push({
-          title : "window",
-          data : JSON.stringify(Object.keys(window))
-        });
-
-        this.debug.list.push({
-          title : "window.plugins",
-          data : JSON.stringify(Object.keys(window.plugins))
-        });
-
-        this.debug.list.push({
-          title : "window.cordova",
-          data : JSON.stringify(Object.keys(window.cordova))
-        });
-
-        this.debug.list.push({
-          title : "window.cordova.plugins",
-          data : JSON.stringify(Object.keys(window.cordova.plugins))
-        });
-
-        // var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-        // var data = self.getF7().data.processUrl;
-        // data.type = "socket";
-        // data.event = "sendDataModuleApp";
-        // i.sendDataModuleApp(self.getF7().data.processUrl);
 
       }); 
     },    

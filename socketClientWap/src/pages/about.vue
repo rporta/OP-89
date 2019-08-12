@@ -14,14 +14,21 @@
   </f7-page>
 </template>
 <script>
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';   
+  import Dom7 from 'dom7';
+  import routes from '../js/routes.js';
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault
+        
       };
+    },
+    mounted() {
+      this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+          
+        }
+      });
     }
   };
 </script>

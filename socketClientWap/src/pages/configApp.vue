@@ -11,87 +11,82 @@
       <f7-list-item :title="'Id : # ' + socketId">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
-      <f7-list-item :title="'Type : ' + config.type">
+      <f7-list-item :title="'Type : ' + $f7.data.config.type">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
     </f7-list>
     <f7-block-title>Config socket</f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configSocket">
       <f7-list-input
-        label="Port"
-        floating-label
-        type="text"
-        name="port"
-        placeholder="Your Port"
-        clear-button
-        :value="getF7().data.config.api.port" 
-        @input="getF7().data.config.api.port = $event.target.value"        
+      label="Port"
+      floating-label
+      type="text"
+      name="port"
+      placeholder="Your Port"
+      clear-button
+      :value="$f7.data.config.api.port" 
+      @input="$f7.data.config.api.port = $event.target.value"        
       >
-                      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-input>
-      <f7-list-input
-        label="Host"
-        floating-label
-        type="text"
-        name="host"
-        placeholder="Your URL Host"
-        clear-button
-        :value="getF7().data.config.api.host" 
-        @input="getF7().data.config.api.host = $event.target.value"   
-      >
-                      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-input>      
-    </f7-list>
-    <f7-block-title>Socket</f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col>
-          <f7-button @click="socketConnect()" fill color="green">connect</f7-button>
-        </f7-col>
-        <f7-col>
-          <f7-button @click="socketDisconnect()" fill color="red">disconnect</f7-button>
-        </f7-col>        
-      </f7-row>      
-    </f7-block>  
+      <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+    </f7-list-input>
+    <f7-list-input
+    label="Host"
+    floating-label
+    type="text"
+    name="host"
+    placeholder="Your URL Host"
+    clear-button
+    :value="$f7.data.config.api.host" 
+    @input="$f7.data.config.api.host = $event.target.value"   
+    >
+    <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+  </f7-list-input>      
+</f7-list>
+<f7-block-title>Socket</f7-block-title>
+<f7-block>
+  <f7-row>
+    <f7-col>
+      <f7-button @click="socketConnect()" fill color="green">connect</f7-button>
+    </f7-col>
+    <f7-col>
+      <f7-button @click="socketDisconnect()" fill color="red">disconnect</f7-button>
+    </f7-col>        
+  </f7-row>      
+</f7-block>  
 
-    <f7-block-title>Set default config </f7-block-title>
-    <f7-block>
-      <f7-row>
-        <f7-col>
-          <f7-button @click="resetDefaultConfig()" fill color="red">reset</f7-button>
-        </f7-col>       
-      </f7-row>      
-    </f7-block>     
-  </f7-page>
+<f7-block-title>Set default config </f7-block-title>
+<f7-block>
+  <f7-row>
+    <f7-col>
+      <f7-button @click="resetDefaultConfig()" fill color="red">reset</f7-button>
+    </f7-col>       
+  </f7-row>      
+</f7-block>     
+</f7-page>
 </template>
 <script>
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';  
+  import Dom7 from 'dom7';
+  import routes from '../js/routes.js';
   // import Dom7 from 'Dom7';
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         socketTitle: "Socket Offline",
         socketColor: "red",
         socketId: ""
       };
     },
     methods: {
-      getF7(){
-        return this.$f7;
-      },      
       resetDefaultConfig(){
         var formConfigPerfil = this.$refs.configSocket.$el;
         var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
-        const configDefaultString = JSON.stringify(this.configDefault);
+        const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
         const configDefaultJSON = JSON.parse(configDefaultString); 
         this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
-        this.config = configDefaultJSON;
+        this.$f7.data.config = configDefaultJSON;
       },
       socketConnect(){
-        socket.io.uri = "http://" + this.getF7().data.config.api.host + ":" + this.getF7().data.config.api.port;        
+        socket.io.uri = "http://" + this.$f7.data.config.api.host + ":" + this.$f7.data.config.api.port;        
         socket.connect();
         var self = this;
         setTimeout(function() {
@@ -104,6 +99,11 @@
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+
+        }
+        
         // Set Dom7 style, events
 
 

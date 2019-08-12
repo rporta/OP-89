@@ -1,7 +1,7 @@
 <template>
   <f7-page name="home">
     <!-- Top Navbar -->
-    <f7-navbar :sliding="false" :title="'socketClient' + config.type">
+    <f7-navbar :sliding="false" :title="'socketClient' + $f7.data.config.type">
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
@@ -17,36 +17,33 @@
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
-  import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';   
+  import routes from '../js/routes.js';     
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
         debug: {
           list: []
         }             
       };
     },
     methods: {
-      getF7(){
-        return this.$f7;
-      }
+
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+
+        }
+        // Set Dom7 style, events
 
         this.debug.list.push({
           title : "mounted",
           data : true
         });
-        // Set Dom7 style, events
 
         var self = this;
-        this.getF7().on("onData", function(data){
+        this.$f7.on("onData", function(data){
           self.debug.list.push({
             title: "appJava",
             data: JSON.stringify(data)

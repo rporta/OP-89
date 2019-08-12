@@ -1,85 +1,82 @@
 <template>
   <f7-page name="socketClient">
-        <f7-navbar title="Socket Client">
-          <f7-nav-right>
-            <f7-link popup-close>Close</f7-link>
-          </f7-nav-right>
-        </f7-navbar>
+    <f7-navbar title="Socket Client">
+      <f7-nav-right>
+        <f7-link popup-close>Close</f7-link>
+      </f7-nav-right>
+    </f7-navbar>
 
-        <f7-messagebar
-          :placeholder="placeholder"
-          ref="messagebar"
-          :attachments-visible="attachmentsVisible"
-          :sheet-visible="sheetVisible"
-        >
-          <f7-link
-            ref="camera"
-            icon-ios="f7:camera_fill"
-            icon-aurora="f7:camera_fill"
-            icon-md="material:camera_alt"
-            slot="inner-start"
-            @click="clickCamera()"
-          ></f7-link>
-          <f7-link
-            icon-ios="f7:arrow_up_fill"
-            icon-aurora="f7:arrow_up_fill"
-            icon-md="material:send"
-            slot="inner-end"
-            @click="sendMessage"
+    <f7-messagebar
+    :placeholder="placeholder"
+    ref="messagebar"
+    :attachments-visible="attachmentsVisible"
+    :sheet-visible="sheetVisible"
+    >
+    <f7-link
+    ref="camera"
+    icon-ios="f7:camera_fill"
+    icon-aurora="f7:camera_fill"
+    icon-md="material:camera_alt"
+    slot="inner-start"
+    @click="clickCamera()"
+    ></f7-link>
+    <f7-link
+    icon-ios="f7:arrow_up_fill"
+    icon-aurora="f7:arrow_up_fill"
+    icon-md="material:send"
+    slot="inner-end"
+    @click="sendMessage"
 
-          ></f7-link>
-          <f7-messagebar-attachments>
-            <f7-messagebar-attachment
-              v-for="(image, index) in attachments"
-              :key="index"
-              :image="image"
-              @attachment:delete="deleteAttachment(image)"
-            ></f7-messagebar-attachment>
-          </f7-messagebar-attachments>
-          <f7-messagebar-sheet>
-            <f7-messagebar-sheet-image
-              v-for="(image, index) in images"
-              :key="index"
-              :image="image"
-              :checked="attachments.indexOf(image) >= 0"
-              @change="handleAttachment"
-            ></f7-messagebar-sheet-image>
-          </f7-messagebar-sheet>
-        </f7-messagebar>
+    ></f7-link>
+    <f7-messagebar-attachments>
+      <f7-messagebar-attachment
+      v-for="(image, index) in attachments"
+      :key="index"
+      :image="image"
+      @attachment:delete="deleteAttachment(image)"
+      ></f7-messagebar-attachment>
+    </f7-messagebar-attachments>
+    <f7-messagebar-sheet>
+      <f7-messagebar-sheet-image
+      v-for="(image, index) in images"
+      :key="index"
+      :image="image"
+      :checked="attachments.indexOf(image) >= 0"
+      @change="handleAttachment"
+      ></f7-messagebar-sheet-image>
+    </f7-messagebar-sheet>
+  </f7-messagebar>
 
-        <f7-messages ref="messages" >
-          <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
-          <f7-message
-            v-for="(message, index) in messagesData"
-            :key="index"
-            :type="message.type"
-            :image="message.image"
-            :name="message.name"
-            :avatar="message.avatar"
-            :first="isFirstMessage(message, index)"
-            :last="isLastMessage(message, index)"
-            :tail="isTailMessage(message, index)"
-          >
-            <span slot="text" v-if="message.text" v-html="message.text"></span>
-          </f7-message>
-          <f7-message v-if="typingMessage"
-            type="received"
-            :typing="true"
-            :first="true"
-            :last="true"
-            :tail="true"
-            :header="`${typingMessage.name} is typing`"
-            :avatar="typingMessage.avatar"
-          ></f7-message>
-        </f7-messages>
-  </f7-page>
+  <f7-messages ref="messages" >
+    <f7-messages-title><b>Sunday, Feb 9,</b> 12:58</f7-messages-title>
+    <f7-message
+    v-for="(message, index) in messagesData"
+    :key="index"
+    :type="message.type"
+    :image="message.image"
+    :name="message.name"
+    :avatar="message.avatar"
+    :first="isFirstMessage(message, index)"
+    :last="isLastMessage(message, index)"
+    :tail="isTailMessage(message, index)"
+    >
+    <span slot="text" v-if="message.text" v-html="message.text"></span>
+  </f7-message>
+  <f7-message v-if="typingMessage"
+  type="received"
+  :typing="true"
+  :first="true"
+  :last="true"
+  :tail="true"
+  :header="`${typingMessage.name} is typing`"
+  :avatar="typingMessage.avatar"
+  ></f7-message>
+</f7-messages>
+</f7-page>
 </template>
 <script>
   import Dom7 from 'dom7';
-  import cordovaApp from '../js/cordova-app.js';
-  import routes from '../js/routes.js';
-  import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';    
+  import routes from '../js/routes.js';  
   export default {
     data() {
       return {
@@ -90,39 +87,21 @@
         messagesData: [
         ],
         images: [
-          'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
-          'https://cdn.framework7.io/placeholder/cats-200x300-2.jpg',
-          'https://cdn.framework7.io/placeholder/cats-400x300-3.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x150-4.jpg',
-          'https://cdn.framework7.io/placeholder/cats-150x300-5.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x300-6.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x300-7.jpg',
-          'https://cdn.framework7.io/placeholder/cats-200x300-8.jpg',
-          'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
-          'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x300-1.jpg',
+        'https://cdn.framework7.io/placeholder/cats-200x300-2.jpg',
+        'https://cdn.framework7.io/placeholder/cats-400x300-3.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x150-4.jpg',
+        'https://cdn.framework7.io/placeholder/cats-150x300-5.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x300-6.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x300-7.jpg',
+        'https://cdn.framework7.io/placeholder/cats-200x300-8.jpg',
+        'https://cdn.framework7.io/placeholder/cats-400x300-9.jpg',
+        'https://cdn.framework7.io/placeholder/cats-300x150-10.jpg',
         ],
-        responseInProgress: false,
-        // Set default config
-        config : config,   
-        configDefault : configDefault        
+        responseInProgress: false,    
       };
     },
-    methods: {
-      getF7(){
-        return this.$f7;
-      },
-      redirectTo(path){
-        this.getF7().view.main.router.navigate(path);
-        this.getF7().panel.close();
-      },      
-      generateColor(color){
-        return {
-          "background-color": color  + "!important"
-        };
-      },
-      alertLoginData() {
-        this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
-      },
+    methods: {     
       isFirstMessage(message, index) {
         const self = this;
         const previousMessage = self.messagesData[index - 1];
@@ -172,36 +151,14 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            // socket.emit("typingMessage", self.getF7().data.perfil); //<- no va, porque :
-            // hay que enviar la data f7->AppJava para que envie el evento al socketServer
-
-            var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-            var data = {
-              type : "socket",
-              event : "typingMessage",
-              data: this.getF7().data.perfil
-            };
-            i.sendDataModuleApp(data);
-
-
+            socket.emit("typingMessage", self.$f7.data.perfil);
           }
         }, 100);
       },
       offKeymonitor(e){
         // Send socket         
         setTimeout(function() {
-          // socket.emit("offTypingMessage", {}); //<- no va, porque :
-          // hay que enviar la data f7->AppJava para que envie el evento al socketServer 
-
-          var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-          var data = {
-            type : "socket",
-            event : "offTypingMessage",
-            data: {}
-          };
-          i.sendDataModuleApp(data);
-
-
+          socket.emit("offTypingMessage", {});          
         }, 500);
       },
       sendMessage() {
@@ -232,24 +189,13 @@
         // Send message
         self.messagesData.push(...messagesToSend);
         // Send socket
-
-        // socket.emit("message", messagesToSend); //<- no va, porque :
-        // hay que enviar la data f7->AppJava para que envie el evento al socketServer
-
-          var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-          var data = {
-            type : "socket",
-            event : "message",
-            data: messagesToSend
-          };
-          i.sendDataModuleApp(data);
-
+        socket.emit("message", messagesToSend);
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
       },
       getInfoDevice(){
-        var device = this.getF7().device;
+        var device = this.$f7.device;
         var data = {};
         for(let key in device){
           if(key != "pixelRatio"){          
@@ -268,6 +214,11 @@
     },
     mounted() {
       this.$f7ready((f7) => {
+        // Init cordova APIs (see cordova-app.js)
+        if (f7.device.cordova) {
+          
+        }
+
         // Call F7 APIs here
         this.messagebar = this.$refs.messagebar.f7Messagebar;
         this.messages = this.$refs.messages.f7Messages;   
@@ -279,41 +230,27 @@
         });
         Dom7(this.messagebar.$textareaEl).keydown(this.keymonitor);
 
-        //recibe events 
-        this.getF7().on("connect", function(data){
-            var initData = {
-                id: socket.id,
-                type: self.config.type,
-                wifi: "on",
-                driver:  self.getInfoDevice()
-            };
-            // socket.emit("init", initData); //<- no va, porque :
-            // hay que enviar la data f7->AppJava para que envie el evento al socketServer
+        // Set socket on
+        var self = this;
 
-            var i = window.cordova.InAppBrowser.open("sendDataModuleApp");
-            var data = {
-              type : "socket",
-              event : "init",
-              data: initData
-            };
-            i.sendDataModuleApp(data);
-            
+        socket.on('connect', function() {
+          var initData = {
+            id: socket.id,
+            type: f7.data.config.type,
+            wifi: "on",
+            driver:  self.getInfoDevice()
+          };
+          socket.emit("init", initData);
         });
-
-        this.getF7().on("sendTypingMessage", function(data){
-          self.responseInProgress = true;
-          self.typingMessage = data;  
-        });
-
-        this.getF7().on("sendTypingMessage", function(data){
+        socket.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      
         });
-        this.getF7().on("sendOffTypingMessage", function(data){
+        socket.on("sendOffTypingMessage", function(data){
           self.responseInProgress = false;
           self.typingMessage = null;      
         });        
-        this.getF7().on("sendMessage", function(data){
+        socket.on("sendMessage", function(data){
           var tempTypingMessage = self.typingMessage;
           self.typingMessage = null;
           self.responseInProgress = false;        
