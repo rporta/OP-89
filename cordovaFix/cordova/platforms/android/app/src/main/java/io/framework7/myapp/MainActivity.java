@@ -19,6 +19,7 @@
 
 package io.framework7.myapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import org.apache.cordova.*;
@@ -33,6 +34,8 @@ import com.emulate.ProcessKey;
 import com.github.nkzawa.emitter.Emitter;
 import com.socketImplement.socketConection;
 import android.support.v4.content.LocalBroadcastManager;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 
 public class MainActivity extends CordovaActivity
 {
@@ -52,6 +55,10 @@ public class MainActivity extends CordovaActivity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+
         super.onCreate(savedInstanceState);
         // enable Cordova apps to be started in the background
         Bundle extras = getIntent().getExtras();
@@ -59,8 +66,48 @@ public class MainActivity extends CordovaActivity
             moveTaskToBack(true);
         }
 
+        MainActivity self = this;
+
         loadUrl(launchUrl);
 
+        //intento f7 -> App(Java)
+        final BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String event = intent.getAction();
+                String item = intent.getExtras().getString("item");
+                LOG.d(TAG, nameofCurrMethod + ", event : " + event + ", item : " + item);
+
+                String pepe2 = intent.getExtras().toString();
+                LOG.d(TAG, nameofCurrMethod + ", event : " + event + ", pepe : " + pepe2);
+
+                //intento App(java) -> f7
+                final Intent intent2 = new Intent("onDataModuleJava");
+
+                //set data
+
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("test", "probando App(java) -> f7");
+                    LOG.d(TAG, nameofCurrMethod + ", data : " + data.toString());
+                } catch (JSONException e) {
+//                    e.printStackTrace();
+                    LOG.d(TAG, nameofCurrMethod + ", catch(), data : " + data.toString());
+
+                }
+
+                Bundle b = new Bundle();
+                b.putString("dataType", "data");
+                b.putString("event", "onData");
+                b.putString("data", data.toString());
+                intent2.putExtras(b);
+                LOG.d(TAG, nameofCurrMethod + ", event : " + b.getString("event") + ", data : " + b.getString("data"));
+
+                LocalBroadcastManager.getInstance(self).sendBroadcastSync(intent2);
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(receiver, new IntentFilter("test.event"));
     }
 
     public socketConection getSocket() {

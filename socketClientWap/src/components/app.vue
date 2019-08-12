@@ -92,6 +92,20 @@
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
+
+
+          window.broadcaster.fireNativeEvent( 
+            "test.event", {
+              "item": "dataItem-test", 
+              "pepe": "data-pepe"
+            }, () => {
+              console.log( "event fired!" );
+            });
+
+
+
+
+
         }
         // Set Dom7 style, events
 
