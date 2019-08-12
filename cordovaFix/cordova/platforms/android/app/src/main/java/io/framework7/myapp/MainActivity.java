@@ -44,8 +44,8 @@ public class MainActivity extends CordovaActivity
     public JSONObject dataFW;
     public Integer resolveCase;
     public String dimensionFw;
-    public Integer countLocal;
-    public Integer countRemote;
+    public Integer countLocal = 0;
+    public Integer countRemote = 0;
     public socketConection socket;
     public boolean socketOn = false;
 
@@ -122,7 +122,8 @@ public class MainActivity extends CordovaActivity
         LOG.d(TAG, nameofCurrMethod + ", url " + this.URL );
 
         if(this.startFinishLoadPag == false){
-            countLocal = 1;
+            //finalizo la carga url local, por primera vez
+            countLocal++;
             Integer w = this.appView.getView().getWidth();
             Integer h = this.appView.getView().getHeight();
             LOG.d(TAG, nameofCurrMethod + ", appView getWidth : " + w + ", appView getHeight : " + h);
@@ -133,6 +134,7 @@ public class MainActivity extends CordovaActivity
 
         }else {
             if(url.indexOf("file") != -1){
+                //finalizo la carga url local
                 if (this.PageStatus == "finalizo la carga remote"){//<-vengo de remote
                     countLocal++;
                     this.PageStatus = "finalizo la carga local";
@@ -141,8 +143,7 @@ public class MainActivity extends CordovaActivity
                 //finalizo la carga url remota
                 this.URLList.add(url);
                 if(this.PageStatus == "finalizo la carga local"){//<-vengo de local
-                    countRemote = 1;
-                    //finalizo la carga url remota por primera vez, realizamos captura de URL, realizamos captura, volvemos a cargar el recurso local
+                    countRemote++;
                     this.PageStatus = "finalizo la carga remote";
                 }
             }
