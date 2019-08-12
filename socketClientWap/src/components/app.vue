@@ -78,24 +78,47 @@
       }
     },
     methods: {
-
+      getInfoDevice(){
+        var device = this.$f7.device;
+        var data = {};
+        for(let key in device){
+          if(key != "pixelRatio"){          
+            var currentValue = device[key];
+            if(typeof currentValue === "boolean"){
+              if(currentValue){
+                data[key] = currentValue;
+              }
+            }else{
+              data[key] = currentValue;
+            }
+          }
+        }
+        return data;
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
+        var self = this;
 
         //add method
         f7.redirectTo = (path) =>{
           f7.view.main.router.navigate(path);
           f7.panel.close();
-        }   
+        }    
 
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
           //f7 -> App(Java) : event "initSocket"
+
           var sendData = {
-            "host": f7.data.config.api.host, 
-            "port": f7.data.config.api.port
+            data : JSON.stringify({
+              host: f7.data.config.api.host, 
+              port: f7.data.config.api.port,
+              type: f7.data.config.type,
+              wifi: "on",
+              driver: self.getInfoDevice()
+            })
           };
           window.broadcaster.fireNativeEvent( 
             "initSocket", sendData);
@@ -104,7 +127,6 @@
         // Set Dom7 style, events
 
         // Set socket on
-        var self = this;
         socket.on("sendConfigProcessUrlSocket", function(data) {
           if(data.type == "Wap"){
             f7.data.processUrl = data;            
