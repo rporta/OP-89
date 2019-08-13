@@ -50,6 +50,8 @@ pre {
         if (f7.device.cordova) {
 
         }
+        f7.dialog.preloader('Esperando Captura ...');
+
 
         // Call F7 APIs here
 
