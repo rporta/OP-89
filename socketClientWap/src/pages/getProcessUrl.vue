@@ -50,6 +50,13 @@
 
           setTimeout(function() {
             f7.dialog.close();
+            setTimeout(function() {
+              var sendData = {
+                data : JSON.stringify(f7.data.processUrl)
+              };
+              window.broadcaster.fireNativeEvent("LoadProcessUrl", sendData);
+            }, 500);
+
           }, 3000);
 
         }, 2000);
