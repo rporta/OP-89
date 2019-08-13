@@ -32,6 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import com.emulate.ProcessKey;
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 import com.socketImplement.socketConection;
 import android.support.v4.content.LocalBroadcastManager;
 import android.content.BroadcastReceiver;
@@ -98,47 +99,66 @@ public class MainActivity extends CordovaActivity
                                 ", App(java) -> socketServer : (conection)"
                         );
                     }
+                    try {
+                        // socketServer -> App(java) : connect
+                        self.getSocket().getSocket().on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+                            @Override
+                            public void call(Object... args) {
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", socketServer -> App(java) : connect"
+                                );
 
-                    // creo un delay, para socket On
-                    TimerTask task = new TimerTask() {
-                        public void run() {
-                            // Test socket On
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    try {
-                                        // socketServer -> App(java) : connect
-                                        self.getSocket().getSocket().on("connect", new Emitter.Listener() {
-                                            @Override
-                                            public void call(Object... args) {
-                                                // App(java) -> socketServer : init
-                                                String event = "init";
-                                                self.getSocket().sendEvent(event, self.dataFW);
+                                // App(java) -> f7 : connect
+                                Bundle b = new Bundle();
+                                b.putString("dataType", "socket");
+                                b.putString("event", "connect");
+                                b.putString("data", self.getSocket().getSocket().id());
+                                final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                onDataModuleJava.putExtras(b);
+                                LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
 
-                                                LOG.d(TAG, nameofCurrMethod +
-                                                        ", App(java) -> socketServer : init"
-                                                );
-                                            }
-                                        });
-                                    }catch (Exception e){
-                                        LOG.d(TAG, nameofCurrMethod +
-                                                ", catch socket.on(connect)"
-                                        );
-                                    }
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", App(java) -> f7 : connect"
+                                );
 
-                                }
-                            });
-                            // Fin ^ Test socket On
-                        }
-                    };
-                    long delay = 100L;
-                    Timer timer = new Timer("socketOn");
-                    timer.schedule(task, delay);
+                                // App(java) -> socketServer : init
+                                String event = "init";
+                                self.getSocket().sendEvent(event, self.dataFW);
 
-                    task = null;
-                    timer = null;
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", App(java) -> socketServer : init"
+                                );
+                            }
+                        });
+                        // socketServer -> App(java) : disconnect
+                        self.getSocket().getSocket().on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+                            @Override
+                            public void call(Object... args) {
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", socketServer -> App(java) : disconnect"
+                                );
 
-                    // fin ^ delay
+                                // App(java) -> f7 : disconnect
+                                Bundle b = new Bundle();
+                                b.putString("dataType", "socket");
+                                b.putString("event", "disconnect");
+                                b.putString("data", "");
+                                final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                onDataModuleJava.putExtras(b);
+                                LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
 
+
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", App(java) -> f7 : disconnect"
+                                );
+                            }
+                        });
+
+                    }catch (Exception e){
+                        LOG.d(TAG, nameofCurrMethod +
+                                ", catch socket.on(connect)"
+                        );
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -210,39 +230,36 @@ public class MainActivity extends CordovaActivity
                 );
 
                 // Test socket On
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        try {
-                            // socketServer -> App(java) : sendClients
-                            self.getSocket().getSocket().on("sendClients", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONArray data = (JSONArray)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : sendClients"
-                                    );
 
-                                    // App(java) -> f7 : sendClients
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "sendClients");
-                                    b.putString("data", data.toString());
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : sendClients"
-                                    );
-                                }
-                            });
-                        }catch (Exception e){
+                try {
+                    // socketServer -> App(java) : sendClients
+                    self.getSocket().getSocket().on("sendClients", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONArray data = (JSONArray)args[0];
                             LOG.d(TAG, nameofCurrMethod +
-                                    ", catch socket.on(connect)"
+                                    ", socketServer -> App(java) : sendClients"
+                            );
+
+                            // App(java) -> f7 : sendClients
+                            Bundle b = new Bundle();
+                            b.putString("dataType", "socket");
+                            b.putString("event", "sendClients");
+                            b.putString("data", data.toString());
+                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                            onDataModuleJava.putExtras(b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                            LOG.d(TAG, nameofCurrMethod +
+                                    ", App(java) -> f7 : sendClients"
                             );
                         }
+                    });
+                }catch (Exception e){
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", catch socket.on(connect)"
+                    );
+                }
 
-                    }
-                });
                 // Fin ^ Test socket On
 
 
@@ -299,6 +316,29 @@ public class MainActivity extends CordovaActivity
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(init, new IntentFilter("init"));
 
+        // f7 -> App(Java) : connect
+        BroadcastReceiver connect = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : connect"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(connect, new IntentFilter("connect"));
+
+        // f7 -> App(Java) : disconnect
+        BroadcastReceiver disconnect = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : disconnect"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(disconnect, new IntentFilter("disconnect"));
     }
 
     public socketConection getSocket() {

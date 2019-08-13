@@ -62,7 +62,9 @@ var cordovaApp = {
             f7.emit(data.event, f7.data.socket.sendClient);
             break;
           case "disconnect":
-            f7.data.socket.disconnect = JSON.parse(data.data);
+            f7.data.socket.id = null;
+            f7.data.socket.disconnect = true;
+            f7.data.socket.connect = false;
             f7.emit(data.event, f7.data.socket.disconnect);
             break;
           case "sendClients":
@@ -78,7 +80,9 @@ var cordovaApp = {
             f7.emit(data.event, f7.data.socket.sendOffTypingMessage);
             break;
           case "connect":
-            f7.data.socket.connect = JSON.parse(data.data);
+            f7.data.socket.id = data.data;
+            f7.data.socket.disconnect = false;
+            f7.data.socket.connect = true;
             f7.emit(data.event, f7.data.socket.connect);
             break;
           case "sendMessage":

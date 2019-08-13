@@ -1,7 +1,7 @@
 <template>
   <f7-page name="configApp">
     <f7-navbar title="Configuracion App" back-link="Back">
-      <f7-chip :text="socketTitle" :color="socketColor"></f7-chip>
+      <f7-chip :text="connect ? 'Socket Online' : 'Socket Offline'" :color="connect ? 'green' : 'red'"></f7-chip>
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
@@ -71,9 +71,8 @@
   export default {
     data() {
       return {
-        socketTitle: "Socket Offline",
-        socketColor: "red",
-        socketId: ""
+        connect: this.$f7.data.socket.connect,
+        socketId: this.$f7.data.socket.id
       };
     },
     methods: {
@@ -86,15 +85,17 @@
         this.$f7.data.config = configDefaultJSON;
       },
       socketConnect(){
-        socket.io.uri = "http://" + this.$f7.data.config.api.host + ":" + this.$f7.data.config.api.port;        
-        socket.connect();
+        var sendData = {
+          data : ""
+        };
+        window.broadcaster.fireNativeEvent("connect", sendData);
         var self = this;
-        setTimeout(function() {
-          self.socketId = socket.id;
-        }, 500);
       },
       socketDisconnect(){
-        socket.disconnect();
+        var sendData = {
+          data : ""
+        };
+        window.broadcaster.fireNativeEvent("disconnect", sendData);
       }
     },
     mounted() {
@@ -103,15 +104,7 @@
         if (f7.device.cordova) {
 
         }
-        
         // Set Dom7 style, events
-
-
-        // Set data 
-        this.socketTitle = socket.connected ? "Socket Online" : "Socket Offline";
-        this.socketColor = socket.connected ? "green" : "red";
-        this.socketId = socket.id;
-
         var self = this;
 
         setInterval(function() {          

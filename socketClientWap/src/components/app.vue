@@ -55,6 +55,7 @@
                 sendTypingMessage: null,
                 sendOffTypingMessage: null,
                 connect: null,
+                id: null,
                 sendMessage: null
               },
               img:null,
