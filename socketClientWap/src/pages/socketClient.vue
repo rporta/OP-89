@@ -163,7 +163,7 @@
               data : JSON.stringify(self.$f7.data.config.perfil)
             };
             
-            window.broadcaster.fireNativeEvent("typingMessage", self.$f7.data.config.perfil);
+            window.broadcaster.fireNativeEvent("typingMessage", sendData);
           }
         }, self.$f7.data.config.setInterval.keymonitor);
       },

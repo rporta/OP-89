@@ -155,6 +155,7 @@
           self.clients = data;
 
         });
+        window.broadcaster.fireNativeEvent("getClients", {});
         setInterval(function() {
           window.broadcaster.fireNativeEvent("getClients", {});
         }, self.$f7.data.config.setInterval.getClients);

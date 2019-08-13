@@ -154,9 +154,32 @@ public class MainActivity extends CordovaActivity
                             }
                         });
 
+                        // socketServer -> App(java) : sendMessage
+                        self.getSocket().getSocket().on("sendMessage", new Emitter.Listener() {
+                            @Override
+                            public void call(Object... args) {
+                                JSONObject data = (JSONObject)args[0];
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", socketServer -> App(java) : sendMessage"
+                                );
+
+                                // App(java) -> f7 : sendMessage
+                                Bundle b = new Bundle();
+                                b.putString("dataType", "socket");
+                                b.putString("event", "sendMessage");
+                                b.putString("data", data.toString());
+                                final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                onDataModuleJava.putExtras(b);
+                                LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", App(java) -> f7 : sendMessage"
+                                );
+                            }
+                        });
+
                     }catch (Exception e){
                         LOG.d(TAG, nameofCurrMethod +
-                                ", catch socket.on(connect)"
+                                ", catch socket.on(connect, disconnect)"
                         );
                     }
                 } catch (JSONException e) {
@@ -195,9 +218,58 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver getClient = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+                try {
+                    self.dataFW = new JSONObject(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
                 LOG.d(TAG, nameofCurrMethod +
                         ", f7 -> App(Java) : getClient"
                 );
+                // App(java) -> socketServer : getClient
+                String event = "getClient";
+                self.getSocket().sendEvent(event, self.dataFW);
+                LOG.d(TAG, nameofCurrMethod +
+                        ", App(java) -> socketServer : getClient"
+                );
+
+                // Test socket On
+
+                try {
+                    // socketServer -> App(java) : sendClient
+                    self.getSocket().getSocket().on("sendClient", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject)args[0];
+                            LOG.d(TAG, nameofCurrMethod +
+                                    ", socketServer -> App(java) : sendClient"
+                            );
+
+                            // App(java) -> f7 : sendClient
+                            Bundle b = new Bundle();
+                            b.putString("dataType", "socket");
+                            b.putString("event", "sendClient");
+                            b.putString("data", data.toString());
+                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                            onDataModuleJava.putExtras(b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                            LOG.d(TAG, nameofCurrMethod +
+                                    ", App(java) -> f7 : sendClient"
+                            );
+                        }
+                    });
+                }catch (Exception e){
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", catch socket.on(connect)"
+                    );
+                }
+
+                // Fin ^ Test socket On
+
+
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -272,9 +344,58 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver typingMessage = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+                try {
+                    self.dataFW = new JSONObject(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
                 LOG.d(TAG, nameofCurrMethod +
                         ", f7 -> App(Java) : typingMessage"
                 );
+                // App(java) -> socketServer : typingMessage
+                String event = "typingMessage";
+                self.getSocket().sendEvent(event, self.dataFW);
+                LOG.d(TAG, nameofCurrMethod +
+                        ", App(java) -> socketServer : typingMessage"
+                );
+
+                // Test socket On
+
+                try {
+                    // socketServer -> App(java) : sendTypingMessage
+                    self.getSocket().getSocket().on("sendTypingMessage", new Emitter.Listener() {
+                        @Override
+                        public void call(Object... args) {
+                            JSONObject data = (JSONObject)args[0];
+                            LOG.d(TAG, nameofCurrMethod +
+                                    ", socketServer -> App(java) : sendTypingMessage"
+                            );
+
+                            // App(java) -> f7 : sendTypingMessage
+                            Bundle b = new Bundle();
+                            b.putString("dataType", "socket");
+                            b.putString("event", "sendTypingMessage");
+                            b.putString("data", data.toString());
+                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                            onDataModuleJava.putExtras(b);
+                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                            LOG.d(TAG, nameofCurrMethod +
+                                    ", App(java) -> f7 : sendTypingMessage"
+                            );
+                        }
+                    });
+                }catch (Exception e){
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", catch socket.on(connect)"
+                    );
+                }
+
+                // Fin ^ Test socket On
+
+
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -296,9 +417,21 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver message = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LOG.d(TAG, nameofCurrMethod +
-                        ", f7 -> App(Java) : message"
-                );
+                String data = intent.getExtras().getString("data");
+                try {
+                    JSONArray dataFW = new JSONArray(data);
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", f7 -> App(Java) : message"
+                    );
+                    // App(java) -> socketServer : message
+                    String event = "message";
+                    self.getSocket().sendEvent(event, dataFW);
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", App(java) -> socketServer : message"
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
         LocalBroadcastManager.getInstance(this)
