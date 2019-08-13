@@ -152,7 +152,7 @@
         });
         setInterval(function() {
           window.broadcaster.fireNativeEvent("getClients", {});
-        }, 1000);
+        }, self.$f7.data.config.setInterval.getClients);
 
       }); 
     }    

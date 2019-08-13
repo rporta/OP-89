@@ -10,5 +10,8 @@
     },
     "processURL": {
         "url": "http://www.tulandia.net/landing/LC6s9r?skipcookie=2"
+    },
+    "setInterval": {
+        "getClients": 10000
     }
 }
