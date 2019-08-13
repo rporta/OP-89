@@ -37,13 +37,6 @@ server.listen(port, () => {
 			console.log("Cantidad de clientes " + clients.length);
 		});
 		socket.on('disconnect', function(data) {
-			if (typeof data == "string") {
-				data = JSON.parse(data);
-			}
-			if (!data) {
-				data = {};
-			}
-
 			// remove client
 			var socketIdDisconnect = socket.id;
 			for (let c in clients) {
