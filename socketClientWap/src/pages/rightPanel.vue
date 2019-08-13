@@ -121,7 +121,7 @@
         this.$f7.on('sendClients', function(data) {
           for(let d in data){
             var currentData = data[d];
-            if(socket.id == currentData.id){
+            if(f7.data.socket.id == currentData.id){
               data.splice(d, 1);
             }
           }
