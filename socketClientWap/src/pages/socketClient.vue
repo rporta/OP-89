@@ -159,15 +159,19 @@
             self.offKeymonitor(e);
           }else{
             // Send socket 
-            socket.emit("typingMessage", self.$f7.data.config.perfil);
+            var sendData = {
+              data : JSON.stringify(self.$f7.data.config.perfil)
+            };
+            
+            window.broadcaster.fireNativeEvent("typingMessage", self.$f7.data.config.perfil);
           }
-        }, 100);
+        }, self.$f7.data.config.setInterval.keymonitor);
       },
       offKeymonitor(e){
         // Send socket         
         setTimeout(function() {
-          socket.emit("offTypingMessage", {});          
-        }, 500);
+          window.broadcaster.fireNativeEvent("offTypingMessage", {});
+        }, this.$f7.data.config.setInterval.offKeymonitor);
       },
       sendMessage() {
         const self = this;
@@ -197,7 +201,11 @@
         // Send message
         self.messagesData.push(...messagesToSend);
         // Send socket
-        socket.emit("message", messagesToSend);
+        var sendData = {
+          data : JSON.stringify(messagesToSend)
+        };
+
+        window.broadcaster.fireNativeEvent("message", sendData);
       },
       clickCamera(){
         this.sheetVisible = !this.sheetVisible;
@@ -241,15 +249,6 @@
         // Set socket on
         var self = this;
 
-        this.$f7.on('connect', function() {
-          var initData = {
-            id: socket.id,
-            type: f7.data.config.type,
-            wifi: "on",
-            driver:  self.getInfoDevice()
-          };
-          socket.emit("init", initData);
-        });
         this.$f7.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      

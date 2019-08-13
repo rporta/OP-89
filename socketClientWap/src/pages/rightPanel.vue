@@ -91,9 +91,14 @@
       },
       disconnectSocket(id){
         console.log("disconnectSocket", id);
-        socket.emit("getDisconnect", {
-          socketId : id
-        });
+        
+        var sendData = {
+          data : JSON.stringify({
+            socketId : id
+          })
+        };
+
+        window.broadcaster.fireNativeEvent("getDisconnect", sendData);
       }
     },
     mounted() {

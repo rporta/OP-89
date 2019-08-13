@@ -127,7 +127,7 @@
         // Set Dom7 style, events
 
         // Set socket on
-        socket.on("sendConfigProcessUrlSocket", function(data) {
+        this.$f7.on("sendConfigProcessUrlSocket", function(data) {
           if(data.type == "Wap"){
             f7.data.processUrl = data;            
             f7.redirectTo('/getProcessUrl/' + data.socketId);
@@ -135,10 +135,10 @@
         });
 
         // Set socket 
-        socket.on("sendDisconnect", function(data){
+        this.$f7.on("sendDisconnect", function(data){
           console.log(data);
           if(data.disconnect){
-            socket.disconnect();
+            // socket.disconnect();
           }
         });
       }); 

@@ -52,9 +52,15 @@
 
         // // Set socket
         var self = this;
-        socket.emit("getClient", {
-          socketId: self.socketId
-        });
+
+
+        var sendData = {
+          data : JSON.stringify({
+            socketId: self.socketId
+          })
+        };
+
+        window.broadcaster.fireNativeEvent("getClient", sendData);
         this.$f7.on("sendClient", function(client){
           self.infoClient = client;
         });
