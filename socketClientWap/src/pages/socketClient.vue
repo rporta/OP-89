@@ -266,7 +266,9 @@
             currentData.type = 'received';
             currentData.name = tempTypingMessage.name;
             currentData.avatar = tempTypingMessage.avatar;
-            self.messagesData.push(currentData);
+            if(typeof self.messagesData != "undefined"){              
+              self.messagesData.push(currentData);
+            }
           }
         });
       }); 
