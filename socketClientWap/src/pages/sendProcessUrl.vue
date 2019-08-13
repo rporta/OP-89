@@ -50,6 +50,8 @@ pre {
         if (f7.device.cordova) {
 
         }
+        f7.dialog.preloader('Esperando Captura ...');
+
 
         // Call F7 APIs here
 
@@ -58,12 +60,6 @@ pre {
         // Set socket on
         var self = this;
 
-        this.$f7.on("getCapture", function(data){
-          self.debug.list.push({
-            title: "getCapture",
-            data: JSON.stringify(data, getCircularReplacer())
-          });
-        });
 
         // this.debug.list.push({
         //   title : "windows",

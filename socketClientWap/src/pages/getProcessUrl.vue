@@ -41,8 +41,18 @@
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
-          
+
         }
+
+
+        setTimeout(function() {
+          f7.dialog.preloader('Cargando Url..');
+
+          setTimeout(function() {
+            f7.dialog.close();
+          }, 3000);
+
+        }, 2000);
 
         // Call F7 APIs here
 
@@ -62,17 +72,6 @@
           title : "processUrl",
           data : f7.data.processUrl
         });
-
-        this.debug.list.push({
-          title : "f7.device",
-          data : JSON.stringify(f7.device)
-        });
-
-        this.debug.list.push({
-          title : "cordovaApp",
-          data : JSON.stringify(Object.keys(cordovaApp))
-        });
-
 
       }); 
     },    
