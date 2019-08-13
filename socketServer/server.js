@@ -254,6 +254,7 @@ server.listen(port, () => {
 			}
 			data.on = "sendCapture";
 			console.log(data);
+			io.sockets.connected[data.socketId].emit("getCapture", data);
 		});
 	});
 });
