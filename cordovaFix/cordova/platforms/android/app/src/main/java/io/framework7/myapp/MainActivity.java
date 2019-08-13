@@ -23,10 +23,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import org.apache.cordova.*;
 import org.json.*;
-
+import android.util.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.ByteArrayOutputStream;
 import com.emulate.ProcessKey;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
@@ -557,6 +559,27 @@ public class MainActivity extends CordovaActivity
 
         return titleCase.toString();
     }
+
+    public String getScreenshot(Bitmap bitmap, int quality) {
+        String out = "";
+        try {
+            ByteArrayOutputStream jpeg_data = new ByteArrayOutputStream();
+
+            if (bitmap.compress(CompressFormat.JPEG, quality, jpeg_data)) {
+                byte[] code = jpeg_data.toByteArray();
+                byte[] output = Base64.encode(code, Base64.NO_WRAP);
+                String js_out = new String(output);
+                js_out = "data:image/jpeg;base64," + js_out;
+                out = js_out;
+            }
+
+            jpeg_data = null;
+
+        } catch (Exception e) {
+
+        }
+        return out;
+    }
     /*
      * RAMIRO PORTAS
      * ESTE METHOD SE LLAMA CUANDO SE DISPARA EL EVENTO AL CARGAR UNA NUEVA PAGINA
@@ -619,8 +642,20 @@ public class MainActivity extends CordovaActivity
                                     streamIn = new FileInputStream(file);
                                     Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
                                     streamIn.close();
+
+                                    String Screenshot = self.getScreenshot(bitmap, 50);
+                                    JSONObject sendCaptureSocket = new JSONObject();
+                                    try {
+                                        sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
+                                        sendCaptureSocket.put("img", Screenshot);
+                                        String event = "sendCapture";
+                                        self.getSocket().sendEvent(event, sendCaptureSocket);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
                                     LOG.d(TAG, nameofCurrMethod +
-                                            ", Screenshot -> saveScreenshot, Bitmap " + bitmap
+                                            ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
                                     );
 
                                 } catch (FileNotFoundException e) {
@@ -634,8 +669,6 @@ public class MainActivity extends CordovaActivity
                                     );
                                     e.printStackTrace();
                                 }
-
-
                             }
                         };
                         long delay = 2000L;
