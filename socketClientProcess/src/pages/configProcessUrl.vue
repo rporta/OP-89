@@ -107,8 +107,8 @@
 
         socket.on("sendConfigProcessUrlSocket", function(data) {
           console.log("sendConfigProcessUrlSocket", data);
-          if(data.type == config.type){
-            self.redirectTo('/sendProcessUrl/' + data.socketId);
+          if(data.type == f7.data.config.type){
+            f7.redirectTo('/sendProcessUrl/' + data.socketId);
           }
         });
 
