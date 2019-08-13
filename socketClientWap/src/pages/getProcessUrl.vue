@@ -19,9 +19,9 @@
   export default {
     data() {
       return {
-        config : config,
-        configDefault : configDefault,
-        socketId: this.pSocketId,          
+        config : this.$f7.data.config,
+        configDefault : this.$f7.data.configDefault,
+        socketId: this.pSocketId,      
         debug: {
           list: []
         }        

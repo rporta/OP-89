@@ -195,9 +195,32 @@ public class MainActivity extends CordovaActivity
                                     );
                                 }
                             });
+
+                            // socketServer -> App(java) : sendConfigProcessUrlSocket
+                            self.getSocket().getSocket().on("sendConfigProcessUrlSocket", new Emitter.Listener() {
+                                @Override
+                                public void call(Object... args) {
+                                    JSONObject data = (JSONObject)args[0];
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", socketServer -> App(java) : sendConfigProcessUrlSocket"
+                                    );
+
+                                    // App(java) -> f7 : sendConfigProcessUrlSocket
+                                    Bundle b = new Bundle();
+                                    b.putString("dataType", "socket");
+                                    b.putString("event", "sendConfigProcessUrlSocket");
+                                    b.putString("data", data.toString());
+                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                    onDataModuleJava.putExtras(b);
+                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", App(java) -> f7 : sendConfigProcessUrlSocket"
+                                    );
+                                }
+                            });
                         }catch (Exception e){
                             LOG.d(TAG, nameofCurrMethod +
-                                    ", catch socket.on(disconnect, sendMessage) : " + e
+                                    ", catch socket.on(sendClient, disconnect, sendMessage, sendClients, sendTypingMessage, sendConfigProcessUrlSocket) : " + e
                             );
                         }
 
