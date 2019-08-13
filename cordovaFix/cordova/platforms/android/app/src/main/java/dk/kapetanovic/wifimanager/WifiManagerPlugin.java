@@ -113,7 +113,8 @@ public class WifiManagerPlugin extends CordovaPlugin {
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
 
-        cordova.getActivity().unregisterReceiver(broadcastReceiver);
+        //cordova.getActivity().unregisterReceiver(broadcastReceiver);
+        // ^ hay que por que falla, por ahora comentado
     }
 
     @Override

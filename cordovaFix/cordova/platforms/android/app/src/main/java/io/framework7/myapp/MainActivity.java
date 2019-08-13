@@ -21,9 +21,16 @@ package io.framework7.myapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import org.apache.cordova.*;
 import org.json.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -34,6 +41,9 @@ import com.emulate.ProcessKey;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.socketImplement.socketConection;
+
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
@@ -70,8 +80,6 @@ public class MainActivity extends CordovaActivity
         MainActivity self = this;
 
         loadUrl(launchUrl);
-
-
 
         // creo un delay, para socket On
         TimerTask task = new TimerTask() {
@@ -498,6 +506,27 @@ public class MainActivity extends CordovaActivity
         };
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(disconnect, new IntentFilter("disconnect"));
+
+        // f7 -> App(Java) : LoadProcessUrl
+        BroadcastReceiver LoadProcessUrl = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+
+                try {
+                    self.dataFW = new JSONObject(data);
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", f7 -> App(Java) : LoadProcessUrl"
+                    );
+                    self.appView.loadUrl(self.dataFW.getString("url"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(LoadProcessUrl, new IntentFilter("LoadProcessUrl"));                
     }
 
     public socketConection getSocket() {
@@ -556,6 +585,8 @@ public class MainActivity extends CordovaActivity
 
         this.URL = url;
 
+        MainActivity self = this;
+
         LOG.d(TAG, nameofCurrMethod + ", url " + this.URL );
 
         if(this.startFinishLoadPag == false){
@@ -569,17 +600,53 @@ public class MainActivity extends CordovaActivity
         }else {
             if(url.indexOf("file") != -1){
                 //finalizo la carga url local
-                if (this.PageStatus == "finalizo la carga remote"){//<-vengo de remote
-                    countLocal++;
-                    this.PageStatus = "finalizo la carga local";
-                }
+
             }else{
                 //finalizo la carga url remota
-                this.URLList.add(url);
-                if(this.PageStatus == "finalizo la carga local"){//<-vengo de local
-                    countRemote++;
-                    this.PageStatus = "finalizo la carga remote";
-                }
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //creo un delay, para para lanzar la captura
+                        TimerTask task = new TimerTask() {
+                            public void run() {
+                                cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
+                                LOG.d(TAG, nameofCurrMethod +
+                                        ", Screenshot -> saveScreenshot"
+                                );
+                                File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
+                                File file = new File(folder, "opraTestScreenShot.jpg");
+                                FileInputStream streamIn = null;
+                                try {
+                                    streamIn = new FileInputStream(file);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
+                                    streamIn.close();
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", Screenshot -> saveScreenshot, Bitmap " + bitmap
+                                    );
+
+                                } catch (FileNotFoundException e) {
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
+                                    );
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", Screenshot -> saveScreenshot, IOException"
+                                    );
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        };
+                        long delay = 2000L;
+                        Timer timer = new Timer("Screenshot");
+                        timer.schedule(task, delay);
+
+                        task = null;
+                        timer = null;
+                    }
+                });
+
             }
         }
     }
