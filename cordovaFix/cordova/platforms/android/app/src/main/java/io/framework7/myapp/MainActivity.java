@@ -151,7 +151,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver configProcessUrlSocket = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : configProcessUrlSocket"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -161,7 +163,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver configProcessUrlSms = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : configProcessUrlSms"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -171,7 +175,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver getClient = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : getClient"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -181,7 +187,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver getDisconnect = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : getDisconnect"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -247,7 +255,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver typingMessage = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : typingMessage"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -257,7 +267,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver offTypingMessage = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : offTypingMessage"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -267,7 +279,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver message = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : message"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
@@ -277,7 +291,9 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver init = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : init"
+                );
             }
         };
         LocalBroadcastManager.getInstance(this)
