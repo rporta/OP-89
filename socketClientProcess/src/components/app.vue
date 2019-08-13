@@ -51,6 +51,7 @@
               historyListaDeEventos: [],
               loadListaDeEventosJson: [],
               loadArrayListaDeEventosJson: [],
+              captura: "static/testCapture/testCapture.jpg"
             };
           },
           // App routes

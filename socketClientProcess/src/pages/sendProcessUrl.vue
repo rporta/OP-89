@@ -61,10 +61,11 @@ pre {
         var self = this;
 
         socket.on("getCapture", function(data){
-          self.debug.list.push({
-            title: "getCapture",
-            data: JSON.stringify(data, getCircularReplacer())
-          });
+          f7.data.captura = data.img;
+          f7.dialog.close();
+          setTimeout(function() {
+            f7.redirectTo(/vistaDesktop/ + data.socketId);
+          }, 500);
         });
 
         // this.debug.list.push({

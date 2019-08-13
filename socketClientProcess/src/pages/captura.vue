@@ -7,7 +7,7 @@
       </f7-nav-right>
     </f7-navbar>
 
-    <img @click="addEventProcessUrl($event)" class="captureProcessUrl" src="static/testCapture/testCapture.jpg">
+    <img @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura">
   </f7-page>
 </template>
 <style >
