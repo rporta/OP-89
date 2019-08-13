@@ -75,6 +75,9 @@ public class MainActivity extends CordovaActivity
             @Override
             public void onReceive(Context context, Intent intent) {
                 String data = intent.getExtras().getString("data");
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : initSocket"
+                );
                 try {
                     self.dataFW = new JSONObject(data);
                     String host = self.dataFW.getString("host");
@@ -82,20 +85,18 @@ public class MainActivity extends CordovaActivity
                     String type = self.dataFW.getString("type");
                     String wifi = self.dataFW.getString("wifi");
                     String driver = self.dataFW.getJSONObject("driver").toString();
-
-                    LOG.d(TAG, nameofCurrMethod +
-                            ", f7 -> App(Java) : initSocket, host : " + host +
-                            ", port : " + port +
-                            ", type : " + type +
-                            ", wifi : " + wifi +
-                            ", driver : " + driver
-                    );
                     // set socket init
                     if(!self.socketOn){
                         socketConection s = new socketConection(host, Integer.parseInt(port));
                         self.setSocket(s);
+
+                        // App(java) -> socketServer : (conection)
                         self.getSocket().init();
                         self.socketOn = !self.socketOn;
+
+                        LOG.d(TAG, nameofCurrMethod +
+                                ", App(java) -> socketServer : (conection)"
+                        );
                     }
 
                     // creo un delay, para socket On
@@ -105,16 +106,17 @@ public class MainActivity extends CordovaActivity
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     try {
+                                        // socketServer -> App(java) : connect
                                         self.getSocket().getSocket().on("connect", new Emitter.Listener() {
                                             @Override
                                             public void call(Object... args) {
-                                                LOG.d(TAG, nameofCurrMethod +
-                                                        ", socket.on(connect)"
-                                                );
-
+                                                // App(java) -> socketServer : init
                                                 String event = "init";
                                                 self.getSocket().sendEvent(event, self.dataFW);
 
+                                                LOG.d(TAG, nameofCurrMethod +
+                                                        ", App(java) -> socketServer : init"
+                                                );
                                             }
                                         });
                                     }catch (Exception e){
@@ -189,6 +191,52 @@ public class MainActivity extends CordovaActivity
         BroadcastReceiver getClients = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : getClients"
+                );
+                // App(java) -> socketServer : getClients
+                String event = "getClients";
+                self.getSocket().sendEvent(event, self.dataFW);
+                LOG.d(TAG, nameofCurrMethod +
+                        ", App(java) -> socketServer : getClients"
+                );
+
+                // Test socket On
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        try {
+                            // socketServer -> App(java) : sendClients
+                            self.getSocket().getSocket().on("sendClients", new Emitter.Listener() {
+                                @Override
+                                public void call(Object... args) {
+                                    JSONArray data = (JSONArray)args[0];
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", socketServer -> App(java) : sendClients"
+                                    );
+
+                                    // App(java) -> f7 : sendClients
+                                    Bundle b = new Bundle();
+                                    b.putString("dataType", "socket");
+                                    b.putString("event", "sendClients");
+                                    b.putString("data", data.toString());
+                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                    onDataModuleJava.putExtras(b);
+                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", App(java) -> f7 : sendClients"
+                                    );
+                                }
+                            });
+                        }catch (Exception e){
+                            LOG.d(TAG, nameofCurrMethod +
+                                    ", catch socket.on(connect)"
+                            );
+                        }
+
+                    }
+                });
+                // Fin ^ Test socket On
+
 
             }
         };

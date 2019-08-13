@@ -107,13 +107,13 @@
         // Set socket on
         var self = this;
 
-        socket.on('disconnect', function (){
+        this.$f7.on('disconnect', function (){
           self.Wap = false;
           self.Process = false;
           self.clients = [];           
         });
 
-        socket.on('sendClients', function(data) {
+        this.$f7.on('sendClients', function(data) {
           for(let d in data){
             var currentData = data[d];
             if(socket.id == currentData.id){
@@ -150,11 +150,8 @@
           self.clients = data;
 
         });
-
         setInterval(function() {
-          socket.emit("getClients", {
-
-          });          
+          window.broadcaster.fireNativeEvent("getClients", {});
         }, 1000);
 
       }); 

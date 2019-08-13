@@ -55,7 +55,7 @@
         socket.emit("getClient", {
           socketId: self.socketId
         });
-        socket.on("sendClient", function(client){
+        this.$f7.on("sendClient", function(client){
           self.infoClient = client;
         });
       }); 

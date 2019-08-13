@@ -105,7 +105,7 @@
         // Set socket on
         var self = this;
 
-        socket.on("sendConfigProcessUrlSocket", function(data) {
+        this.$f7.on("sendConfigProcessUrlSocket", function(data) {
           console.log("sendConfigProcessUrlSocket", data);
           if(data.type == config.type){
             self.redirectTo('/sendProcessUrl/' + data.socketId);

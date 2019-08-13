@@ -230,10 +230,7 @@
         });
         Dom7(this.messagebar.$textareaEl).keydown(this.keymonitor);
 
-        // Set socket on
-        var self = this;
-
-        socket.on('connect', function() {
+        this.$f7.on('connect', function() {
           var initData = {
             id: socket.id,
             type: f7.data.config.type,
@@ -242,15 +239,15 @@
           };
           socket.emit("init", initData);
         });
-        socket.on("sendTypingMessage", function(data){
+        this.$f7.on("sendTypingMessage", function(data){
           self.responseInProgress = true;
           self.typingMessage = data;      
         });
-        socket.on("sendOffTypingMessage", function(data){
+        this.$f7.on("sendOffTypingMessage", function(data){
           self.responseInProgress = false;
           self.typingMessage = null;      
         });        
-        socket.on("sendMessage", function(data){
+        this.$f7.on("sendMessage", function(data){
           var tempTypingMessage = self.typingMessage;
           self.typingMessage = null;
           self.responseInProgress = false;        

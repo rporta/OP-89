@@ -109,8 +109,8 @@
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
-          //f7 -> App(Java) : event "initSocket"
 
+          // f7 -> App(Java) : event "initSocket"
           var sendData = {
             data : JSON.stringify({
               host: f7.data.config.api.host, 
