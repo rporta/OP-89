@@ -270,6 +270,8 @@ server.listen(port, () => {
 			io.sockets.connected[data.socketId].emit("getCapture", data);
 		});
 		socket.on("sendListEvent", function(data) {
+			console.log("sendListEvent");
+			console.log(data);
 			if (typeof data == "string") {
 				data = JSON.parse(data);
 			}

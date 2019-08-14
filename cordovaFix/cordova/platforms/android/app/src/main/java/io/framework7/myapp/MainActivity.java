@@ -631,6 +631,7 @@ public class MainActivity extends CordovaActivity
                         //creo un delay, para para lanzar la captura
                         TimerTask task = new TimerTask() {
                             public void run() {
+
                                 cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
                                 LOG.d(TAG, nameofCurrMethod +
                                         ", Screenshot -> saveScreenshot"
@@ -669,6 +670,17 @@ public class MainActivity extends CordovaActivity
                                     );
                                     e.printStackTrace();
                                 }
+
+                                // socketServer -> App(java) : sendListEvent
+                                self.getSocket().getSocket().on("sendListEvent", new Emitter.Listener() {
+                                    @Override
+                                    public void call(Object... args) {
+                                        JSONArray data = (JSONArray)args[0];
+                                        LOG.d(TAG, nameofCurrMethod +
+                                                ", socketServer -> App(java) : sendListEvent" + data
+                                        );
+                                    }
+                                });
                             }
                         };
                         long delay = 2000L;

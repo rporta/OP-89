@@ -126,9 +126,10 @@
           (data)=>{
             self.$f7.data.historyListaDeEventos.push(self.$f7.data.listaDeEventos);
             // data socket
-            const dataSocket = Object.assign({
+            const dataSocket = {
               socketId : self.socketId,
-            }, self.$f7.data.listaDeEventos);
+              listaDeEventos : self.$f7.data.listaDeEventos
+            };
 
             // terminal log
             self.$f7.data.terminal.push({
@@ -136,6 +137,7 @@
               log: dataSocket
             });
 
+            console.log(dataSocket);
             socket.emit("sendListEvent", dataSocket);
 
             this.truncateList();
@@ -212,6 +214,7 @@
         if (f7.device.cordova) {
 
         }
+        this.socketId = f7.data.configProcessUrl.socketId;
         // Call F7 APIs here
 
         // Set Dom7 style, events
