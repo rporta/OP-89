@@ -5,7 +5,7 @@
       <f7-view url="/rightPanel/">
       </f7-view>
     </f7-panel>  
-    <f7-panel left >
+    <f7-panel left v-if="leftPanelShow">
       <f7-view url="/leftPanel/">
       </f7-view>
     </f7-panel>  
@@ -32,6 +32,7 @@
     data() {
       return {
         // Framework7 Parameters
+        leftPanelShow: null,
         f7params: {
           id: 'io.framework7.myapp', // App bundle ID
           name: 'socketClient' + config.type, // App name
@@ -46,7 +47,6 @@
             return {
               config : config,
               configDefault : configDefault,
-              processUrl: null,
               listaDeEventos: [],
               historyListaDeEventos: [],
               loadListaDeEventosJson: [],
@@ -93,7 +93,7 @@
     },
     mounted() {
       this.$f7ready((f7) => {
-
+        this.leftPanelShow = f7.data.configProcessUrl
         //add method
         f7.redirectTo = (path) => {
           f7.view.main.router.navigate(path);

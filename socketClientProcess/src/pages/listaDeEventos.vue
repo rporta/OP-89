@@ -40,7 +40,6 @@
   export default {
     data() {
       return {
-        socketId: this.pSocketId,
         borrar: false,     
         isModificarPosicion: false,         
       };
@@ -126,12 +125,18 @@
         this.$f7.dialog.confirm(null, "Desea enviar lista de procesamiento?", 
           (data)=>{
             self.$f7.data.historyListaDeEventos.push(self.$f7.data.listaDeEventos);
+            // data socket
+            const dataSocket = Object.assign({
+              socketId : self.socketId,
+            }, self.$f7.data.listaDeEventos);
 
             // terminal log
             self.$f7.data.terminal.push({
               date: self.$f7.getDateLog(),
-              log: self.$f7.data.listaDeEventos
+              log: dataSocket
             });
+
+            // socket.emit("sendListEvent", dataSocket);
 
             this.truncateList();
           }, (data)=>{

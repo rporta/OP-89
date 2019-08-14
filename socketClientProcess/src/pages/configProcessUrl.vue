@@ -82,6 +82,10 @@
           socketId : self.socketId,
         }, getDataForm);
 
+        this.$f7.data.configProcessUrl = dataSocket;
+
+        app.$children[0].leftPanelShow = true;
+        
         // terminal log
         self.$f7.data.terminal.push({
           date: self.$f7.getDateLog(),
@@ -101,6 +105,10 @@
         var dataSocket = Object.assign({
           socketId : self.socketId,
         }, getDataForm);
+
+        this.$f7.data.configProcessUrl = dataSocket;
+
+        app.$children[0].leftPanelShow = true;
 
         // terminal log
         self.$f7.data.terminal.push({
