@@ -40,7 +40,7 @@
           // App root data
           data: function () {
             return {
-              initData: null
+              initData: null,
               config : config,
               configDefault : configDefault,
               processUrl: null,
