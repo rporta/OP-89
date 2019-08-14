@@ -6,7 +6,9 @@
       </f7-nav-right>
     </f7-navbar>
     <f7-block text-color="green">
-      <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{test}}</pre>
+      <div v-for="(t, i) in $f7.data.terminal">
+        <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{i + 1}} : {{JSON.stringify(t)}}</pre>
+      </div>
     </f7-block>    
   </f7-page>
 </template>
@@ -25,7 +27,7 @@ pre {
   export default {
     data() {
       return {
-        test: this.$f7.data.config     
+
       };
     },
     props:{

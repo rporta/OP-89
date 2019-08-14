@@ -114,7 +114,7 @@
           const listaDeEventosStringJSON = JSON.parse(listaDeEventosString); 
 
           var self = this;
-          this.truncateList()
+          this.truncateList();
           setTimeout(function() {
             self.$f7.data.listaDeEventos = newDataJSON;
           }, 1);
@@ -122,9 +122,18 @@
         }
       },
       sendListEvent(){
+        var self = this;
         this.$f7.dialog.confirm(null, "Desea enviar lista de procesamiento?", 
           (data)=>{
-            // ok ..
+            self.$f7.data.historyListaDeEventos.push(self.$f7.data.listaDeEventos);
+
+            // terminal log
+            self.$f7.data.terminal.push({
+              date: self.$f7.getDateLog(),
+              log: self.$f7.data.listaDeEventos
+            });
+
+            this.truncateList();
           }, (data)=>{
             // cancel ..
 
@@ -196,7 +205,7 @@
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
-          
+
         }
         // Call F7 APIs here
 

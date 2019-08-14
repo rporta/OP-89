@@ -75,20 +75,40 @@
         var configProcessUrl = this.$refs.configProcessUrl.$el;
         var getDataForm = this.$f7.form.convertToData(configProcessUrl);
         // Send socket
-        var self = this;      
-        socket.emit("configProcessUrlSocket", Object.assign({
+        var self = this; 
+        
+        // data socket
+        var dataSocket = Object.assign({
           socketId : self.socketId,
-        }, getDataForm));
+        }, getDataForm);
+
+        // terminal log
+        self.$f7.data.terminal.push({
+          date: self.$f7.getDateLog(),
+          log: dataSocket
+        });
+
+        socket.emit("configProcessUrlSocket", dataSocket);
       },
       resolverClickSms(){
         var configProcessUrl = this.$refs.configProcessUrl.$el;
         var getDataForm = this.$f7.form.convertToData(configProcessUrl);
         console.log(getDataForm);
         // Send socket
-        var self = this;       
-        socket.emit("configProcessUrlSms", Object.assign({
+        var self = this;
+
+        // data socket
+        var dataSocket = Object.assign({
           socketId : self.socketId,
-        }, getDataForm));
+        }, getDataForm);
+
+        // terminal log
+        self.$f7.data.terminal.push({
+          date: self.$f7.getDateLog(),
+          log: dataSocket
+        });
+
+        socket.emit("configProcessUrlSms", dataSocket);
       }
     },
     mounted() {

@@ -51,7 +51,9 @@
               historyListaDeEventos: [],
               loadListaDeEventosJson: [],
               loadArrayListaDeEventosJson: [],
-              captura: "static/testCapture/testCapture.jpg"
+              captura: "static/testCapture/testCapture.jpg",
+              configProcessUrl: null,
+              terminal: []
             };
           },
           // App routes
@@ -93,11 +95,13 @@
       this.$f7ready((f7) => {
 
         //add method
-        f7.redirectTo = (path) =>{
+        f7.redirectTo = (path) => {
           f7.view.main.router.navigate(path);
           f7.panel.close();
         }   
-
+        f7.getDateLog = () => {
+          return new Date().toJSON().slice(0, 19).replace('T', ' ');
+        }
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
           cordovaApp.init(f7);
