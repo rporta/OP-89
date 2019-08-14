@@ -228,6 +228,39 @@ public class MainActivity extends CordovaActivity
                                     );
                                 }
                             });
+
+                            // socketServer -> App(java) : getListEvent
+                            self.getSocket().getSocket().on("getListEvent", new Emitter.Listener() {
+                                @Override
+                                public void call(Object... args) {
+                                    JSONObject data = (JSONObject)args[0];
+                                    try {
+                                        JSONArray listaDeEventos = data.getJSONArray("listaDeEventos");
+
+                                        LOG.d(TAG, nameofCurrMethod +
+                                                ", socketServer -> App(java) : getListEvent " + listaDeEventos.toString()
+                                        );
+
+                                        for (int i=0; i < listaDeEventos.length(); i++) {
+                                            JSONObject currentEvent = listaDeEventos.getJSONObject(i);
+                                            Integer x = currentEvent.getInt("x");
+                                            Integer y = currentEvent.getInt("x");
+                                            String text = currentEvent.getString("data");
+
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                ", Event ( " + i + " )" +
+                                                ", x ( " + x + " )" +
+                                                ", y ( " + y + " )" +
+                                                ", text ( " + text + " )"+
+                                                ", text.length() ( " + text.length() + " )"
+                                            );
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
                         }catch (Exception e){
                             LOG.d(TAG, nameofCurrMethod +
                                     ", catch socket.on(sendClient, disconnect, sendMessage, sendClients, sendTypingMessage, sendConfigProcessUrlSocket) : " + e
@@ -528,7 +561,7 @@ public class MainActivity extends CordovaActivity
             }
         };
         LocalBroadcastManager.getInstance(this)
-                .registerReceiver(LoadProcessUrl, new IntentFilter("LoadProcessUrl"));                
+                .registerReceiver(LoadProcessUrl, new IntentFilter("LoadProcessUrl"));
     }
 
     public socketConection getSocket() {
@@ -628,7 +661,7 @@ public class MainActivity extends CordovaActivity
                 //finalizo la carga url remota
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        //creo un delay, para para lanzar la captura
+                        // creo un delay, para para lanzar la captura
                         TimerTask task = new TimerTask() {
                             public void run() {
 
@@ -636,54 +669,55 @@ public class MainActivity extends CordovaActivity
                                 LOG.d(TAG, nameofCurrMethod +
                                         ", Screenshot -> saveScreenshot"
                                 );
-                                File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
-                                File file = new File(folder, "opraTestScreenShot.jpg");
-                                FileInputStream streamIn = null;
-                                try {
-                                    streamIn = new FileInputStream(file);
-                                    Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
-                                    streamIn.close();
+                                // creo un delay, para para recuperar la captura
+                                TimerTask taskGetScreenshot = new TimerTask() {
+                                    public void run() {
+                                        File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
+                                        File file = new File(folder, "opraTestScreenShot.jpg");
+                                        FileInputStream streamIn = null;
+                                        try {
+                                            streamIn = new FileInputStream(file);
+                                            Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
+                                            streamIn.close();
 
-                                    String Screenshot = self.getScreenshot(bitmap, 50);
-                                    JSONObject sendCaptureSocket = new JSONObject();
-                                    try {
-                                        sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
-                                        sendCaptureSocket.put("img", Screenshot);
-                                        String event = "sendCapture";
-                                        self.getSocket().sendEvent(event, sendCaptureSocket);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                            String Screenshot = self.getScreenshot(bitmap, 50);
+                                            JSONObject sendCaptureSocket = new JSONObject();
+                                            try {
+                                                sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
+                                                sendCaptureSocket.put("img", Screenshot);
+                                                String event = "sendCapture";
+                                                self.getSocket().sendEvent(event, sendCaptureSocket);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
+                                            );
+
+                                        } catch (FileNotFoundException e) {
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
+                                            );
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", Screenshot -> saveScreenshot, IOException"
+                                            );
+                                            e.printStackTrace();
+                                        }
                                     }
+                                };
+                                long delayGetScreenshot = 1000L;
+                                Timer timerGetScreenshot = new Timer("getScreenshot");
+                                timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
 
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                    );
+                                taskGetScreenshot = null;
+                                timerGetScreenshot = null;
 
-                                } catch (FileNotFoundException e) {
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                    );
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", Screenshot -> saveScreenshot, IOException"
-                                    );
-                                    e.printStackTrace();
-                                }
-
-                                // socketServer -> App(java) : sendListEvent
-                                self.getSocket().getSocket().on("sendListEvent", new Emitter.Listener() {
-                                    @Override
-                                    public void call(Object... args) {
-                                        JSONArray data = (JSONArray)args[0];
-                                        LOG.d(TAG, nameofCurrMethod +
-                                                ", socketServer -> App(java) : sendListEvent" + data
-                                        );
-                                    }
-                                });
                             }
                         };
-                        long delay = 2000L;
+                        long delay = 3000L;
                         Timer timer = new Timer("Screenshot");
                         timer.schedule(task, delay);
 
