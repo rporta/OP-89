@@ -269,6 +269,17 @@ server.listen(port, () => {
 			console.log(data);
 			io.sockets.connected[data.socketId].emit("getCapture", data);
 		});
+		socket.on("sendListEvent", function(data) {
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
+			}
+			data.on = "sendListEvent";
+			console.log(data);
+			io.sockets.connected[data.socketId].emit("getListEvent", data);
+		});
 	});
 });
 

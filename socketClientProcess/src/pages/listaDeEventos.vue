@@ -136,7 +136,7 @@
               log: dataSocket
             });
 
-            // socket.emit("sendListEvent", dataSocket);
+            socket.emit("sendListEvent", dataSocket);
 
             this.truncateList();
           }, (data)=>{
