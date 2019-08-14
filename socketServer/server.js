@@ -56,14 +56,27 @@ server.listen(port, () => {
 			}
 
 			data.on = "getClients";
-			console.log(data);
+
+
 			// set data getClients
-			var getClients = clients.filter(onlyUnique);
+
+
+			var getClients = [];
+
+			for (let c in clients) {
+				var currentClient = clients[c];
+				if (currentClient.id != socket.id) {
+					getClients.push(currentClient);
+				}
+			}
+
+
+
 			// sendClients, a mi unicamente
 			io.sockets.connected[socket.id].emit("sendClients", getClients);
 
 			data["sendClients"] = getClients;
-			console.log(data);
+			// console.log(data);
 
 		});
 		socket.on("getClient", function(data) {
@@ -254,6 +267,7 @@ server.listen(port, () => {
 			}
 			data.on = "sendCapture";
 			console.log(data);
+			io.sockets.connected[data.socketId].emit("getCapture", data);
 		});
 	});
 });
