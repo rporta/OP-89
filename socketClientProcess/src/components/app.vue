@@ -44,6 +44,7 @@
           // App root data
           data: function () {
             return {
+              initData : null,
               config : config,
               configDefault : configDefault,
               processUrl: null,
@@ -112,13 +113,19 @@
         var self = this;
 
         socket.on('connect', function() {
-          var initData = {
-            id: socket.id,
-            type: f7.data.config.type,
-            wifi: "on",
-            driver:  self.getInfoDevice()
-          };
-          socket.emit("init", initData);
+
+          new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}}).then(
+            (ip) => {
+              var initData = {
+                id: socket.id,
+                type: f7.data.config.type,
+                wifi: "on",
+                ip: ip,
+                driver:  self.getInfoDevice()
+              };
+              f7.data.initData = initData;
+              socket.emit("init", initData);
+            });
         });
 
 
