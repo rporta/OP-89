@@ -40,7 +40,6 @@
           // App root data
           data: function () {
             return {
-              initData: null,
               config : config,
               configDefault : configDefault,
               processUrl: null,
@@ -61,7 +60,6 @@
               },
               img:null,
               appJava:null
-
             };
           },
           // App routes
@@ -113,23 +111,18 @@
         if (f7.device.cordova) {
           cordovaApp.init(f7);
 
-          new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}}).then(
-            (ip) => {
-              var sendData = {
-                data : JSON.stringify({
-                  host: f7.data.config.api.host, 
-                  port: f7.data.config.api.port,
-                  type: f7.data.config.type,
-                  wifi: "on",
-                  ip: ip,
-                  driver: self.getInfoDevice()
-                })
-              };
-              f7.data.initData = initData;
-              window.broadcaster.fireNativeEvent( 
-                "initSocket", sendData);
-            });
-
+          // f7 -> App(Java) : event "initSocket"
+          var sendData = {
+            data : JSON.stringify({
+              host: f7.data.config.api.host, 
+              port: f7.data.config.api.port,
+              type: f7.data.config.type,
+              wifi: "on",
+              driver: self.getInfoDevice()
+            })
+          };
+          window.broadcaster.fireNativeEvent( 
+            "initSocket", sendData);
 
         }
         // Set Dom7 style, events

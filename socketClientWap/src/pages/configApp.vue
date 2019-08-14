@@ -6,16 +6,15 @@
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
-
     <f7-block-title>General : </f7-block-title>
     <f7-list>
-      <f7-list-item v-if="typeof v == 'string' " :title="k + ' : ' + v" v-for="(v, k) in $f7.data.initData">
+      <f7-list-item :title="'Id : # ' + socketId">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
-      <f7-list-item v-if="typeof v == 'string' || typeof v == 'boolean' " :title="k + ' : ' + v" v-for="(v, k) in $f7.data.initData.driver">
+      <f7-list-item :title="'Type : ' + $f7.data.config.type">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
-    </f7-list> 
+    </f7-list>
     <f7-block-title>Config socket</f7-block-title>
     <f7-list no-hairlines-md form form-store-data ref="configSocket">
       <f7-list-input
