@@ -426,7 +426,11 @@ public class MainActivity extends CordovaActivity
                                     LOG.d(TAG, nameofCurrMethod +
                                             ", socketServer -> App(java) : getReiniciarF7"
                                     );
-                                    loadUrl((String) URLList.get(0));
+                                    Intent intent = new Intent(self, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    self.startActivity(intent);
+                                    Runtime.getRuntime().exit(0);
+//                                    loadUrl((String) URLList.get(0));
                                 }
                             });
 
