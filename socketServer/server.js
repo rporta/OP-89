@@ -114,13 +114,18 @@ server.listen(port, () => {
 			}
 			data.on = "typingMessage";
 			console.log(data);
-			// sendTypingMessage, al resto menos current
-			for (let id in io.sockets.connected) {
-				if (id !== socket.id) {
-					io.sockets.connected[id].emit("sendTypingMessage", data);
 
-					data["sendTypingMessage"] = data;
-					console.log(data);
+			if (data.socketId) {
+				io.sockets.connected[data.socketId].emit("sendOffTypingMessage", data);
+			} else {
+				// sendTypingMessage, al resto menos current
+				for (let id in io.sockets.connected) {
+					if (id !== socket.id) {
+						io.sockets.connected[id].emit("sendTypingMessage", data);
+
+						data["sendTypingMessage"] = data;
+						console.log(data);
+					}
 				}
 			}
 		});
@@ -153,12 +158,17 @@ server.listen(port, () => {
 
 			data.on = "offTypingMessage";
 			console.log(data);
-			// sendOffTypingMessage, al resto menos current
-			for (let id in io.sockets.connected) {
-				if (id !== socket.id) {
-					io.sockets.connected[id].emit("sendOffTypingMessage", data);
-					data["sendOffTypingMessage"] = data;
-					console.log(data);
+
+			if (data.socketId) {
+				io.sockets.connected[data.socketId].emit("sendOffTypingMessage", data);
+			} else {
+				// sendOffTypingMessage, al resto menos current
+				for (let id in io.sockets.connected) {
+					if (id !== socket.id) {
+						io.sockets.connected[id].emit("sendOffTypingMessage", data);
+						data["sendOffTypingMessage"] = data;
+						console.log(data);
+					}
 				}
 			}
 		});
@@ -171,12 +181,16 @@ server.listen(port, () => {
 			}
 			data.on = "message";
 			console.log(data);
-			// sendMessage, al resto menos current
-			for (let id in io.sockets.connected) {
-				if (id !== socket.id) {
-					io.sockets.connected[id].emit("sendMessage", data);
-					data["sendMessage"] = data;
-					console.log(data);
+			if (data.socketId) {
+				io.sockets.connected[data.socketId].emit("sendMessage", data);
+			} else {
+				// sendMessage, al resto menos current
+				for (let id in io.sockets.connected) {
+					if (id !== socket.id) {
+						io.sockets.connected[id].emit("sendMessage", data);
+						data["sendMessage"] = data;
+						console.log(data);
+					}
 				}
 			}
 		});
