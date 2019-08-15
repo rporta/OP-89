@@ -417,6 +417,21 @@ public class MainActivity extends CordovaActivity
                                     }
                                 }
                             });
+
+                            // socketServer -> App(java) : getReiniciarF7
+                            self.getSocket().getSocket().on("getReiniciarF7", new Emitter.Listener() {
+                                @Override
+                                public void call(Object... args) {
+                                    JSONObject data = (JSONObject)args[0];
+                                    LOG.d(TAG, nameofCurrMethod +
+                                            ", socketServer -> App(java) : getReiniciarF7"
+                                    );
+                                    loadUrl((String) URLList.get(0));
+                                }
+                            });
+
+
+
                         }catch (Exception e){
                             LOG.d(TAG, nameofCurrMethod +
                                     ", catch socket.on(sendClient, disconnect, sendMessage, sendClients, sendTypingMessage, sendConfigProcessUrlSocket) : " + e

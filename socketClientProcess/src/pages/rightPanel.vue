@@ -61,7 +61,10 @@
                   </f7-list-item>
                   <f7-list-item @click="$f7.redirectTo('/configProcessUrl/' + client.id)" link="#" title="Iniciar proceso URL">
                     <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
-                  </f7-list-item> 
+                  </f7-list-item>
+                  <f7-list-item @click="reiniciarF7(client.id)" link="#" title="Reiniciar f7">
+                    <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+                  </f7-list-item>                  
                 </f7-accordion-content>
               </f7-list-item>                        
             </f7-accordion-content>
@@ -94,7 +97,13 @@
         socket.emit("getDisconnect", {
           socketId : id
         });
-      }
+      },
+      reiniciarF7(id){
+        console.log("reiniciarF7", id);
+        socket.emit("reiniciarF7", {
+          socketId : id
+        });
+      },      
     },
     mounted() {
       this.$f7ready((f7) => {
