@@ -7,7 +7,7 @@
       </f7-nav-right>
     </f7-navbar>
 
-    <img @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura">
+    <img :width="capture.width" :height="capture.height"  @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura">
   </f7-page>
 </template>
 <style >
@@ -15,8 +15,6 @@
   position: relative;  
   display: block;
   top: calc(50% - 213px) !important;
-  width: 240px;
-  height: 426px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -27,7 +25,11 @@
   export default {
     data() {
       return {
-        socketId: this.pSocketId        
+        socketId: this.pSocketId,
+        capture: {
+          width: 240,
+          height: 426
+        }      
       };
     },
     methods:{
@@ -53,8 +55,8 @@
 
         // calculate resolution event 1920x1080   | 16:9
 
-        var calculeX = x  * 1080 / 240;
-        var calculeY = y * 1920 / 426;
+        var calculeX = x  * 1080 / this.capture.width;
+        var calculeY = y * 1920 / this.capture.height;
 
         // calculate round resolution event
 
@@ -96,7 +98,7 @@
       this.$f7ready((f7) => {
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
-          
+
         }
       });
     }
