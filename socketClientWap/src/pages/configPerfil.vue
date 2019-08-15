@@ -37,8 +37,8 @@
     <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
   </f7-list-input>      
 </f7-list>
-<f7-block-title>Load Perfil </f7-block-title>
-<f7-block>
+<f7-block-title v-if="isLoadPerfil">Load Perfil </f7-block-title>
+<f7-block v-if="isLoadPerfil">
   <f7-row>
     <f7-col>
       <f7-button fill color="green">by Google</f7-button>
@@ -65,7 +65,7 @@
   export default {
     data() {
       return {
-
+        isLoadPerfil : false
       };
     },
     methods: {

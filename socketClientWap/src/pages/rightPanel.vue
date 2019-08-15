@@ -8,7 +8,7 @@
       <f7-list-item @click="$f7.redirectTo('/configPerfil/')" link="#" title="Configuracion de perfil" >
         <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
       </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/configApp/')" link="#" title="Configuracion App">
+      <f7-list-item v-if="isConfigApp" @click="$f7.redirectTo('/configApp/')" link="#" title="Configuracion App">
         <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
       </f7-list-item>
       <f7-list-item  accordion-item title="Lista de clientes process">
@@ -17,13 +17,13 @@
           <f7-list-item accordion-item v-show="client.type == 'Process' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id + 'Process'">
             <f7-icon text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
-              <f7-list-item link="#" @click="$f7.redirectTo('/infoClient/' + client.id)" title="Ver informacion">
+              <f7-list-item v-if="isInfoClient" link="#" @click="$f7.redirectTo('/infoClient/' + client.id)" title="Ver informacion">
                 <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
               </f7-list-item>
-              <f7-list-item @click="$f7.redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
+              <f7-list-item v-if="isConfigClient" @click="$f7.redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
                 <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
-              <f7-list-item @click="disconnectSocket(client.id)" link="#" title="Desconectar">
+              <f7-list-item v-if="isDisconnectSocket" @click="disconnectSocket(client.id)" link="#" title="Desconectar">
                 <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
               <f7-list-item  accordion-item link="#" title="Acciones">
@@ -44,13 +44,13 @@
           <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id  + 'Wap'">
             <f7-icon text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
-              <f7-list-item link="#" @click="$f7.redirectTo('/infoClient/'+ client.id )" title="Ver informacion">
+              <f7-list-item v-if="isInfoClient" link="#" @click="$f7.redirectTo('/infoClient/'+ client.id )" title="Ver informacion">
                 <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
               </f7-list-item>
-              <f7-list-item @click="$f7.redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
+              <f7-list-item v-if="isConfigClient" @click="$f7.redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
                 <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
-              <f7-list-item @click="disconnectSocket(client.id)" link="#" title="Desconectar">
+              <f7-list-item v-if="isDisconnectSocket" @click="disconnectSocket(client.id)" link="#" title="Desconectar">
                 <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
               <f7-list-item  accordion-item link="#" title="Acciones">
@@ -80,7 +80,11 @@
       return {
         clients: [],
         Process: false,
-        Wap: false
+        Wap: false,
+        isInfoClient : false,
+        isConfigClient : false,
+        isDisconnectSocket : false,
+        isConfigApp: false
       }
     },
     methods: {

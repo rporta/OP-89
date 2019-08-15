@@ -7,7 +7,7 @@
       </f7-nav-right>
     </f7-navbar>
     <!-- Page content-->
-    <f7-block strong>
+    <f7-block v-if="isPopupSocketClient" strong>
       <f7-row>
         <f7-col width="100">
           <f7-button fill raised popup-open="#my-popup">Socket Client Open</f7-button>
@@ -22,7 +22,7 @@
   export default {
     data() {
       return {
-
+        isPopupSocketClient : false
       };
     },
     methods: {

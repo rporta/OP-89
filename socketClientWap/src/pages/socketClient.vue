@@ -160,6 +160,7 @@
           }else{
             // Send socket 
             var sendData = {
+              socketId : socketId,
               data : JSON.stringify(self.$f7.data.config.perfil)
             };
             
@@ -170,7 +171,7 @@
       offKeymonitor(e){
         // Send socket         
         setTimeout(function() {
-          window.broadcaster.fireNativeEvent("offTypingMessage", {});
+          window.broadcaster.fireNativeEvent("offTypingMessage", {socketId : socketId});
         }, this.$f7.data.config.setInterval.offKeymonitor);
       },
       sendMessage() {
@@ -202,6 +203,7 @@
         self.messagesData.push(...messagesToSend);
         // Send socket
         var sendData = {
+          socketId : socketId,
           data : JSON.stringify(messagesToSend)
         };
 

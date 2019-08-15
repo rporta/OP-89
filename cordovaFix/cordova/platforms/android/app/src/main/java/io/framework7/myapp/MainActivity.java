@@ -433,9 +433,6 @@ public class MainActivity extends CordovaActivity
 //                                    loadUrl((String) URLList.get(0));
                                 }
                             });
-
-
-
                         }catch (Exception e){
                             LOG.d(TAG, nameofCurrMethod +
                                     ", catch socket.on(sendClient, disconnect, sendMessage, sendClients, sendTypingMessage, sendConfigProcessUrlSocket) : " + e

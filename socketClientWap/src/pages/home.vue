@@ -7,7 +7,7 @@
       </f7-nav-right>
     </f7-navbar>
     <!-- Page content-->
-    <div v-for="(d, i) in debug.list">
+    <div v-if="isDebug" v-for="(d, i) in debug.list">
       <f7-block-title>{{i}} : {{d.title}}</f7-block-title>
       <f7-block text-color="green">
         <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{d.data}}</pre>
@@ -23,7 +23,8 @@
       return {
         debug: {
           list: []
-        }             
+        },
+        isDebug : false
       };
     },
     methods: {

@@ -24,7 +24,7 @@
         socketId: this.pSocketId,      
         debug: {
           list: []
-        }        
+        }   
       };
     },
     props:{
