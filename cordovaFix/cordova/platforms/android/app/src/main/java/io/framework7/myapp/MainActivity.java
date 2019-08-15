@@ -247,9 +247,15 @@ public class MainActivity extends CordovaActivity
                                             Integer y = currentEvent.getInt("y");
                                             String text = currentEvent.getString("data");
 
-                                            String ParamFocus = "{\"top\":0,\"left\":0,\"right\":" + x + ",\"bottom\":"+ y +"}";
+                                            JSONObject ParamFocus = new JSONObject();
+
+                                            ParamFocus.put("top", y - 50);
+                                            ParamFocus.put("left", x - 50);
+                                            ParamFocus.put("right", x);
+                                            ParamFocus.put("bottom", y);
+
                                             // realizamos toch
-                                            cordovaInterface.pluginManager.exec("Focus", "focus", "", "[" + ParamFocus + "]");
+                                            cordovaInterface.pluginManager.exec("Focus", "focus", "", "[" + ParamFocus.toString() + "]");
 
                                             Integer w = self.appView.getView().getWidth();
                                             Integer h = self.appView.getView().getHeight();
