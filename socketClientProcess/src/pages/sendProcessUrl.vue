@@ -62,8 +62,8 @@ pre {
 
         socket.on("getCapture", function(data){
           f7.data.captura = data.img;
-          f7.dialog.close();
           setTimeout(function() {
+            f7.dialog.close();
             f7.redirectTo(/vistaDesktop/ + data.socketId);
           }, 500);
         });

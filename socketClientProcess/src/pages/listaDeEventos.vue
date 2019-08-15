@@ -139,6 +139,7 @@
 
             console.log(dataSocket);
             socket.emit("sendListEvent", dataSocket);
+            self.$f7.dialog.preloader('Esperando Captura ...');
 
             this.truncateList();
           }, (data)=>{

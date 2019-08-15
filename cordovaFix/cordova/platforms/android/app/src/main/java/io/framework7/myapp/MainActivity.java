@@ -16,7 +16,6 @@
        specific language governing permissions and limitations
        under the License.
  */
-
 package io.framework7.myapp;
 
 import android.content.Context;
@@ -214,7 +213,6 @@ public class MainActivity extends CordovaActivity
                                     LOG.d(TAG, nameofCurrMethod +
                                             ", socketServer -> App(java) : sendConfigProcessUrlSocket"
                                     );
-
                                     // App(java) -> f7 : sendConfigProcessUrlSocket
                                     Bundle b = new Bundle();
                                     b.putString("dataType", "socket");
@@ -222,10 +220,18 @@ public class MainActivity extends CordovaActivity
                                     b.putString("data", data.toString());
                                     final Intent onDataModuleJava = new Intent("onDataModuleJava");
                                     onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : sendConfigProcessUrlSocket"
-                                    );
+                                    if(self.PageStatus == "f7"){
+                                        LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                        LOG.d(TAG, nameofCurrMethod +
+                                                ", App(java) -> f7 : sendConfigProcessUrlSocket"
+                                        );
+                                    }else{
+                                        try {
+                                            self.appView.loadUrl(data.getString("url"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }
                             });
 
@@ -399,10 +405,10 @@ public class MainActivity extends CordovaActivity
                                             }
 
                                             LOG.d(TAG, nameofCurrMethod +
-                                                ", Event ( " + i + " )" +
-                                                ", x ( " + x + " )" +
-                                                ", y ( " + y + " )" +
-                                                ", text ( " + text + " )"
+                                                    ", Event ( " + i + " )" +
+                                                    ", x ( " + x + " )" +
+                                                    ", y ( " + y + " )" +
+                                                    ", text ( " + text + " )"
                                             );
                                         }
 
@@ -801,13 +807,14 @@ public class MainActivity extends CordovaActivity
 
             this.URLList.add(url);
             this.startFinishLoadPag = true;
-            this.PageStatus = "finalizo la carga local";
+            this.PageStatus = "f7";
 
         }else {
             if(url.indexOf("file") != -1){
                 //finalizo la carga url local
-
+                this.PageStatus = "f7";
             }else{
+                this.PageStatus = "remote";
                 //finalizo la carga url remota
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -833,18 +840,20 @@ public class MainActivity extends CordovaActivity
                                             String Screenshot = self.getScreenshot(bitmap, 50);
                                             JSONObject sendCaptureSocket = new JSONObject();
                                             try {
+                                                LOG.d(TAG, nameofCurrMethod +
+                                                        ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
+                                                );
                                                 sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
                                                 sendCaptureSocket.put("img", Screenshot);
                                                 String event = "sendCapture";
+                                                LOG.d(TAG, nameofCurrMethod +
+                                                        ", App(java) -> socketServer : Screenshot "
+                                                );
+
                                                 self.getSocket().sendEvent(event, sendCaptureSocket);
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
-
-                                            LOG.d(TAG, nameofCurrMethod +
-                                                    ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                            );
-
                                         } catch (FileNotFoundException e) {
                                             LOG.d(TAG, nameofCurrMethod +
                                                     ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
@@ -880,4 +889,3 @@ public class MainActivity extends CordovaActivity
         }
     }
 }
-
