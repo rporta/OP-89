@@ -95,28 +95,46 @@
         socket.emit("configProcessUrlSocket", dataSocket);
       },
       resolverClickSms(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        console.log(getDataForm);
-        // Send socket
+
         var self = this;
 
-        // data socket
-        var dataSocket = Object.assign({
-          socketId : self.socketId,
-        }, getDataForm);
+        this.$f7.dialog.prompt("Ingrese un msisdn", "Set data : ", 
+          (msisdn)=>{
+            // ok ..
+            this.$f7.dialog.prompt("Ingrese una marcación", "Set data : ", 
+              (sortCode)=>{
+                // ok ..
+                var configProcessUrl = this.$refs.configProcessUrl.$el;
+                var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+                console.log(getDataForm);
+                // Send socket
+                var self = this;
 
-        this.$f7.data.configProcessUrl = dataSocket;
+                // data socket
+                var dataSocket = Object.assign({
+                  socketId : self.socketId,
+                }, getDataForm);
 
-        app.$children[0].leftPanelShow = true;
+                this.$f7.data.configProcessUrl = dataSocket;
 
-        // terminal log
-        self.$f7.data.terminal.push({
-          date: self.$f7.getDateLog(),
-          log: dataSocket
-        });
+                app.$children[0].leftPanelShow = true;
 
-        socket.emit("configProcessUrlSms", dataSocket);
+                // terminal log
+                self.$f7.data.terminal.push({
+                  date: self.$f7.getDateLog(),
+                  log: dataSocket
+                });
+                socket.emit("configProcessUrlSms", dataSocket);
+              }, (sortCode)=>{
+                // cancel ..
+
+              }, 
+              null);
+          }, (msisdn)=>{
+            // cancel ..
+
+          }, 
+          null);
       }
     },
     mounted() {
