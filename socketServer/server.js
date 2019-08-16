@@ -282,6 +282,19 @@ server.listen(port, () => {
 			console.log(data);
 			io.sockets.connected[data.socketId].emit("getListEvent", data);
 		});
+		socket.on("sendFinishPage", function(data) {
+			console.log("sendFinishPage");
+			console.log(data);
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
+			}
+			data.on = "sendFinishPage";
+			console.log(data);
+			io.sockets.connected[data.socketId].emit("getFinishPage", data);
+		});
 		socket.on("reiniciarF7", function(data) {
 			console.log("reiniciarF7");
 			console.log(data);
