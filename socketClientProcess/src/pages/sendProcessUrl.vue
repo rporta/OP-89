@@ -68,7 +68,7 @@ pre {
 
         socket.on("getCapture", function(data){
           console.log("getCapture");
-          f7.data.captura = data.img;
+          f7.data.captura.img = data.img;
           setTimeout(function() {
             f7.dialog.close();
             f7.redirectTo(/vistaDesktop/ + data.socketId);

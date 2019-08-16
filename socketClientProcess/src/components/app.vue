@@ -51,7 +51,11 @@
               historyListaDeEventos: [],
               loadListaDeEventosJson: [],
               loadArrayListaDeEventosJson: [],
-              captura: "static/testCapture/testCapture.jpg",
+              captura:{
+                img:"static/testCapture/testCapture.jpg",
+                width: null,
+                height: null
+              },
               configProcessUrl: null,
               terminal: []
             };
