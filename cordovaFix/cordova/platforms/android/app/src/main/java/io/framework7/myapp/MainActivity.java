@@ -18,6 +18,7 @@
  */
 package io.framework7.myapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,6 +27,8 @@ import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import org.apache.cordova.*;
 import org.json.*;
+
+import android.os.SystemClock;
 import android.util.Base64;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +51,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
+import android.view.MotionEvent;
 
 public class MainActivity extends CordovaActivity
 {
@@ -253,15 +257,16 @@ public class MainActivity extends CordovaActivity
                                             Integer y = currentEvent.getInt("y");
                                             String text = currentEvent.getString("data");
 
-                                            JSONObject ParamFocus = new JSONObject();
+                                            JSONArray ParamFocus = new JSONArray();
+                                            JSONObject coordenadas = new JSONObject();
+                                            coordenadas.put("x", x);
+                                            coordenadas.put("y", y);
+//
+                                            ParamFocus.put(0, coordenadas);
 
-                                            ParamFocus.put("top", y - 50);
-                                            ParamFocus.put("left", x - 50);
-                                            ParamFocus.put("right", x);
-                                            ParamFocus.put("bottom", y);
 
-                                            // realizamos toch
-                                            cordovaInterface.pluginManager.exec("Focus", "focus", "", "[" + ParamFocus.toString() + "]");
+                                            // realizamos toch native
+                                            self.generateTouch(ParamFocus);
 
                                             Integer w = self.appView.getView().getWidth();
                                             Integer h = self.appView.getView().getHeight();
@@ -747,6 +752,40 @@ public class MainActivity extends CordovaActivity
         this.socket = socket;
     }
 
+    public void generateTouch(JSONArray args){
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        LOG.d(TAG, nameofCurrMethod +
+                ", JSONArray args " + args
+        );
+
+        // Get bounding positions of target element
+        JSONObject rect = null;
+        try {
+            rect = args.getJSONObject(0);
+            // Compute its center
+            final Integer centerX = rect.getInt("x");
+            final Integer centerY = rect.getInt("y");
+            // Emulate click
+            MainActivity self = this;
+            this.runOnUiThread(new Runnable() {
+                public void run() {
+                    final long uMillis = SystemClock.uptimeMillis();
+                    self.dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerX, centerY, 0));
+                    self.dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerX, centerY, 0));
+
+                    // self.appView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerX, centerY, 0));
+                    // self.appView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerX, centerY, 0));
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static String toTitleCase(String input) {
         StringBuilder titleCase = new StringBuilder(input.length());
         boolean nextTitleCase = true;
@@ -842,6 +881,7 @@ public class MainActivity extends CordovaActivity
                                 LOG.d(TAG, nameofCurrMethod +
                                         ", Screenshot -> saveScreenshot"
                                 );
+
                                 // creo un delay, para para recuperar la captura
                                 TimerTask taskGetScreenshot = new TimerTask() {
                                     public void run() {
