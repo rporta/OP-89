@@ -214,7 +214,7 @@
         default: "",
       },
       pNavbarDescktop:{
-        type: Boolean,
+        type: String,
         required : false,
         default: false,
       }

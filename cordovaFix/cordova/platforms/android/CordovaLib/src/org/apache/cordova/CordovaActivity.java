@@ -108,6 +108,10 @@ public class CordovaActivity extends Activity {
     public void onPageFinishedLoading(String url){
 
     }
+
+    public void onPageStarted(String url){
+
+    }
     public void onDataFW(String DataFW){
 
     }

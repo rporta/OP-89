@@ -282,8 +282,8 @@ server.listen(port, () => {
 			console.log(data);
 			io.sockets.connected[data.socketId].emit("getListEvent", data);
 		});
-		socket.on("sendFinishPage", function(data) {
-			console.log("sendFinishPage");
+		socket.on("sendPageStarted", function(data) {
+			console.log("sendPageStarted");
 			console.log(data);
 			if (typeof data == "string") {
 				data = JSON.parse(data);
@@ -291,9 +291,9 @@ server.listen(port, () => {
 			if (!data) {
 				data = {};
 			}
-			data.on = "sendFinishPage";
+			data.on = "sendPageStarted";
 			console.log(data);
-			io.sockets.connected[data.socketId].emit("getFinishPage", data);
+			io.sockets.connected[data.socketId].emit("getPageStarted", data);
 		});
 		socket.on("reiniciarF7", function(data) {
 			console.log("reiniciarF7");

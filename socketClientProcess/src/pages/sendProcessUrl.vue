@@ -60,7 +60,14 @@ pre {
         // Set socket on
         var self = this;
 
+        socket.on("getPageStarted", function(data){
+          console.log("getPageStarted");
+          f7.dialog.close();
+          f7.dialog.preloader('Se recargo una nueva pagina, esperando Captura ...');          
+        });
+
         socket.on("getCapture", function(data){
+          console.log("getCapture");
           f7.data.captura = data.img;
           setTimeout(function() {
             f7.dialog.close();
