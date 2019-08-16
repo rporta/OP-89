@@ -67,6 +67,13 @@ pre {
         });
 
         socket.on("getCapture", function(data){
+
+          var img = new Image();
+          img.onload = function() {
+            console.log("img.onload", this.width, this.height);
+          }
+          img.src = data.img;
+
           console.log("getCapture");
           f7.data.captura.img = data.img;
           setTimeout(function() {
