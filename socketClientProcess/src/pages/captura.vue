@@ -1,12 +1,12 @@
 <template >
   <f7-page >
-    <f7-navbar v-if="!navbarDescktop" title="Captura" back-link="Back">
+    <f7-navbar v-if="!JSON.parse(navbarDescktop)" title="Captura" back-link="Back">
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
 
-    <f7-navbar bg-color="teal" v-if="navbarDescktop" title="Captura">
+    <f7-navbar bg-color="teal" v-if="JSON.parse(navbarDescktop)" title="Captura">
     </f7-navbar>
 
     <img :width="capture.width" :height="capture.height"  @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura">

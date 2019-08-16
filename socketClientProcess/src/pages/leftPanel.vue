@@ -2,13 +2,13 @@
   <f7-page name="leftPanel">
     <f7-navbar title="Menu proceso URL"></f7-navbar>
     <f7-list>
-      <f7-list-item @click="$f7.redirectTo('/terminal/' + $f7.data.configProcessUrl.socketId)" link="#" title="Terminal">
+      <f7-list-item @click="$f7.redirectTo('/terminal/' + $f7.data.configProcessUrl.socketId + '/' + false)" link="#" title="Terminal">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/captura/' + $f7.data.configProcessUrl.socketId)" link="#" title="Captura">
+      <f7-list-item @click="$f7.redirectTo('/captura/' + $f7.data.configProcessUrl.socketId + '/' + false)" link="#" title="Captura">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/listaDeEventos/' + $f7.data.configProcessUrl.socketId)" link="#" title="Lista de eventos">
+      <f7-list-item @click="$f7.redirectTo('/listaDeEventos/' + $f7.data.configProcessUrl.socketId + '/' + false)" link="#" title="Lista de eventos">
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
       <f7-list-item @click="$f7.redirectTo('/vistaDesktop/' + $f7.data.configProcessUrl.socketId)" link="#" title="Vista desktop">
