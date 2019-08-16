@@ -85,17 +85,17 @@ var routes = [
   },
 
   {
-    path: '/terminal/:pSocketId',
+    path: '/terminal/:pSocketId/:pNavbarDescktop',
     component: Terminal,
   },
 
   {
-    path: '/captura/:pSocketId',
+    path: '/captura/:pSocketId/:pNavbarDescktop',
     component: Captura,
   },
 
   {
-    path: '/listaDeEventos/:pSocketId',
+    path: '/listaDeEventos/:pSocketId/:pNavbarDescktop',
     component: ListaDeEventos,
   },
 

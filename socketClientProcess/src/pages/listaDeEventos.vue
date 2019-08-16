@@ -1,9 +1,12 @@
 <template>
   <f7-page>
-    <f7-navbar title="Lista de eventos" back-link="Back">
+    <f7-navbar v-if="!navbarDescktop" title="Lista de eventos" back-link="Back">
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
+    </f7-navbar>
+
+    <f7-navbar bg-color="teal" v-if="navbarDescktop" title="Lista de eventos">
     </f7-navbar>
 
 
@@ -41,7 +44,9 @@
     data() {
       return {
         borrar: false,     
-        isModificarPosicion: false,         
+        isModificarPosicion: false,
+        socketId: this.pSocketId,
+        navbarDescktop : this.pNavbarDescktop              
       };
     },
     methods: {
@@ -207,6 +212,11 @@
         type: String,
         required : false,
         default: "",
+      },
+      pNavbarDescktop:{
+        type: Boolean,
+        required : false,
+        default: false,
       }
     },
     mounted() {

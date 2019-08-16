@@ -1,10 +1,14 @@
 <template>
   <f7-page>
-    <f7-navbar title="Terminal" back-link="Back">
+    <f7-navbar v-if="!navbarDescktop" title="Terminal" back-link="Back">
       <f7-nav-right>
         <f7-link icon-ios="f7:menu" icon-aurora="f7:menu" icon-md="material:menu" panel-open="right"></f7-link>
       </f7-nav-right>
     </f7-navbar>
+
+    <f7-navbar bg-color="teal" v-if="navbarDescktop" title="Terminal" >
+    </f7-navbar>
+
     <f7-block text-color="green">
       <div v-for="(t, i) in $f7.data.terminal">
         <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{i + 1}} : {{JSON.stringify(t)}}</pre>
@@ -27,7 +31,8 @@ pre {
   export default {
     data() {
       return {
-
+        socketId: this.pSocketId,
+        navbarDescktop : this.pNavbarDescktop
       };
     },
     props:{
@@ -35,7 +40,12 @@ pre {
         type: String,
         required : false,
         default: "",
-      }
+      },
+      pNavbarDescktop:{
+        type: Boolean,
+        required : false,
+        default: false,
+      }  
     },
     methods: {
 

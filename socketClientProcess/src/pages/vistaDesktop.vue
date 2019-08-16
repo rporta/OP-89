@@ -8,13 +8,13 @@
     <f7-row>
       <f7-col>
         <f7-page-content class="c1rama">
-          <f7-view url="/captura/1" name="vistaDesktop-c1" :animate="false"
+          <f7-view url="/captura/1/1" name="vistaDesktop-c1" :animate="false"
           ></f7-view>
         </f7-page-content>
       </f7-col>
       <f7-col>
         <f7-page-content class="c2rama">
-          <f7-view url="/listaDeEventos/1" name="vistaDesktop-c2" :animate="false"
+          <f7-view url="/listaDeEventos/1/1" name="vistaDesktop-c2" :animate="false"
           ></f7-view>
         </f7-page-content>
       </f7-col>
@@ -22,7 +22,7 @@
     <f7-row>
       <f7-col>
         <f7-page-content class="r2rama">
-          <f7-view url="/terminal/1" name="vistaDesktop-c3" :animate="false"
+          <f7-view url="/terminal/1/1" name="vistaDesktop-c3" :animate="false"
           ></f7-view>         
         </f7-page-content>
       </f7-col>
