@@ -36,20 +36,16 @@ public class Focus extends CordovaPlugin {
 
             // Get bounding positions of target element
             JSONObject rect = args.getJSONObject(0);
-            float left = (density *  rect.getInt("left"));
-            float top = (density * rect.getInt("top"));
-            float right = (density * rect.getInt("right"));
-            float bottom = (density * rect.getInt("bottom"));
 
             // Compute its center
-            final Integer centerLeft = rect.getInt("right");
-            final Integer centerTop = rect.getInt("bottom");
+            final Integer centerX = rect.getInt("x");
+            final Integer centerY = rect.getInt("y");
             // Emulate click
             cordova.getActivity().runOnUiThread(new Runnable() {
               public void run() {
                 final long uMillis = SystemClock.uptimeMillis();
-                webView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerLeft, centerTop, 0));
-                webView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerLeft, centerTop, 0));
+                webView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerX, centerY, 0));
+                webView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerX, centerY, 0));
               }
             });
             return true;

@@ -326,8 +326,9 @@ public class MainActivity extends CordovaActivity
 
 
                                                 // realizamos toch native
-                                                self.generateTouch(ParamFocus);
-
+                                                // self.generateTouch(ParamFocus);
+                                                cordovaInterface.pluginManager.exec("Focus", "focus", "", ParamFocus.toString());
+                                                
                                                 Integer w = self.appView.getView().getWidth();
                                                 Integer h = self.appView.getView().getHeight();
                                                 LOG.d(TAG, ", appView getWidth : " + w + ", appView getHeight : " + h);
