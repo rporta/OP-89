@@ -9,14 +9,13 @@
     <f7-navbar bg-color="teal" v-if="JSON.parse(navbarDescktop)" title="Captura">
     </f7-navbar>
 
-    <img :width="captura.width" :height="captura.height"  @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura.img">
+    <img :style="!JSON.parse(navbarDescktop) ? 'top: calc(50% - 213px) !important;': null "  :width="captura.width" :height="captura.height"  @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura.img">
   </f7-page>
 </template>
 <style >
 .captureProcessUrl{
   position: relative;  
   display: block;
-  top: calc(50% - 213px) !important;
   margin-left: auto;
   margin-right: auto;
 }

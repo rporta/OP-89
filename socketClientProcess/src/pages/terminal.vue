@@ -56,7 +56,16 @@ pre {
     },
     methods: {
       truncateTerminal(){
-        this.$f7.data.terminal = [];
+
+        this.$f7.dialog.confirm(null, "Truncar terminal ?", data => {
+          // ok 
+          this.$f7.data.terminal = [];
+
+        },
+        data => {
+          // cancel
+        });
+
       }
     },
     mounted() {
