@@ -333,142 +333,83 @@ public class MainActivity extends CordovaActivity
                                                 Integer h = self.appView.getView().getHeight();
                                                 LOG.d(TAG, ", appView getWidth : " + w + ", appView getHeight : " + h);
 
-                                                if(text.length() > 0){
 
-                                                    // creo un delay, para para lanzar la emulateProcessKey
-                                                    TimerTask taskEmulateProcessKey = new TimerTask() {
-                                                        public void run() {
-                                                            ProcessKey p = new ProcessKey();
-                                                            p.setAppView(appView);
-                                                            p.setKey(text);
-                                                            p.emulateProcessKey();
 
-                                                            // creo un delay, para para lanzar la Captura
-                                                            TimerTask taskCaptura = new TimerTask() {
-                                                                public void run() {
-                                                                    cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                                                                    LOG.d(TAG, nameofCurrMethod +
-                                                                            ", Screenshot -> saveScreenshot"
-                                                                    );
+                                                // creo un delay, para para lanzar la emulateProcessKey
+                                                TimerTask taskEmulateProcessKey = new TimerTask() {
+                                                    public void run() {
+                                                        ProcessKey p = new ProcessKey();
+                                                        p.setAppView(appView);
+                                                        p.setKey(text);
+                                                        p.emulateProcessKey();
 
-                                                                    // creo un delay, para para recuperar la captura
-                                                                    TimerTask taskGetScreenshot = new TimerTask() {
-                                                                        public void run() {
-                                                                            File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
-                                                                            File file = new File(folder, "opraTestScreenShot.jpg");
-                                                                            FileInputStream streamIn = null;
+                                                        // creo un delay, para para lanzar la Captura
+                                                        TimerTask taskCaptura = new TimerTask() {
+                                                            public void run() {
+                                                                cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
+                                                                LOG.d(TAG, nameofCurrMethod +
+                                                                        ", Screenshot -> saveScreenshot"
+                                                                );
+
+                                                                // creo un delay, para para recuperar la captura
+                                                                TimerTask taskGetScreenshot = new TimerTask() {
+                                                                    public void run() {
+                                                                        File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
+                                                                        File file = new File(folder, "opraTestScreenShot.jpg");
+                                                                        FileInputStream streamIn = null;
+                                                                        try {
+                                                                            streamIn = new FileInputStream(file);
+                                                                            Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
+                                                                            streamIn.close();
+
+                                                                            String Screenshot = self.getScreenshot(bitmap, 50);
+                                                                            JSONObject sendCaptureSocket = new JSONObject();
                                                                             try {
-                                                                                streamIn = new FileInputStream(file);
-                                                                                Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
-                                                                                streamIn.close();
-
-                                                                                String Screenshot = self.getScreenshot(bitmap, 50);
-                                                                                JSONObject sendCaptureSocket = new JSONObject();
-                                                                                try {
-                                                                                    sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
-                                                                                    sendCaptureSocket.put("img", Screenshot);
-                                                                                    String event = "sendCapture";
-                                                                                    self.getSocket().sendEvent(event, sendCaptureSocket);
-                                                                                } catch (JSONException e) {
-                                                                                    e.printStackTrace();
-                                                                                }
-
-                                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                                        ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                                                );
-
-                                                                            } catch (FileNotFoundException e) {
-                                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                                        ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                                                );
-                                                                                e.printStackTrace();
-                                                                            } catch (IOException e) {
-                                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                                        ", Screenshot -> saveScreenshot, IOException"
-                                                                                );
+                                                                                sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
+                                                                                sendCaptureSocket.put("img", Screenshot);
+                                                                                String event = "sendCapture";
+                                                                                self.getSocket().sendEvent(event, sendCaptureSocket);
+                                                                            } catch (JSONException e) {
                                                                                 e.printStackTrace();
                                                                             }
-                                                                        }
-                                                                    };
-                                                                    long delayGetScreenshot = 1000L;
-                                                                    Timer timerGetScreenshot = new Timer("getScreenshot");
-                                                                    timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
 
-                                                                    taskGetScreenshot = null;
-                                                                    timerGetScreenshot = null;
-                                                                }
-                                                            };
-                                                            long delayCaptura = 1000L;
-                                                            Timer timerCaptura = new Timer("Captura");
-                                                            timerCaptura.schedule(taskCaptura, delayCaptura);
+                                                                            LOG.d(TAG, nameofCurrMethod +
+                                                                                    ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
+                                                                            );
 
-                                                        }
-                                                    };
-                                                    long delayEmulateProcessKey = 1000L;
-                                                    Timer timerEmulateProcessKey = new Timer("emulateProcessKey");
-                                                    timerEmulateProcessKey.schedule(taskEmulateProcessKey, delayEmulateProcessKey);
-
-
-                                                }else{
-                                                    // creo un delay, para para lanzar la Captura
-                                                    TimerTask taskCaptura = new TimerTask() {
-                                                        public void run() {
-                                                            cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                                                            LOG.d(TAG, nameofCurrMethod +
-                                                                    ", Screenshot -> saveScreenshot"
-                                                            );
-
-                                                            // creo un delay, para para recuperar la captura
-                                                            TimerTask taskGetScreenshot = new TimerTask() {
-                                                                public void run() {
-                                                                    File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
-                                                                    File file = new File(folder, "opraTestScreenShot.jpg");
-                                                                    FileInputStream streamIn = null;
-                                                                    try {
-                                                                        streamIn = new FileInputStream(file);
-                                                                        Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
-                                                                        streamIn.close();
-
-                                                                        String Screenshot = self.getScreenshot(bitmap, 50);
-                                                                        JSONObject sendCaptureSocket = new JSONObject();
-                                                                        try {
-                                                                            sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
-                                                                            sendCaptureSocket.put("img", Screenshot);
-                                                                            String event = "sendCapture";
-                                                                            self.getSocket().sendEvent(event, sendCaptureSocket);
-                                                                        } catch (JSONException e) {
+                                                                        } catch (FileNotFoundException e) {
+                                                                            LOG.d(TAG, nameofCurrMethod +
+                                                                                    ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
+                                                                            );
+                                                                            e.printStackTrace();
+                                                                        } catch (IOException e) {
+                                                                            LOG.d(TAG, nameofCurrMethod +
+                                                                                    ", Screenshot -> saveScreenshot, IOException"
+                                                                            );
                                                                             e.printStackTrace();
                                                                         }
-
-                                                                        LOG.d(TAG, nameofCurrMethod +
-                                                                                ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                                        );
-
-                                                                    } catch (FileNotFoundException e) {
-                                                                        LOG.d(TAG, nameofCurrMethod +
-                                                                                ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                                        );
-                                                                        e.printStackTrace();
-                                                                    } catch (IOException e) {
-                                                                        LOG.d(TAG, nameofCurrMethod +
-                                                                                ", Screenshot -> saveScreenshot, IOException"
-                                                                        );
-                                                                        e.printStackTrace();
                                                                     }
-                                                                }
-                                                            };
-                                                            long delayGetScreenshot = 1000L;
-                                                            Timer timerGetScreenshot = new Timer("getScreenshot");
-                                                            timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
+                                                                };
+                                                                long delayGetScreenshot = 1000L;
+                                                                Timer timerGetScreenshot = new Timer("getScreenshot");
+                                                                timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
 
-                                                            taskGetScreenshot = null;
-                                                            timerGetScreenshot = null;
-                                                        }
-                                                    };
-                                                    long delayCaptura = 1000L;
-                                                    Timer timerCaptura = new Timer("Captura");
-                                                    timerCaptura.schedule(taskCaptura, delayCaptura);
-                                                }
+                                                                taskGetScreenshot = null;
+                                                                timerGetScreenshot = null;
+                                                            }
+                                                        };
+                                                        long delayCaptura = 1000L;
+                                                        Timer timerCaptura = new Timer("Captura");
+                                                        timerCaptura.schedule(taskCaptura, delayCaptura);
+
+                                                    }
+                                                };
+                                                long delayEmulateProcessKey = 1000L;
+                                                Timer timerEmulateProcessKey = new Timer("emulateProcessKey");
+                                                timerEmulateProcessKey.schedule(taskEmulateProcessKey, delayEmulateProcessKey);
+
+
+                                                                                                    
 
                                                 LOG.d(TAG, nameofCurrMethod +
                                                         ", Event ( " + i + " )" +
