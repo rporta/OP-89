@@ -13,7 +13,14 @@
       <div v-for="(t, i) in $f7.data.terminal">
         <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{i + 1}} : {{JSON.stringify(t)}}</pre>
       </div>
-    </f7-block>    
+    </f7-block>
+    <br>
+    <br>
+    <f7-toolbar bottom-md style="background-color: #1a1a1ad4;">
+      <f7-link ></f7-link>
+      <f7-link @click="truncateTerminal()">Truncar terminal</f7-link>
+      <f7-link ></f7-link>
+    </f7-toolbar>  
   </f7-page>
 </template>
 <style>
@@ -42,13 +49,15 @@ pre {
         default: "",
       },
       pNavbarDescktop:{
-        type: String,
+        type: Boolean,
         required : false,
         default: false,
       }  
     },
     methods: {
-
+      truncateTerminal(){
+        this.$f7.data.terminal = [];
+      }
     },
     mounted() {
       this.$f7ready((f7) => {
