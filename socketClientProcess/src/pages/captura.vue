@@ -9,7 +9,7 @@
     <f7-navbar bg-color="teal" v-if="JSON.parse(navbarDescktop)" title="Captura">
     </f7-navbar>
 
-    <img :width="capture.width" :height="capture.height"  @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura.img">
+    <img :width="captura.width" :height="captura.height"  @click="addEventProcessUrl($event)" class="captureProcessUrl" :src="this.$f7.data.captura.img">
   </f7-page>
 </template>
 <style >
@@ -28,9 +28,9 @@
     data() {
       return {
         socketId: this.pSocketId,
-        capture: {
-          width: 240,
-          height: 426
+        captura: {
+          width: 0,
+          height: 0
         },
         navbarDescktop : this.pNavbarDescktop
       };
@@ -52,16 +52,14 @@
         // La resolucion original de captura es 1920x1080 con relacion de aspecto 16:9
         // La resolucion de captura en la vista es 426x240 con relacion de aspecto 16:9
 
-        // current resolution event 426x240       | 16:9
+
         var x = e.layerX; 
         var y = e.layerY;
 
-        // calculate resolution event 1920x1080   | 16:9
+        var calculeX = x  * this.$f7.data.captura.width / this.captura.width;
+        var calculeY = y * this.$f7.data.captura.height / this.captura.height;
 
-        var calculeX = x  * 1080 / this.capture.width;
-        var calculeY = y * 1920 / this.capture.height;
-
-        // calculate round resolution event
+        // calcule round resolution event
 
         var calculateRoundResolutionX = Math.round(calculeX);
         var calculateRoundResolutionY = Math.round(calculeY);
@@ -108,6 +106,12 @@
         if (f7.device.cordova) {
 
         }
+        var self = this;
+
+        self.captura.width = f7.data.captura.width / 4 ;
+        self.captura.height = f7.data.captura.height / 4 ;
+
+
       });
     }
   };
