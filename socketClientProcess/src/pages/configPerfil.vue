@@ -70,12 +70,19 @@
     },
     methods: {
       resetDefaultConfig(){
-        var formConfigPerfil = this.$refs.configPerfil.$el;
-        var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
-        const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
-        const configDefaultJSON = JSON.parse(configDefaultString); 
-        this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
-        this.$f7.data.config = configDefaultJSON;
+
+        this.$f7.dialog.confirm(null, "Set default config ?", data => {
+          // ok 
+          var formConfigPerfil = this.$refs.configPerfil.$el;
+          var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
+          const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
+          const configDefaultJSON = JSON.parse(configDefaultString); 
+          this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
+          this.$f7.data.config = configDefaultJSON;
+        },
+        data => {
+          // cancel
+        });
       }
     },
     mounted() {

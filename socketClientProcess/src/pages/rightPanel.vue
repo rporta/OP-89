@@ -102,10 +102,19 @@
         });
       },
       reiniciarF7(id){
-        console.log("reiniciarF7", id);
-        socket.emit("reiniciarF7", {
-          socketId : id
+
+        this.$f7.dialog.confirm("El reinicio se aplicara al id : " + id, "Reiniciar F7?", data => {
+          // ok 
+          console.log("reiniciarF7", id);
+          socket.emit("reiniciarF7", {
+            socketId : id
+          });
+
+        },
+        data => {
+          // cancel
         });
+
       },      
     },
     mounted() {

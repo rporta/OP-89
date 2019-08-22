@@ -78,23 +78,44 @@
     },
     methods: {
       resetDefaultConfig(){
-        var formConfigPerfil = this.$refs.configSocket.$el;
-        var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
-        const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
-        const configDefaultJSON = JSON.parse(configDefaultString); 
-        this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
-        this.$f7.data.config = configDefaultJSON;
+        this.$f7.dialog.confirm(null, "Set default config ?", data => {
+          // ok 
+          var formConfigPerfil = this.$refs.configSocket.$el;
+          var getDataForm = this.$f7.form.convertToData(formConfigPerfil);
+          const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
+          const configDefaultJSON = JSON.parse(configDefaultString); 
+          this.$f7.form.fillFromData(formConfigPerfil, configDefaultJSON.perfil);
+          this.$f7.data.config = configDefaultJSON;
+        },
+        data => {
+          // cancel
+        });
       },
       socketConnect(){
-        socket.io.uri = "http://" + this.$f7.data.config.api.host + ":" + this.$f7.data.config.api.port;        
-        socket.connect();
-        var self = this;
-        setTimeout(function() {
-          self.socketId = socket.id;
-        }, 500);
+        this.$f7.dialog.confirm(null, "Connect ?", data => {
+          // ok 
+          socket.io.uri = "http://" + this.$f7.data.config.api.host + ":" + this.$f7.data.config.api.port;        
+          socket.connect();
+          var self = this;
+          setTimeout(function() {
+            self.socketId = socket.id;
+          }, 500);
+        },
+        data => {
+          // cancel
+        });
+
+
       },
       socketDisconnect(){
-        socket.disconnect();
+        this.$f7.dialog.confirm(null, "Disconnect ?", data => {
+          // ok 
+          socket.disconnect();
+        },
+        data => {
+          // cancel
+        });
+
       }
     },
     mounted() {

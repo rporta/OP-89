@@ -71,7 +71,11 @@ pre {
           var img = new Image();
           img.onload = function() {
             console.log("img.onload", this.width, this.height);
+            f7.data.captura.width = this.width;
+            f7.data.captura.height = this.height;
           }
+          console.log(f7.data.captura);
+
           img.src = data.img;
 
           console.log("getCapture");
