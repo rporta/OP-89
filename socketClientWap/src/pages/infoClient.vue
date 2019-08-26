@@ -16,7 +16,7 @@
     </f7-list>
     <f7-block-title>Driver : </f7-block-title>
     <f7-list>
-      <f7-list-item :title="index.charAt(0).toUpperCase() + index.slice(1) + ' : ' + driver" v-for="(driver, index) in infoClient.driver">
+      <f7-list-item>
         <f7-icon text-color="deeporange" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
       </f7-list-item>
     </f7-list>

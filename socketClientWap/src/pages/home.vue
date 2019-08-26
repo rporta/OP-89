@@ -24,7 +24,7 @@
         debug: {
           list: []
         },
-        isDebug : false
+        isDebug : true
       };
     },
     methods: {
@@ -35,6 +35,7 @@
         // Init cordova APIs (see cordova-app.js)
         if (f7.device.cordova) {
 
+
         }
         // Set Dom7 style, events
 
@@ -44,11 +45,20 @@
         });
 
         var self = this;
-        this.$f7.on("onData", function(data){
-          self.debug.list.push({
-            title: "appJava",
-            data: JSON.stringify(data)
-          });
+
+        this.debug.list.push({
+          title : "window",
+          data : Object.keys(window)
+        });
+
+        this.debug.list.push({
+          title : "window.plugins",
+          data : Object.keys(window.plugins)
+        });
+
+        this.debug.list.push({
+          title : "window.cordova",
+          data : Object.keys(window.cordova)
         });
       }); 
     }        

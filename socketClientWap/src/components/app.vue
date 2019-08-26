@@ -23,7 +23,9 @@
   import cordovaApp from '../js/cordova-app.js';
   import routes from '../js/routes.js';
   import config from '../config/config.json';
-  import configDefault from '../config/configDefault.json';   
+  import configDefault from '../config/configDefault.json';
+  import async from 'async';
+
   export default {
     data() {
       return {
@@ -111,6 +113,70 @@
         if (f7.device.cordova) {
           cordovaApp.init(f7);
 
+          // init permisos
+          // Check permisos ...
+
+          // AndroidManifest.xml :
+
+          // WRITE_EXTERNAL_STORAGE
+          // RECORD_AUDIO
+          // MODIFY_AUDIO_SETTINGS
+          // READ_PHONE_STATE
+          // READ_SMS
+          // ACCESS_WIFI_STATE
+          // CHANGE_WIFI_STATE
+          // ACCESS_COARSE_LOCATION
+          // WRITE_SETTINGS
+
+          const permissions = window.cordova.plugins.permissions;
+
+          var listPermisions = [
+          permissions.READ_SMS,
+          permissions.WRITE_EXTERNAL_STORAGE
+          ];
+
+          var self = this;
+          async.forever( (nextForever) => {
+            async.eachSeries(listPermisions, function(currentPermision, next) {
+              window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
+                if(!status.hasPermission){
+                  // !OK : hasPermission
+                  window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
+                    if(!status.hasPermission){
+                      //  !OK : requestPermissions
+                      next(true);
+                    }else{
+                      //   OK : requestPermissions
+                      next();
+                    }
+                  },(error) => {
+                    // error : requestPermissions
+                    next(true);
+                  });
+                }else{
+                  //  OK : hasPermission
+                  next();
+                }
+              }, 
+              (error) => {
+                // error : hasPermission
+                next(true);
+              });
+
+            }, function(err){
+              if(err){
+                // err
+                nextForever();
+              }else{
+                // fin
+                return ;
+              }
+            });
+
+          }, (errForever) => {
+
+          });
+
           // f7 -> App(Java) : event "initSocket"
           var sendData = {
             data : JSON.stringify({
@@ -123,7 +189,6 @@
           };
           window.broadcaster.fireNativeEvent( 
             "initSocket", sendData);
-
         }
         // Set Dom7 style, events
 

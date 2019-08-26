@@ -64,40 +64,67 @@
     },     
     methods: {
       resetDefaultConfig(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
-        const configDefaultJSON = JSON.parse(configDefaultString); 
-        this.$f7.form.fillFromData(configProcessUrl, configDefaultJSON.processURL);
-        this.$f7.data.config = configDefaultJSON;
+
+        this.$f7.dialog.confirm(null, "Set default config ?", data => {
+          // ok 
+          var configProcessUrl = this.$refs.configProcessUrl.$el;
+          var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+          const configDefaultString = JSON.stringify(this.$f7.data.configDefault);
+          const configDefaultJSON = JSON.parse(configDefaultString); 
+          this.$f7.form.fillFromData(configProcessUrl, configDefaultJSON.processURL);
+          this.$f7.data.config = configDefaultJSON;
+
+        },
+        data => {
+          // cancel
+        });
+
       },
       resolverClickSocket(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        // Send socket
-        var self = this;   
 
-        var sendData = {
-          data : JSON.stringify(Object.assign({
-            socketId : self.socketId,
-          }, getDataForm))
-        };
+        this.$f7.dialog.confirm(null, "Iniciar Proceso via socket ?", data => {
+          // ok 
+          var configProcessUrl = this.$refs.configProcessUrl.$el;
+          var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+          // Send socket
+          var self = this;   
 
-        window.broadcaster.fireNativeEvent("configProcessUrlSocket", sendData);
+          var sendData = {
+            data : JSON.stringify(Object.assign({
+              socketId : self.socketId,
+            }, getDataForm))
+          };
+
+          window.broadcaster.fireNativeEvent("configProcessUrlSocket", sendData);
+
+        },
+        data => {
+          // cancel
+        });
+
       },
       resolverClickSms(){
-        var configProcessUrl = this.$refs.configProcessUrl.$el;
-        var getDataForm = this.$f7.form.convertToData(configProcessUrl);
-        console.log(getDataForm);
-        // Send socket
-        var self = this;  
 
-        var sendData = {
-          data : JSON.stringify(Object.assign({
-            socketId : self.socketId,
-          }, getDataForm))
-        };     
-        window.broadcaster.fireNativeEvent("configProcessUrlSms", sendData);
+        this.$f7.dialog.confirm(null, "Iniciar Proceso via sms ?", data => {
+          // ok 
+          var configProcessUrl = this.$refs.configProcessUrl.$el;
+          var getDataForm = this.$f7.form.convertToData(configProcessUrl);
+          console.log(getDataForm);
+          // Send socket
+          var self = this;  
+
+          var sendData = {
+            data : JSON.stringify(Object.assign({
+              socketId : self.socketId,
+            }, getDataForm))
+          };     
+          window.broadcaster.fireNativeEvent("configProcessUrlSms", sendData);
+
+        },
+        data => {
+          // cancel
+        });
+
       }
     },
     mounted() {
