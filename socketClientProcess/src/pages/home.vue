@@ -19,6 +19,7 @@
 <script>
   import Dom7 from 'dom7';
   import routes from '../js/routes.js';  
+  import async from 'async';
   export default {
     data() {
       return {
@@ -39,7 +40,6 @@
         // Set Dom7 style, events
 
         // Set socket on
-        var self = this;
       }); 
     } 
   };

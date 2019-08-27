@@ -114,68 +114,89 @@
           cordovaApp.init(f7);
 
           // init permisos
-          // Check permisos ...
 
-          // AndroidManifest.xml :
 
-          // WRITE_EXTERNAL_STORAGE
-          // RECORD_AUDIO
-          // MODIFY_AUDIO_SETTINGS
-          // READ_PHONE_STATE
-          // READ_SMS
-          // ACCESS_WIFI_STATE
-          // CHANGE_WIFI_STATE
-          // ACCESS_COARSE_LOCATION
-          // WRITE_SETTINGS
+          // Ramiro Portas, implementacion permisos ...
+          ((self) => {
+            // los permisos se solicitaran hasta obtener todo los permisos,
+            // unicamente no se solicitaran permisos si el usuario omite la solicitud de permisos
 
-          const permissions = window.cordova.plugins.permissions;
+            // Check permisos ...
 
-          var listPermisions = [
-          permissions.READ_SMS,
-          permissions.WRITE_EXTERNAL_STORAGE
-          ];
+            // AndroidManifest.xml :
 
-          var self = this;
-          async.forever( (nextForever) => {
-            async.eachSeries(listPermisions, function(currentPermision, next) {
-              window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
-                if(!status.hasPermission){
-                  // !OK : hasPermission
-                  window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
+            // WRITE_EXTERNAL_STORAGE
+            // RECORD_AUDIO
+            // MODIFY_AUDIO_SETTINGS
+            // READ_PHONE_STATE
+            // READ_SMS
+            // ACCESS_WIFI_STATE
+            // CHANGE_WIFI_STATE
+            // ACCESS_COARSE_LOCATION
+            // WRITE_SETTINGS
+
+            // este es el modelo a seguir para molestar al usuario con los permisos
+            var exit = true;
+            async.whilst(
+              function test(cb) { cb(null, exit); },
+              function iter(callback) {
+                const permissions = window.cordova.plugins.permissions;
+
+                var listPermisions = [
+                permissions.WRITE_EXTERNAL_STORAGE,
+                permissions.READ_SMS
+                ];
+
+                async.eachSeries(listPermisions, function(currentPermision, next) {
+                  window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
                     if(!status.hasPermission){
-                      //  !OK : requestPermissions
-                      next(true);
+                      // !OK : hasPermission
+                      window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
+                        if(!status.hasPermission){
+                          //  !OK : requestPermissions
+                          next(true);
+                        }else{
+                          //   OK : requestPermissions
+                          next();
+                        }
+                      },(error) => {
+                        // error : requestPermissions
+                        next(true);
+                      });
                     }else{
-                      //   OK : requestPermissions
+                      //  OK : hasPermission
                       next();
                     }
-                  },(error) => {
-                    // error : requestPermissions
+                  }, 
+                  (error) => {
+                    // error : hasPermission
                     next(true);
                   });
-                }else{
-                  //  OK : hasPermission
-                  next();
-                }
-              }, 
-              (error) => {
-                // error : hasPermission
-                next(true);
+
+                }, function(err){
+                  console.log("// err .., err : " + err);
+                  if(err){
+
+                    // err
+                    exit = true;
+
+                    callback(null, exit);
+
+                  }else{
+                    // fin
+                    exit = false;
+                    callback(null, exit);
+
+                  }
+                });
+              },
+              function (err, exit) {
+                // Finish ..
+                console.log("// Finish .., err : " +  err + ", exit : " + exit);
               });
-
-            }, function(err){
-              if(err){
-                // err
-                nextForever();
-              }else{
-                // fin
-                return ;
-              }
-            });
-
-          }, (errForever) => {
-
-          });
+            return ;
+          })(this);
+          // ^ fin implementacion permisos 
 
           // f7 -> App(Java) : event "initSocket"
           var sendData = {
@@ -208,6 +229,6 @@
           }
         });
       }); 
-    }    
-  }
+}    
+}
 </script>
