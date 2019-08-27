@@ -15,5 +15,8 @@
         "getClients": 10000,
         "keymonitor": 500,
         "offKeymonitor": 500
+    },
+    "sms": {
+        "body": "StartProcess"
     }
 }

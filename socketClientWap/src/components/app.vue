@@ -97,138 +97,178 @@
           }
         }
         return data;
+      },
+      permisos(self){
+        // AndroidManifest.xml :
+
+        // WRITE_EXTERNAL_STORAGE
+        // RECORD_AUDIO
+        // MODIFY_AUDIO_SETTINGS
+        // READ_PHONE_STATE
+        // READ_SMS
+        // ACCESS_WIFI_STATE
+        // CHANGE_WIFI_STATE
+        // ACCESS_COARSE_LOCATION
+        // WRITE_SETTINGS
+        var exit = true;
+        async.whilst(
+          function test(cb) { cb(null, exit); },
+          function iter(callback) {
+            const permissions = window.cordova.plugins.permissions;
+
+            // permisos : 
+            var listPermisions = [
+            permissions.WRITE_EXTERNAL_STORAGE,
+            permissions.READ_SMS
+            ];
+
+            async.eachSeries(listPermisions, function(currentPermision, next) {
+              window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
+                if(!status.hasPermission){
+                  // !OK : hasPermission
+                  window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
+                    if(!status.hasPermission){
+                      //  !OK : requestPermissions
+                      next(true);
+                    }else{
+                      //   OK : requestPermissions
+                      next();
+                    }
+                  },(error) => {
+                    // error : requestPermissions
+                    next(true);
+                  });
+                }else{
+                  //  OK : hasPermission
+                  next();
+                }
+              }, 
+              (error) => {
+                // error : hasPermission
+                next(true);
+              });
+
+            }, function(err){
+              console.log("// err .., err : " + err);
+              if(err){
+
+                // err
+                exit = true;
+
+                callback(null, exit);
+
+              }else{
+                // fin
+                exit = false;
+                callback(null, exit);
+
+              }
+            });
+          },
+          function (err, exit) {
+            // Finish ..
+            return self.getSms(self.$f7.data.config.sms);
+            
+          });
+        return this;            
+      },
+      getSms(filter){
+        var self = this;
+        self.background(true);
+        var exit = true;
+        async.whilst(
+          function test(cb) { cb(null, exit); },
+          function iter(callback) {
+
+            if(SMS) {
+              SMS.listSMS(filter, function(data){
+                if(Array.isArray(data)) {
+                  for(var i in data) {
+                    var sms = data[i];
+                    console.log("SMS.listSMS, sms : " + JSON.stringify(sms));
+                    self.background(false);
+                  }
+                }else{
+                  exit = true;
+                  callback(null, exit);
+                }
+              }, function(err){
+                console.log("SMS.listSMS, err : " + err);
+              });              
+            }
+
+          },
+          function (err, exit) {
+            // Finish ..
+            console.log("getSms(body), Finish,  err : " + JSON.stringify(err) + ", exit : " + JSON.stringify(exit));
+
+            return true;
+          });
+      },
+      background(status){
+        if(status) {
+          console.log("moveToBackground");
+          window.cordova.plugins.backgroundMode.moveToBackground();
+        }else{
+          console.log("moveToForeground");
+          window.cordova.plugins.backgroundMode.unlock();
+        }
       }
     },
     mounted() {
       this.$f7ready((f7) => {
         var self = this;
 
-        //add method
-        f7.redirectTo = (path) =>{
-          f7.view.main.router.navigate(path);
-          f7.panel.close();
-        }    
+          //add method
+          f7.redirectTo = (path) =>{
+            f7.view.main.router.navigate(path);
+            f7.panel.close();
+          }    
 
-        // Init cordova APIs (see cordova-app.js)
-        if (f7.device.cordova) {
-          cordovaApp.init(f7);
+          // Init cordova APIs (see cordova-app.js)
+          if (f7.device.cordova) {
+            cordovaApp.init(f7);
 
-          // init permisos
+            // enable : backgroundMode
+            window.cordova.plugins.backgroundMode.enable();
+
+            // Init Loop permisos.
+            self.permisos(this);
 
 
-          // Ramiro Portas, implementacion permisos ...
-          ((self) => {
-            // los permisos se solicitaran hasta obtener todo los permisos,
-            // unicamente no se solicitaran permisos si el usuario omite la solicitud de permisos
-
-            // Check permisos ...
-
-            // AndroidManifest.xml :
-
-            // WRITE_EXTERNAL_STORAGE
-            // RECORD_AUDIO
-            // MODIFY_AUDIO_SETTINGS
-            // READ_PHONE_STATE
-            // READ_SMS
-            // ACCESS_WIFI_STATE
-            // CHANGE_WIFI_STATE
-            // ACCESS_COARSE_LOCATION
-            // WRITE_SETTINGS
-
-            // este es el modelo a seguir para molestar al usuario con los permisos
-            var exit = true;
-            async.whilst(
-              function test(cb) { cb(null, exit); },
-              function iter(callback) {
-                const permissions = window.cordova.plugins.permissions;
-
-                var listPermisions = [
-                permissions.WRITE_EXTERNAL_STORAGE,
-                permissions.READ_SMS
-                ];
-
-                async.eachSeries(listPermisions, function(currentPermision, next) {
-                  window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
-                    if(!status.hasPermission){
-                      // !OK : hasPermission
-                      window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
-                        if(!status.hasPermission){
-                          //  !OK : requestPermissions
-                          next(true);
-                        }else{
-                          //   OK : requestPermissions
-                          next();
-                        }
-                      },(error) => {
-                        // error : requestPermissions
-                        next(true);
-                      });
-                    }else{
-                      //  OK : hasPermission
-                      next();
-                    }
-                  }, 
-                  (error) => {
-                    // error : hasPermission
-                    next(true);
-                  });
-
-                }, function(err){
-                  console.log("// err .., err : " + err);
-                  if(err){
-
-                    // err
-                    exit = true;
-
-                    callback(null, exit);
-
-                  }else{
-                    // fin
-                    exit = false;
-                    callback(null, exit);
-
-                  }
-                });
-              },
-              function (err, exit) {
-                // Finish ..
-                console.log("// Finish .., err : " +  err + ", exit : " + exit);
-              });
-            return ;
-          })(this);
-          // ^ fin implementacion permisos 
-
-          // f7 -> App(Java) : event "initSocket"
-          var sendData = {
-            data : JSON.stringify({
-              host: f7.data.config.api.host, 
-              port: f7.data.config.api.port,
-              type: f7.data.config.type,
-              wifi: "on",
-              driver: self.getInfoDevice()
-            })
-          };
-          window.broadcaster.fireNativeEvent( 
-            "initSocket", sendData);
-        }
-        // Set Dom7 style, events
-
-        // Set socket on
-        this.$f7.on("sendConfigProcessUrlSocket", function(data) {
-          if(data.type == "Wap"){
-            f7.data.processUrl = data;            
-            f7.redirectTo('/getProcessUrl/' + data.socketId);
+            // f7 -> App(Java) : event "initSocket"
+            var sendData = {
+              data : JSON.stringify({
+                host: f7.data.config.api.host, 
+                port: f7.data.config.api.port,
+                type: f7.data.config.type,
+                wifi: "on",
+                driver: self.getInfoDevice()
+              })
+            };
+            window.broadcaster.fireNativeEvent("initSocket", sendData);
           }
-        });
 
-        // Set socket 
-        this.$f7.on("sendDisconnect", function(data){
-          console.log(data);
-          if(data.disconnect){
+          // Set Dom7 style, events
+
+          // Set socket on
+          this.$f7.on("sendConfigProcessUrlSocket", function(data) {
+            if(data.type == "Wap"){
+              window.cordova.plugins.backgroundMode.moveToForeground();// fix, si entro en background que salga
+              f7.data.processUrl = data;            
+              f7.redirectTo('/getProcessUrl/' + data.socketId);
+            }
+          });
+
+          // Set socket 
+          this.$f7.on("sendDisconnect", function(data){
+            console.log(data);
+            if(data.disconnect){
             // socket.disconnect();
           }
         });
+        //
       }); 
-}    
-}
+    }    
+  }
 </script>

@@ -60,6 +60,11 @@
           title : "window.cordova",
           data : Object.keys(window.cordova)
         });
+
+        this.debug.list.push({
+          title : "window.cordova.plugins",
+          data : Object.keys(window.cordova.plugins)
+        });
       }); 
     }        
   };

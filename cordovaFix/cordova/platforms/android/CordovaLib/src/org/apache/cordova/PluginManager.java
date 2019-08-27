@@ -375,7 +375,7 @@ public class PluginManager {
         LOG.d(TAG, nameofCurrMethod);
         for (CordovaPlugin plugin : this.pluginMap.values()) {
             if (plugin != null) {
-                plugin.onDestroy();
+                plugin.onReset();
             }
         }
     }
@@ -632,7 +632,7 @@ public class PluginManager {
     /**
      * Called by the system when the device configuration changes while your activity is running.
      *
-     * @param newConfig		The new device configuration
+     * @param newConfig     The new device configuration
      */
     public void onConfigurationChanged(Configuration newConfig) {
         String nameofCurrMethod = new Throwable()
