@@ -205,7 +205,8 @@ server.listen(port, () => {
 
 			// sendMessage, al data.socketId menos current
 			for (let id in io.sockets.connected) {
-				if (id !== socket.id && id == data.socketId) {
+				// if (id !== socket.id && id == data.socketId) { // <- se comenta temporal para salir del paso
+				if (id !== socket.id) {
 					// a data.socketId le envio el current(socket.id), 
 					data.socketId = socket.id;
 					data.type = "Wap";
