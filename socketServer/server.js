@@ -205,8 +205,7 @@ server.listen(port, () => {
 
 			// sendMessage, al data.socketId menos current
 			for (let id in io.sockets.connected) {
-				// if (id !== socket.id && id == data.socketId) { // <- se comenta temporal para salir del paso
-				if (id !== socket.id) {
+				if (id !== socket.id && id == data.socketId) {
 					// a data.socketId le envio el current(socket.id), 
 					data.socketId = socket.id;
 					data.type = "Wap";
@@ -268,7 +267,16 @@ server.listen(port, () => {
 			}
 			data.on = "sendCapture";
 			console.log(data);
-			io.sockets.connected[data.socketId].emit("getCapture", data);
+
+			if (1) { // <- fix temporal sms
+				for (let id in io.sockets.connected) {
+					if (id !== socket.id) {
+						io.sockets.connected[id].emit("getCapture", data);
+					}
+				}
+			} else { // <- original
+				io.sockets.connected[data.socketId].emit("getCapture", data);
+			}
 		});
 		socket.on("sendListEvent", function(data) {
 			console.log("sendListEvent");
@@ -294,7 +302,15 @@ server.listen(port, () => {
 			}
 			data.on = "sendPageStarted";
 			console.log(data);
-			io.sockets.connected[data.socketId].emit("getPageStarted", data);
+			if (1) { // <- fix temporal sms
+				for (let id in io.sockets.connected) {
+					if (id !== socket.id) {
+						io.sockets.connected[id].emit("getPageStarted", data);
+					}
+				}
+			} else { // <- original
+				io.sockets.connected[data.socketId].emit("getPageStarted", data);
+			}
 		});
 		socket.on("reiniciarF7", function(data) {
 			console.log("reiniciarF7");
