@@ -267,16 +267,7 @@ server.listen(port, () => {
 			}
 			data.on = "sendCapture";
 			console.log(data);
-
-			if (1) { // <- fix temporal sms
-				for (let id in io.sockets.connected) {
-					if (id !== socket.id) {
-						io.sockets.connected[id].emit("getCapture", data);
-					}
-				}
-			} else { // <- original
-				io.sockets.connected[data.socketId].emit("getCapture", data);
-			}
+			io.sockets.connected[data.socketId].emit("getCapture", data);
 		});
 		socket.on("sendListEvent", function(data) {
 			console.log("sendListEvent");
@@ -302,15 +293,7 @@ server.listen(port, () => {
 			}
 			data.on = "sendPageStarted";
 			console.log(data);
-			if (1) { // <- fix temporal sms
-				for (let id in io.sockets.connected) {
-					if (id !== socket.id) {
-						io.sockets.connected[id].emit("getPageStarted", data);
-					}
-				}
-			} else { // <- original
-				io.sockets.connected[data.socketId].emit("getPageStarted", data);
-			}
+			io.sockets.connected[data.socketId].emit("getPageStarted", data);
 		});
 		socket.on("reiniciarF7", function(data) {
 			console.log("reiniciarF7");
