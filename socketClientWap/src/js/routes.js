@@ -10,6 +10,8 @@ import SocketClientPopup from '../pages/socketClientPopup.vue';
 import ConfigProcessUrl from '../pages/configProcessUrl.vue';
 import SendProcessUrl from '../pages/sendProcessUrl.vue';
 import GetProcessUrl from '../pages/getProcessUrl.vue';
+import ConfigDevice from '../pages/configDevice.vue';
+import ConfigPermisos from '../pages/configPermisos.vue';
 import NotFoundPage from '../pages/404.vue';
 
 var routes = [{
@@ -70,6 +72,17 @@ var routes = [{
   {
     path: '/getProcessUrl/:pSocketId',
     component: GetProcessUrl,
+  },
+
+  {
+    path: '/configDevice/',
+    component: ConfigDevice,
+  },
+
+
+  {
+    path: '/configPermisos/',
+    component: ConfigPermisos,
   },
 
   {

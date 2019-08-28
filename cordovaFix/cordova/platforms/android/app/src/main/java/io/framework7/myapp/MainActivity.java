@@ -24,17 +24,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import org.apache.cordova.*;
 import org.json.*;
 
 import android.os.SystemClock;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -607,6 +611,35 @@ public class MainActivity extends CordovaActivity
         };
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(getDisconnect, new IntentFilter("getDisconnect"));
+
+
+        // f7 -> App(Java) : set3g4g
+        BroadcastReceiver set3g4g = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Boolean data = intent.getExtras().getBoolean("data");
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : set3g4g, set " + data
+                );
+                // set 3g 4g
+                TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                Method methodSet = null;
+                try {
+                    methodSet = tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
+                    methodSet.invoke(tm,data);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(set3g4g, new IntentFilter("set3g4g"));
+
 
         // f7 -> App(Java) : getClients
         BroadcastReceiver getClients = new BroadcastReceiver() {

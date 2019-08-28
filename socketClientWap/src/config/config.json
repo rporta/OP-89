@@ -19,5 +19,11 @@
     "sms": {
         "address": "20300",
         "read": 1
+    },
+    "android": {
+        "permission": [
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_SMS"
+        ]
     }
 }

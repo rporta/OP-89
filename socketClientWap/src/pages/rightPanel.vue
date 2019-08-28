@@ -5,6 +5,12 @@
       <f7-list-item @click="$f7.redirectTo('/')" link="#" title="Inicio">
         <f7-icon text-color="white" slot="media" ios="f7:home" aurora="f7:home" md="material:home"></f7-icon>
       </f7-list-item>
+      <f7-list-item @click="$f7.redirectTo('/configPermisos/')" link="#" title="Configuracion de permisos" >
+        <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+      </f7-list-item>
+      <f7-list-item @click="$f7.redirectTo('/configDevice/')" link="#" title="Configuracion del dispositivo" >
+        <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+      </f7-list-item>
       <f7-list-item @click="$f7.redirectTo('/configPerfil/')" link="#" title="Configuracion de perfil" >
         <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
       </f7-list-item>
