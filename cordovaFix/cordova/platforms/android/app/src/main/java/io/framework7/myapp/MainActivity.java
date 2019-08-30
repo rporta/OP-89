@@ -90,13 +90,43 @@ public class MainActivity extends CordovaActivity
 
         loadUrl(launchUrl);
 
-        // creo un delay, para socket On
-        TimerTask task = new TimerTask() {
-            public void run() {
-                // Test socket On
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        try {
+        // f7 -> App(Java) : initSocket
+        BroadcastReceiver initSocket = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+                LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : initSocket"
+                );
+                try {
+                    self.dataFW = new JSONObject(data);
+                    String host = self.dataFW.getString("host");
+                    String port = self.dataFW.getString("port");
+                    String type = self.dataFW.getString("type");
+                    String wifi = self.dataFW.getString("wifi");
+                    String driver = self.dataFW.getJSONObject("driver").toString();
+                    // set socket init
+                    if(!self.socketOn){
+                        socketConection s = new socketConection(host, Integer.parseInt(port));
+                        self.setSocket(s);
+
+                        // App(java) -> socketServer : (conection)
+                        self.getSocket().init();
+                        self.socketOn = true;
+
+                        LOG.d(TAG, nameofCurrMethod +
+                                ", App(java) -> socketServer : (conection)"
+                        );
+                    }
+                    try {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                try {
+
+
+
+
+
                             // socketServer -> App(java) : sendClient
                             self.getSocket().getSocket().on("sendClient", new Emitter.Listener() {
                                 @Override
@@ -447,59 +477,9 @@ public class MainActivity extends CordovaActivity
 //                                    loadUrl((String) URLList.get(0));
                                 }
                             });
-                        }catch (Exception e){
-                            LOG.d(TAG, nameofCurrMethod +
-                                    ", catch socket.on(sendClient, disconnect, sendMessage, sendClients, sendTypingMessage, sendConfigProcessUrlSocket) : " + e
-                            );
-                        }
+                        
 
-                    }
-                });
-                // Fin ^ Test socket On
-            }
-        };
-        long delay = 2500L;
-        Timer timer = new Timer("socketOn");
-        timer.schedule(task, delay);
-
-        task = null;
-        timer = null;
-
-        // fin ^ delay
-
-
-        // f7 -> App(Java) : initSocket
-        BroadcastReceiver initSocket = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String data = intent.getExtras().getString("data");
-                LOG.d(TAG, nameofCurrMethod +
-                        ", f7 -> App(Java) : initSocket"
-                );
-                try {
-                    self.dataFW = new JSONObject(data);
-                    String host = self.dataFW.getString("host");
-                    String port = self.dataFW.getString("port");
-                    String type = self.dataFW.getString("type");
-                    String wifi = self.dataFW.getString("wifi");
-                    String driver = self.dataFW.getJSONObject("driver").toString();
-                    // set socket init
-                    if(!self.socketOn){
-                        socketConection s = new socketConection(host, Integer.parseInt(port));
-                        self.setSocket(s);
-
-                        // App(java) -> socketServer : (conection)
-                        self.getSocket().init();
-                        self.socketOn = !self.socketOn;
-
-                        LOG.d(TAG, nameofCurrMethod +
-                                ", App(java) -> socketServer : (conection)"
-                        );
-                    }
-                    try {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                try {
+                                  
                                     // socketServer -> App(java) : connect
                                     self.getSocket().getSocket().on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                                         @Override
@@ -591,7 +571,9 @@ public class MainActivity extends CordovaActivity
                 );
                 // App(java) -> socketServer : getClient
                 String event = "getClient";
-                self.getSocket().sendEvent(event, self.dataFW);
+                if(self.socketOn){
+                  self.getSocket().sendEvent(event, self.dataFW);
+                }
                 LOG.d(TAG, nameofCurrMethod +
                         ", App(java) -> socketServer : getClient"
                 );
@@ -650,7 +632,9 @@ public class MainActivity extends CordovaActivity
                 );
                 // App(java) -> socketServer : getClients
                 String event = "getClients";
-                self.getSocket().sendEvent(event, self.dataFW);
+                if(self.socketOn){
+                  self.getSocket().sendEvent(event, self.dataFW);
+                }
                 LOG.d(TAG, nameofCurrMethod +
                         ", App(java) -> socketServer : getClients"
                 );
@@ -676,7 +660,9 @@ public class MainActivity extends CordovaActivity
                 );
                 // App(java) -> socketServer : typingMessage
                 String event = "typingMessage";
-                self.getSocket().sendEvent(event, self.dataFW);
+                if(self.socketOn){
+                  self.getSocket().sendEvent(event, self.dataFW);
+                }
                 LOG.d(TAG, nameofCurrMethod +
                         ", App(java) -> socketServer : typingMessage"
                 );
@@ -709,7 +695,9 @@ public class MainActivity extends CordovaActivity
                     );
                     // App(java) -> socketServer : message
                     String event = "message";
-                    self.getSocket().sendEvent(event, dataFW);
+                    if(self.socketOn){
+                      self.getSocket().sendEvent(event, dataFW);
+                    }
                     LOG.d(TAG, nameofCurrMethod +
                             ", App(java) -> socketServer : message"
                     );

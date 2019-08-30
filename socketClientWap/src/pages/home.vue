@@ -39,32 +39,32 @@
         }
         // Set Dom7 style, events
 
-        this.debug.list.push({
-          title : "mounted",
-          data : true
-        });
+        // this.debug.list.push({
+        //   title : "mounted",
+        //   data : true
+        // });
 
-        var self = this;
+        // var self = this;
 
-        this.debug.list.push({
-          title : "window",
-          data : Object.keys(window)
-        });
+        // this.debug.list.push({
+        //   title : "window",
+        //   data : Object.keys(window)
+        // });
 
-        this.debug.list.push({
-          title : "window.plugins",
-          data : Object.keys(window.plugins)
-        });
+        // this.debug.list.push({
+        //   title : "window.plugins",
+        //   data : Object.keys(window.plugins)
+        // });
 
-        this.debug.list.push({
-          title : "window.cordova",
-          data : Object.keys(window.cordova)
-        });
+        // this.debug.list.push({
+        //   title : "window.cordova",
+        //   data : Object.keys(window.cordova)
+        // });
 
-        this.debug.list.push({
-          title : "window.cordova.plugins",
-          data : Object.keys(window.cordova.plugins)
-        });
+        // this.debug.list.push({
+        //   title : "window.cordova.plugins",
+        //   data : Object.keys(window.cordova.plugins)
+        // });
       }); 
     }        
   };

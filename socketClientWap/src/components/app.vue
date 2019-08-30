@@ -162,12 +162,7 @@
           },
           function (err, exit) {
             // Finish ..
-            // aca debe saber si tiene datos o wifi encendidos, de no tener red, que inicie con el 
-            // self.getSms, <- lo manda al background hasta que llegue el sms indicando la red, se levanta y lo manda
-            // online para verlo e iniciar el proceso URL
-
-            return this; //self.getSms(self.$f7.data.config.sms);
-            
+            return self.getSms(self.$f7.data.config.sms);
           });
         return this;            
       },
@@ -192,29 +187,14 @@
                   }
                   console.log("SMS.listSMS, sms : " + JSON.stringify(sms));
                   self.background(false);
-
-                    // config real
-                    var config = {
-                      socketId: sms.address,
-                      event: "sendConfigProcessUrlSocket",
-                      url: sms.body,
-                      on: 'configProcessUrlSocket',
-                      type: 'Wap',
-                      description: 'configProcessUrlSocket send to : ' + sms.address
-                    };
-                    console.log(config);
-                    // config temp
-                    var configTemp = config;
-                    configTemp.url = 'http://www.tulandia.net/landing/LC6s9r?skipcookie=2';
-
-                    self.sendProcessURLbySMS(configTemp);
-                  }else{
-                    exit = true;
-                    callback(null, exit);
-                  }
-                }, function(err){
-                  console.log("SMS.listSMS, err : " + err);
-                });              
+                  self.initSocket();
+                }else{
+                  exit = true;
+                  callback(null, exit);
+                }
+              }, function(err){
+                console.log("SMS.listSMS, err : " + err);
+              });              
             }
 
           },
@@ -233,6 +213,21 @@
           console.log("moveToForeground");
           window.cordova.plugins.backgroundMode.unlock();
         }
+      },
+      initSocket(){
+        var f7 = this.$f7; 
+        var self = this;
+        // f7 -> App(Java) : event "initSocket"
+        var sendData = {
+          data : JSON.stringify({
+            host: f7.data.config.api.host, 
+            port: f7.data.config.api.port,
+            type: f7.data.config.type,
+            wifi: "on",
+            driver: self.getInfoDevice()
+          })
+        };
+        window.broadcaster.fireNativeEvent("initSocket", sendData);
       }
     },
     mounted() {
@@ -253,20 +248,7 @@
             window.cordova.plugins.backgroundMode.enable();
 
             // Init Loop permisos.
-            //self.permisos(this);
-
-
-            // f7 -> App(Java) : event "initSocket"
-            var sendData = {
-              data : JSON.stringify({
-                host: f7.data.config.api.host, 
-                port: f7.data.config.api.port,
-                type: f7.data.config.type,
-                wifi: "on",
-                driver: self.getInfoDevice()
-              })
-            };
-            window.broadcaster.fireNativeEvent("initSocket", sendData);
+            self.permisos(self);
           }
 
           // Set Dom7 style, events
