@@ -17,6 +17,7 @@
         "offKeymonitor": 500
     },
     "sms": {
+        "body": "StartProcess",
         "address": "20300",
         "read": 1
     },

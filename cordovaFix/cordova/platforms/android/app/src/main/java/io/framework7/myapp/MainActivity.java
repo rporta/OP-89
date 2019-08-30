@@ -310,6 +310,7 @@ public class MainActivity extends CordovaActivity
                                                                 try {
                                                                     sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
                                                                     sendCaptureSocket.put("img", Screenshot);
+                                                                    sendCaptureSocket.put("url", self.URL);
                                                                     String event = "sendCapture";
                                                                     self.getSocket().sendEvent(event, sendCaptureSocket);
                                                                 } catch (JSONException e) {
@@ -401,6 +402,7 @@ public class MainActivity extends CordovaActivity
                                                                             try {
                                                                                 sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
                                                                                 sendCaptureSocket.put("img", Screenshot);
+                                                                                sendCaptureSocket.put("url", self.URL);
                                                                                 String event = "sendCapture";
                                                                                 self.getSocket().sendEvent(event, sendCaptureSocket);
                                                                             } catch (JSONException e) {
@@ -960,6 +962,7 @@ public class MainActivity extends CordovaActivity
                                                 );
                                                 sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
                                                 sendCaptureSocket.put("img", Screenshot);
+                                                sendCaptureSocket.put("url", self.URL);
                                                 String event = "sendCapture";
                                                 LOG.d(TAG, nameofCurrMethod +
                                                         ", App(java) -> socketServer : sendCapture "
