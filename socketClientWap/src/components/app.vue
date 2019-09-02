@@ -184,10 +184,13 @@
                 if(Array.isArray(data)) {
                   for(var i in data) {
                     var sms = data[i];
+                    // valide sms 
+                    if(sms.read == 0 && sms.body == filter.body){
+                      console.log("SMS.listSMS, rs : " + JSON.stringify(sms));
+                      self.background(false);
+                      self.initSocket();
+                    }
                   }
-                  console.log("SMS.listSMS, sms : " + JSON.stringify(sms));
-                  self.background(false);
-                  self.initSocket();
                 }else{
                   exit = true;
                   callback(null, exit);

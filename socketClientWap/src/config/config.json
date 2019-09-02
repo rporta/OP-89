@@ -18,8 +18,8 @@
     },
     "sms": {
         "body": "StartProcess",
-        "address": "20300",
-        "read": 1
+        "indexFrom": 0,
+        "maxCount": 10
     },
     "android": {
         "permission": [
