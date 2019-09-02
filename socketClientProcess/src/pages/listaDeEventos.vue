@@ -132,7 +132,7 @@
           const listaDeEventosStringJSON = JSON.parse(listaDeEventosString); 
 
           var self = this;
-          this.truncateList();
+          this.$f7.data.listaDeEventos = [];
           setTimeout(function() {
             self.$f7.data.listaDeEventos = newDataJSON;
           }, 1);
@@ -158,7 +158,8 @@
 
             console.log(dataSocket);
             socket.emit("sendListEvent", dataSocket);
-            self.$f7.dialog.preloader('Esperando Captura ...');            
+            self.$f7.dialog.preloader('Esperando Captura ...');     
+            self.$f7.data.listaDeEventos = [];       
           }, (data)=>{
             // cancel ..
 
