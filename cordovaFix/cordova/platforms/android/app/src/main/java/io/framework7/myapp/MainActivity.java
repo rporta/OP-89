@@ -18,13 +18,12 @@
  */
 package io.framework7.myapp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
-import android.net.ConnectivityManager;
+
 import android.os.Bundle;
 import org.apache.cordova.*;
 import org.json.*;
@@ -39,7 +38,6 @@ import java.io.IOException;
 import java.lang.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -51,11 +49,15 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.socketImplement.socketConection;
 
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.view.MotionEvent;
+
+import static android.view.WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON;
+import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
+import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
+import static android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
 
 public class MainActivity extends CordovaActivity
 {
@@ -71,6 +73,7 @@ public class MainActivity extends CordovaActivity
     public Integer countRemote = 0;
     public socketConection socket;
     public boolean socketOn = false;
+    public boolean isBackground = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -127,361 +130,361 @@ public class MainActivity extends CordovaActivity
 
 
 
-                            // socketServer -> App(java) : sendClient
-                            self.getSocket().getSocket().on("sendClient", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONObject data = (JSONObject)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : sendClient"
-                                    );
+                                    // socketServer -> App(java) : sendClient
+                                    self.getSocket().getSocket().on("sendClient", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONObject data = (JSONObject)args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : sendClient"
+                                            );
 
-                                    // App(java) -> f7 : sendClient
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "sendClient");
-                                    b.putString("data", data.toString());
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : sendClient"
-                                    );
-                                }
-                            });
-
-                            // socketServer -> App(java) : disconnect
-                            self.getSocket().getSocket().on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : disconnect"
-                                    );
-
-                                    // App(java) -> f7 : disconnect
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "disconnect");
-                                    b.putString("data", "");
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-
-
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : disconnect"
-                                    );
-                                }
-                            });
-
-                            // socketServer -> App(java) : sendMessage
-                            self.getSocket().getSocket().on("sendMessage", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONArray data = (JSONArray)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : sendMessage"
-                                    );
-
-                                    // App(java) -> f7 : sendMessage
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "sendMessage");
-                                    b.putString("data", data.toString());
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : sendMessage " + data.toString()
-                                    );
-                                }
-                            });
-
-                            // socketServer -> App(java) : sendClients
-                            self.getSocket().getSocket().on("sendClients", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONArray data = (JSONArray)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : sendClients"
-                                    );
-
-                                    // App(java) -> f7 : sendClients
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "sendClients");
-                                    b.putString("data", data.toString());
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : sendClients"
-                                    );
-                                }
-                            });
-
-                            // socketServer -> App(java) : sendTypingMessage
-                            self.getSocket().getSocket().on("sendTypingMessage", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONObject data = (JSONObject)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : sendTypingMessage"
-                                    );
-
-                                    // App(java) -> f7 : sendTypingMessage
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "sendTypingMessage");
-                                    b.putString("data", data.toString());
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", App(java) -> f7 : sendTypingMessage"
-                                    );
-                                }
-                            });
-
-                            // socketServer -> App(java) : sendConfigProcessUrlSocket
-                            self.getSocket().getSocket().on("sendConfigProcessUrlSocket", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONObject data = (JSONObject)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : sendConfigProcessUrlSocket"
-                                    );
-                                    // App(java) -> f7 : sendConfigProcessUrlSocket
-                                    Bundle b = new Bundle();
-                                    b.putString("dataType", "socket");
-                                    b.putString("event", "sendConfigProcessUrlSocket");
-                                    b.putString("data", data.toString());
-                                    final Intent onDataModuleJava = new Intent("onDataModuleJava");
-                                    onDataModuleJava.putExtras(b);
-                                    if(self.PageStatus == "f7"){
-                                        LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
-                                        LOG.d(TAG, nameofCurrMethod +
-                                                ", App(java) -> f7 : sendConfigProcessUrlSocket"
-                                        );
-                                    }else{
-                                        try {
-                                            self.appView.loadUrl(data.getString("url"));
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
+                                            // App(java) -> f7 : sendClient
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "sendClient");
+                                            b.putString("data", data.toString());
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", App(java) -> f7 : sendClient"
+                                            );
                                         }
-                                    }
-                                }
-                            });
+                                    });
 
-                            // socketServer -> App(java) : getListEvent
-                            self.getSocket().getSocket().on("getListEvent", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONObject data = (JSONObject)args[0];
-                                    try {
-                                        JSONArray listaDeEventos = data.getJSONArray("listaDeEventos");
+                                    // socketServer -> App(java) : disconnect
+                                    self.getSocket().getSocket().on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : disconnect"
+                                            );
 
-                                        LOG.d(TAG, nameofCurrMethod +
-                                                ", socketServer -> App(java) : getListEvent " + listaDeEventos.toString()
-                                        );
+                                            // App(java) -> f7 : disconnect
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "disconnect");
+                                            b.putString("data", "");
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
 
-                                        if(listaDeEventos.length() == 0){
-                                            // creo un delay, para para lanzar la Captura
-                                            TimerTask taskCaptura = new TimerTask() {
-                                                public void run() {
-                                                    cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                                                    LOG.d(TAG, nameofCurrMethod +
-                                                            ", Screenshot -> saveScreenshot"
-                                                    );
 
-                                                    // creo un delay, para para recuperar la captura
-                                                    TimerTask taskGetScreenshot = new TimerTask() {
-                                                        public void run() {
-                                                            File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
-                                                            File file = new File(folder, "opraTestScreenShot.jpg");
-                                                            FileInputStream streamIn = null;
-                                                            try {
-                                                                streamIn = new FileInputStream(file);
-                                                                Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
-                                                                streamIn.close();
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", App(java) -> f7 : disconnect"
+                                            );
+                                        }
+                                    });
 
-                                                                String Screenshot = self.getScreenshot(bitmap, 50);
-                                                                JSONObject sendCaptureSocket = new JSONObject();
-                                                                try {
-                                                                    sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
-                                                                    sendCaptureSocket.put("img", Screenshot);
-                                                                    sendCaptureSocket.put("url", self.URL);
-                                                                    String event = "sendCapture";
-                                                                    self.getSocket().sendEvent(event, sendCaptureSocket);
-                                                                } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                }
+                                    // socketServer -> App(java) : sendMessage
+                                    self.getSocket().getSocket().on("sendMessage", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONArray data = (JSONArray)args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : sendMessage"
+                                            );
 
-                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                        ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                                );
+                                            // App(java) -> f7 : sendMessage
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "sendMessage");
+                                            b.putString("data", data.toString());
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", App(java) -> f7 : sendMessage " + data.toString()
+                                            );
+                                        }
+                                    });
 
-                                                            } catch (FileNotFoundException e) {
-                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                        ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                                );
-                                                                e.printStackTrace();
-                                                            } catch (IOException e) {
-                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                        ", Screenshot -> saveScreenshot, IOException"
-                                                                );
-                                                                e.printStackTrace();
-                                                            }
-                                                        }
-                                                    };
-                                                    long delayGetScreenshot = 1000L;
-                                                    Timer timerGetScreenshot = new Timer("getScreenshot");
-                                                    timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
+                                    // socketServer -> App(java) : sendClients
+                                    self.getSocket().getSocket().on("sendClients", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONArray data = (JSONArray)args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : sendClients"
+                                            );
 
-                                                    taskGetScreenshot = null;
-                                                    timerGetScreenshot = null;
+                                            // App(java) -> f7 : sendClients
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "sendClients");
+                                            b.putString("data", data.toString());
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", App(java) -> f7 : sendClients"
+                                            );
+                                        }
+                                    });
+
+                                    // socketServer -> App(java) : sendTypingMessage
+                                    self.getSocket().getSocket().on("sendTypingMessage", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONObject data = (JSONObject)args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : sendTypingMessage"
+                                            );
+
+                                            // App(java) -> f7 : sendTypingMessage
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "sendTypingMessage");
+                                            b.putString("data", data.toString());
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", App(java) -> f7 : sendTypingMessage"
+                                            );
+                                        }
+                                    });
+
+                                    // socketServer -> App(java) : sendConfigProcessUrlSocket
+                                    self.getSocket().getSocket().on("sendConfigProcessUrlSocket", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONObject data = (JSONObject)args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : sendConfigProcessUrlSocket"
+                                            );
+                                            // App(java) -> f7 : sendConfigProcessUrlSocket
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "sendConfigProcessUrlSocket");
+                                            b.putString("data", data.toString());
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            if(self.PageStatus == "f7"){
+                                                LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                                LOG.d(TAG, nameofCurrMethod +
+                                                        ", App(java) -> f7 : sendConfigProcessUrlSocket"
+                                                );
+                                            }else{
+                                                try {
+                                                    self.appView.loadUrl(data.getString("url"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
-                                            };
-                                            long delayCaptura = 1000L;
-                                            Timer timerCaptura = new Timer("Captura");
-                                            timerCaptura.schedule(taskCaptura, delayCaptura);
-                                        }else{
-                                            for (int i=0; i < listaDeEventos.length(); i++) {
-                                                JSONObject currentEvent = listaDeEventos.getJSONObject(i);
-                                                Integer x = currentEvent.getInt("x");
-                                                Integer y = currentEvent.getInt("y");
-                                                String text = currentEvent.getString("data");
+                                            }
+                                        }
+                                    });
 
-                                                JSONArray ParamFocus = new JSONArray();
-                                                JSONObject coordenadas = new JSONObject();
-                                                coordenadas.put("x", x);
-                                                coordenadas.put("y", y);
-                                                //
-                                                ParamFocus.put(0, coordenadas);
-
-
-                                                // realizamos toch native
-                                                // self.generateTouch(ParamFocus);
-                                                cordovaInterface.pluginManager.exec("Focus", "focus", "", ParamFocus.toString());
-                                                
-                                                Integer w = self.appView.getView().getWidth();
-                                                Integer h = self.appView.getView().getHeight();
-                                                LOG.d(TAG, ", appView getWidth : " + w + ", appView getHeight : " + h);
-
-
-
-                                                // creo un delay, para para lanzar la emulateProcessKey
-                                                TimerTask taskEmulateProcessKey = new TimerTask() {
-                                                    public void run() {
-                                                        ProcessKey p = new ProcessKey();
-                                                        p.setAppView(appView);
-                                                        p.setKey(text);
-                                                        p.emulateProcessKey();
-
-                                                        // creo un delay, para para lanzar la Captura
-                                                        TimerTask taskCaptura = new TimerTask() {
-                                                            public void run() {
-                                                                cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
-                                                                LOG.d(TAG, nameofCurrMethod +
-                                                                        ", Screenshot -> saveScreenshot"
-                                                                );
-
-                                                                // creo un delay, para para recuperar la captura
-                                                                TimerTask taskGetScreenshot = new TimerTask() {
-                                                                    public void run() {
-                                                                        File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
-                                                                        File file = new File(folder, "opraTestScreenShot.jpg");
-                                                                        FileInputStream streamIn = null;
-                                                                        try {
-                                                                            streamIn = new FileInputStream(file);
-                                                                            Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
-                                                                            streamIn.close();
-
-                                                                            String Screenshot = self.getScreenshot(bitmap, 50);
-                                                                            JSONObject sendCaptureSocket = new JSONObject();
-                                                                            try {
-                                                                                sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
-                                                                                sendCaptureSocket.put("img", Screenshot);
-                                                                                sendCaptureSocket.put("url", self.URL);
-                                                                                String event = "sendCapture";
-                                                                                self.getSocket().sendEvent(event, sendCaptureSocket);
-                                                                            } catch (JSONException e) {
-                                                                                e.printStackTrace();
-                                                                            }
-
-                                                                            LOG.d(TAG, nameofCurrMethod +
-                                                                                    ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                                            );
-
-                                                                        } catch (FileNotFoundException e) {
-                                                                            LOG.d(TAG, nameofCurrMethod +
-                                                                                    ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                                            );
-                                                                            e.printStackTrace();
-                                                                        } catch (IOException e) {
-                                                                            LOG.d(TAG, nameofCurrMethod +
-                                                                                    ", Screenshot -> saveScreenshot, IOException"
-                                                                            );
-                                                                            e.printStackTrace();
-                                                                        }
-                                                                    }
-                                                                };
-                                                                long delayGetScreenshot = 1000L;
-                                                                Timer timerGetScreenshot = new Timer("getScreenshot");
-                                                                timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
-
-                                                                taskGetScreenshot = null;
-                                                                timerGetScreenshot = null;
-                                                            }
-                                                        };
-                                                        long delayCaptura = 1000L;
-                                                        Timer timerCaptura = new Timer("Captura");
-                                                        timerCaptura.schedule(taskCaptura, delayCaptura);
-
-                                                    }
-                                                };
-                                                long delayEmulateProcessKey = 1000L;
-                                                Timer timerEmulateProcessKey = new Timer("emulateProcessKey");
-                                                timerEmulateProcessKey.schedule(taskEmulateProcessKey, delayEmulateProcessKey);
-
-
-                                                                                                    
+                                    // socketServer -> App(java) : getListEvent
+                                    self.getSocket().getSocket().on("getListEvent", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONObject data = (JSONObject)args[0];
+                                            try {
+                                                JSONArray listaDeEventos = data.getJSONArray("listaDeEventos");
 
                                                 LOG.d(TAG, nameofCurrMethod +
-                                                        ", Event ( " + i + " )" +
-                                                        ", x ( " + x + " )" +
-                                                        ", y ( " + y + " )" +
-                                                        ", text ( " + text + " )"
+                                                        ", socketServer -> App(java) : getListEvent " + listaDeEventos.toString()
                                                 );
+
+                                                if(listaDeEventos.length() == 0){
+                                                    // creo un delay, para para lanzar la Captura
+                                                    TimerTask taskCaptura = new TimerTask() {
+                                                        public void run() {
+                                                            cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
+                                                            LOG.d(TAG, nameofCurrMethod +
+                                                                    ", Screenshot -> saveScreenshot"
+                                                            );
+
+                                                            // creo un delay, para para recuperar la captura
+                                                            TimerTask taskGetScreenshot = new TimerTask() {
+                                                                public void run() {
+                                                                    File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
+                                                                    File file = new File(folder, "opraTestScreenShot.jpg");
+                                                                    FileInputStream streamIn = null;
+                                                                    try {
+                                                                        streamIn = new FileInputStream(file);
+                                                                        Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
+                                                                        streamIn.close();
+
+                                                                        String Screenshot = self.getScreenshot(bitmap, 50);
+                                                                        JSONObject sendCaptureSocket = new JSONObject();
+                                                                        try {
+                                                                            sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
+                                                                            sendCaptureSocket.put("img", Screenshot);
+                                                                            sendCaptureSocket.put("url", self.URL);
+                                                                            String event = "sendCapture";
+                                                                            self.getSocket().sendEvent(event, sendCaptureSocket);
+                                                                        } catch (JSONException e) {
+                                                                            e.printStackTrace();
+                                                                        }
+
+                                                                        LOG.d(TAG, nameofCurrMethod +
+                                                                                ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
+                                                                        );
+
+                                                                    } catch (FileNotFoundException e) {
+                                                                        LOG.d(TAG, nameofCurrMethod +
+                                                                                ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
+                                                                        );
+                                                                        e.printStackTrace();
+                                                                    } catch (IOException e) {
+                                                                        LOG.d(TAG, nameofCurrMethod +
+                                                                                ", Screenshot -> saveScreenshot, IOException"
+                                                                        );
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+                                                            };
+                                                            long delayGetScreenshot = 1000L;
+                                                            Timer timerGetScreenshot = new Timer("getScreenshot");
+                                                            timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
+
+                                                            taskGetScreenshot = null;
+                                                            timerGetScreenshot = null;
+                                                        }
+                                                    };
+                                                    long delayCaptura = 1000L;
+                                                    Timer timerCaptura = new Timer("Captura");
+                                                    timerCaptura.schedule(taskCaptura, delayCaptura);
+                                                }else{
+                                                    for (int i=0; i < listaDeEventos.length(); i++) {
+                                                        JSONObject currentEvent = listaDeEventos.getJSONObject(i);
+                                                        Integer x = currentEvent.getInt("x");
+                                                        Integer y = currentEvent.getInt("y");
+                                                        String text = currentEvent.getString("data");
+
+                                                        JSONArray ParamFocus = new JSONArray();
+                                                        JSONObject coordenadas = new JSONObject();
+                                                        coordenadas.put("x", x);
+                                                        coordenadas.put("y", y);
+                                                        //
+                                                        ParamFocus.put(0, coordenadas);
+
+
+                                                        // realizamos toch native
+                                                        // self.generateTouch(ParamFocus);
+                                                        cordovaInterface.pluginManager.exec("Focus", "focus", "", ParamFocus.toString());
+
+                                                        Integer w = self.appView.getView().getWidth();
+                                                        Integer h = self.appView.getView().getHeight();
+                                                        LOG.d(TAG, ", appView getWidth : " + w + ", appView getHeight : " + h);
+
+
+
+                                                        // creo un delay, para para lanzar la emulateProcessKey
+                                                        TimerTask taskEmulateProcessKey = new TimerTask() {
+                                                            public void run() {
+                                                                ProcessKey p = new ProcessKey();
+                                                                p.setAppView(appView);
+                                                                p.setKey(text);
+                                                                p.emulateProcessKey();
+
+                                                                // creo un delay, para para lanzar la Captura
+                                                                TimerTask taskCaptura = new TimerTask() {
+                                                                    public void run() {
+                                                                        cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
+                                                                        LOG.d(TAG, nameofCurrMethod +
+                                                                                ", Screenshot -> saveScreenshot"
+                                                                        );
+
+                                                                        // creo un delay, para para recuperar la captura
+                                                                        TimerTask taskGetScreenshot = new TimerTask() {
+                                                                            public void run() {
+                                                                                File folder = new File(Environment.getExternalStorageDirectory(), "Pictures");
+                                                                                File file = new File(folder, "opraTestScreenShot.jpg");
+                                                                                FileInputStream streamIn = null;
+                                                                                try {
+                                                                                    streamIn = new FileInputStream(file);
+                                                                                    Bitmap bitmap = BitmapFactory.decodeStream(streamIn);
+                                                                                    streamIn.close();
+
+                                                                                    String Screenshot = self.getScreenshot(bitmap, 50);
+                                                                                    JSONObject sendCaptureSocket = new JSONObject();
+                                                                                    try {
+                                                                                        sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
+                                                                                        sendCaptureSocket.put("img", Screenshot);
+                                                                                        sendCaptureSocket.put("url", self.URL);
+                                                                                        String event = "sendCapture";
+                                                                                        self.getSocket().sendEvent(event, sendCaptureSocket);
+                                                                                    } catch (JSONException e) {
+                                                                                        e.printStackTrace();
+                                                                                    }
+
+                                                                                    LOG.d(TAG, nameofCurrMethod +
+                                                                                            ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
+                                                                                    );
+
+                                                                                } catch (FileNotFoundException e) {
+                                                                                    LOG.d(TAG, nameofCurrMethod +
+                                                                                            ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
+                                                                                    );
+                                                                                    e.printStackTrace();
+                                                                                } catch (IOException e) {
+                                                                                    LOG.d(TAG, nameofCurrMethod +
+                                                                                            ", Screenshot -> saveScreenshot, IOException"
+                                                                                    );
+                                                                                    e.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        };
+                                                                        long delayGetScreenshot = 1000L;
+                                                                        Timer timerGetScreenshot = new Timer("getScreenshot");
+                                                                        timerGetScreenshot.schedule(taskGetScreenshot, delayGetScreenshot);
+
+                                                                        taskGetScreenshot = null;
+                                                                        timerGetScreenshot = null;
+                                                                    }
+                                                                };
+                                                                long delayCaptura = 1000L;
+                                                                Timer timerCaptura = new Timer("Captura");
+                                                                timerCaptura.schedule(taskCaptura, delayCaptura);
+
+                                                            }
+                                                        };
+                                                        long delayEmulateProcessKey = 1000L;
+                                                        Timer timerEmulateProcessKey = new Timer("emulateProcessKey");
+                                                        timerEmulateProcessKey.schedule(taskEmulateProcessKey, delayEmulateProcessKey);
+
+
+
+
+                                                        LOG.d(TAG, nameofCurrMethod +
+                                                                ", Event ( " + i + " )" +
+                                                                ", x ( " + x + " )" +
+                                                                ", y ( " + y + " )" +
+                                                                ", text ( " + text + " )"
+                                                        );
+                                                    }
+
+                                                }
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-
                                         }
+                                    });
 
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-
-                            // socketServer -> App(java) : getReiniciarF7
-                            self.getSocket().getSocket().on("getReiniciarF7", new Emitter.Listener() {
-                                @Override
-                                public void call(Object... args) {
-                                    JSONObject data = (JSONObject)args[0];
-                                    LOG.d(TAG, nameofCurrMethod +
-                                            ", socketServer -> App(java) : getReiniciarF7"
-                                    );
-                                    Intent intent = new Intent(self, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    self.startActivity(intent);
-                                    Runtime.getRuntime().exit(0);
+                                    // socketServer -> App(java) : getReiniciarF7
+                                    self.getSocket().getSocket().on("getReiniciarF7", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object... args) {
+                                            JSONObject data = (JSONObject)args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                    ", socketServer -> App(java) : getReiniciarF7"
+                                            );
+                                            Intent intent = new Intent(self, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            self.startActivity(intent);
+                                            Runtime.getRuntime().exit(0);
 //                                    loadUrl((String) URLList.get(0));
-                                }
-                            });
-                        
+                                        }
+                                    });
 
-                                  
+
+
                                     // socketServer -> App(java) : connect
                                     self.getSocket().getSocket().on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                                         @Override
@@ -574,7 +577,7 @@ public class MainActivity extends CordovaActivity
                 // App(java) -> socketServer : getClient
                 String event = "getClient";
                 if(self.socketOn){
-                  self.getSocket().sendEvent(event, self.dataFW);
+                    self.getSocket().sendEvent(event, self.dataFW);
                 }
                 LOG.d(TAG, nameofCurrMethod +
                         ", App(java) -> socketServer : getClient"
@@ -635,7 +638,7 @@ public class MainActivity extends CordovaActivity
                 // App(java) -> socketServer : getClients
                 String event = "getClients";
                 if(self.socketOn){
-                  self.getSocket().sendEvent(event, self.dataFW);
+                    self.getSocket().sendEvent(event, self.dataFW);
                 }
                 LOG.d(TAG, nameofCurrMethod +
                         ", App(java) -> socketServer : getClients"
@@ -663,7 +666,7 @@ public class MainActivity extends CordovaActivity
                 // App(java) -> socketServer : typingMessage
                 String event = "typingMessage";
                 if(self.socketOn){
-                  self.getSocket().sendEvent(event, self.dataFW);
+                    self.getSocket().sendEvent(event, self.dataFW);
                 }
                 LOG.d(TAG, nameofCurrMethod +
                         ", App(java) -> socketServer : typingMessage"
@@ -698,7 +701,7 @@ public class MainActivity extends CordovaActivity
                     // App(java) -> socketServer : message
                     String event = "message";
                     if(self.socketOn){
-                      self.getSocket().sendEvent(event, dataFW);
+                        self.getSocket().sendEvent(event, dataFW);
                     }
                     LOG.d(TAG, nameofCurrMethod +
                             ", App(java) -> socketServer : message"
@@ -767,6 +770,28 @@ public class MainActivity extends CordovaActivity
         };
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(LoadProcessUrl, new IntentFilter("LoadProcessUrl"));
+
+        // f7 -> App(Java) : background
+        BroadcastReceiver background = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+
+                try {
+                    self.dataFW = new JSONObject(data);
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", f7 -> App(Java) : background"
+                    );
+                    self.isBackground = self.dataFW.getBoolean("setBackground");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(background, new IntentFilter("background"));
+
     }
 
     public socketConection getSocket() {
@@ -831,6 +856,22 @@ public class MainActivity extends CordovaActivity
 
         return titleCase.toString();
     }
+
+    @Override
+    public void onResume(){
+        String nameofCurrMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        super.onResume();
+        MainActivity self = this;
+        if(self.isBackground){
+            // enviar nuevamente al background
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            self.startActivity(intent);
+        }
+    }
+
 
     public String getScreenshot(Bitmap bitmap, int quality) {
         String out = "";

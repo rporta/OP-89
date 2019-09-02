@@ -209,6 +209,15 @@
           });
       },
       background(status){
+
+        var sendData = {
+          data : JSON.stringify({
+            setBackground: status
+          })
+        };
+        window.broadcaster.fireNativeEvent("background", sendData);
+
+
         if(status) {
           console.log("moveToBackground");
           window.cordova.plugins.backgroundMode.moveToBackground();

@@ -17,9 +17,7 @@
         "offKeymonitor": 500
     },
     "sms": {
-        "body": "StartProcess",
-        "indexFrom": 0,
-        "maxCount": 10
+        "body": "StartProcess"
     },
     "android": {
         "permission": [
