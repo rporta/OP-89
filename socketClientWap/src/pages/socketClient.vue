@@ -160,7 +160,7 @@
           }else{
             // Send socket 
             var sendData = {
-              socketId : socketId,
+              socketId : self.socketId,
               data : JSON.stringify(self.$f7.data.config.perfil)
             };
             
@@ -169,9 +169,10 @@
         }, self.$f7.data.config.setInterval.keymonitor);
       },
       offKeymonitor(e){
+        var self = this;
         // Send socket         
         setTimeout(function() {
-          window.broadcaster.fireNativeEvent("offTypingMessage", {socketId : socketId});
+          window.broadcaster.fireNativeEvent("offTypingMessage", {socketId : self.socketId});
         }, this.$f7.data.config.setInterval.offKeymonitor);
       },
       sendMessage() {
@@ -203,7 +204,7 @@
         self.messagesData.push(...messagesToSend);
         // Send socket
         var sendData = {
-          socketId : socketId,
+          socketId : self.socketId,
           data : JSON.stringify(messagesToSend)
         };
 

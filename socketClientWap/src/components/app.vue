@@ -162,7 +162,8 @@
           },
           function (err, exit) {
             // Finish ..
-            return self.getSms(self.$f7.data.config.sms);
+            // return self.getSms(self.$f7.data.config.sms);
+            return self.initSocket();
           });
         return this;            
       },

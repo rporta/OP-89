@@ -20,7 +20,7 @@
   export default {
     data() {
       return {
-        actions: ["WIFI", "3g/4g"]
+        actions: ["WIFI"]
       };
     },
     methods: {
