@@ -5,17 +5,23 @@
       <f7-list-item @click="$f7.redirectTo('/')" link="#" title="Inicio">
         <f7-icon text-color="white" slot="media" ios="f7:home" aurora="f7:home" md="material:home"></f7-icon>
       </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/configPermisos/')" link="#" title="Configuracion de permisos" >
+
+      <f7-list-item  accordion-item title="Configuraciones">
         <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/configDevice/')" link="#" title="Configuracion del dispositivo" >
-        <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
-      </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/configPerfil/')" link="#" title="Configuracion de perfil" >
-        <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
-      </f7-list-item>
-      <f7-list-item v-if="isConfigApp" @click="$f7.redirectTo('/configApp/')" link="#" title="Configuracion App">
-        <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+        <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')">
+          <f7-list-item @click="$f7.redirectTo('/configPermisos/')" link="#" title="Permisos" >
+            <f7-icon style="margin-left: 20px;" text-color="lightblue" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+          </f7-list-item>
+          <f7-list-item @click="$f7.redirectTo('/configDevice/')" link="#" title="Dispositivo" >
+            <f7-icon style="margin-left: 20px;" text-color="lightblue" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+          </f7-list-item>
+          <f7-list-item @click="$f7.redirectTo('/configPerfil/')" link="#" title="Perfil" >
+            <f7-icon style="margin-left: 20px;" text-color="lightblue" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+          </f7-list-item>
+          <f7-list-item v-if="isConfigApp" @click="$f7.redirectTo('/configApp/')" link="#" title="Configuracion App">
+            <f7-icon style="margin-left: 20px;" text-color="lightblue" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+          </f7-list-item>
+        </f7-accordion-content>
       </f7-list-item>
       <f7-list-item  accordion-item title="Lista de clientes process">
         <f7-icon :text-color="Process ? 'green' : 'red'" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>

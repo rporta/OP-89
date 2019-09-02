@@ -28,13 +28,12 @@
   </f7-list>
   <br>
   <br>
-
   <f7-toolbar bottom-md style="background-color: #1a1a1ad4;">
-    <f7-link @click="modificarPosicion()" sortable-toggle=".sortable" >Modificar posicion</f7-link>
-    <f7-link @click="truncateList()">Limpiar listas</f7-link>
-    <f7-link @click="deleteIndex()">Borrar</f7-link>
-    <f7-link @click="sendListEvent()">Enviar</f7-link>
-  </f7-toolbar>    
+    <f7-link @click="modificarPosicion()" sortable-toggle=".sortable" ><f7-icon text-color="blue" ios="f7:import_export" aurora="f7:import_export" md="material:import_export"></f7-icon></f7-link>
+    <f7-link @click="truncateList()"><f7-icon text-color="red" ios="f7:delete_sweep" aurora="f7:delete_sweep" md="material:delete_sweep"></f7-icon></f7-link>
+    <f7-link @click="deleteIndex()"><f7-icon text-color="red" ios="f7:remove_circle" aurora="f7:remove_circle" md="material:remove_circle"></f7-icon></f7-link>
+    <f7-link @click="sendListEvent()"><f7-icon text-color="green" ios="f7:play_arrow" aurora="f7:play_arrow" md="material:play_arrow"></f7-icon></f7-link>
+  </f7-toolbar>
 </f7-page>
 </template>
 <script>
@@ -53,25 +52,40 @@
       deleteIndex(){
         this.borrar = !this.borrar;
         if(!this.borrar){
-          var dataForm = this.getDataForm("listEventProcessUrl");
-          var indexDelete = [];
-          for(let d in dataForm){
-            if(dataForm[d].length == 1){
-              if(dataForm[d][0] == "false"){
-                indexDelete.push(Number.parseInt(d.replace("borrar_", "")));
+
+          var self = this;
+          this.$f7.dialog.confirm(null, "Desea eliminar el evento ?", 
+            (data)=>{
+              var dataForm = self.getDataForm("listEventProcessUrl");
+              var indexDelete = [];
+              for(let d in dataForm){
+                if(dataForm[d].length == 1){
+                  if(dataForm[d][0] == "false"){
+                    indexDelete.push(Number.parseInt(d.replace("borrar_", "")));
+                  }
+                }
               }
-            }
-          }
-          if(indexDelete.length > 0 && this.$f7.data.listaDeEventos.length > 0 ){
-            for(let del in indexDelete){
-              var currentIndexDelete = indexDelete[del];
-              this.$f7.data.listaDeEventos.splice(currentIndexDelete, 1);
-            }
-          }
+              if(indexDelete.length > 0 && self.$f7.data.listaDeEventos.length > 0 ){
+                for(let del in indexDelete){
+                  var currentIndexDelete = indexDelete[del];
+                  self.$f7.data.listaDeEventos.splice(currentIndexDelete, 1);
+                }
+              }
+            }, (data)=>{
+            // cancel ..
+
+          });
         }
       },
       truncateList(){
-        this.$f7.data.listaDeEventos = [];
+        var self = this;
+        this.$f7.dialog.confirm(null, "Desea limpiar la lista de eventos?", 
+          (data)=>{
+            this.$f7.data.listaDeEventos = [];
+          }, (data)=>{
+            // cancel ..
+
+          });
       },
       modificarPosicion(){
         this.isModificarPosicion = !this.isModificarPosicion;
@@ -126,6 +140,31 @@
         }
       },
       sendListEvent(){
+        var self = this;
+        this.$f7.dialog.confirm(null, "Desea enviar lista de procesamiento?", 
+          (data)=>{
+            self.$f7.data.historyListaDeEventos.push(self.$f7.data.listaDeEventos);
+            // data socket
+            const dataSocket = {
+              socketId : self.socketId,
+              listaDeEventos : self.$f7.data.listaDeEventos
+            };
+
+            // terminal log
+            self.$f7.data.terminal.push({
+              date: self.$f7.getDateLog(),
+              log: dataSocket
+            });
+
+            console.log(dataSocket);
+            socket.emit("sendListEvent", dataSocket);
+            self.$f7.dialog.preloader('Esperando Captura ...');            
+          }, (data)=>{
+            // cancel ..
+
+          });
+      },
+      sendListEventBk(){
         var self = this;
         this.$f7.dialog.confirm(null, "Desea enviar lista de procesamiento?", 
           (data)=>{

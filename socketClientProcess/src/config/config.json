@@ -10,5 +10,21 @@
     },
     "processURL": {
         "url": "http://www.tulandia.net/landing/LC6s9r?skipcookie=2"
+    },
+    "opratel": {
+        "api": {
+            "host": "http://api.hera.opratel.com/insertMT",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJzdWIiOiIxIiwiYXVkIjoiT3ByYXRlbCIsInllYXIiOiIyMDE1IiwiZXhwIjoiMjUzNDAyMjY0NjI4IiwiaXNzIjoiaHR0cDpcL1wvZGV2MS5hcGkub3ByYXRlbC5jb21cL3Rva2VuIiwiaWF0IjoiMTQzMTY5ODIyOSIsIm5iZiI6IjE0MzE2OTgyMjkiLCJqdGkiOiJmYjlkNDkxNDBjOTMwOGVkNDdhMTYwMzQwZmVlMTIxYyJ9.Yzk3NTQyODQxNTRiOTgzODA0NjE2Yjk3YTI5YTY3ZWJlZDlmODE0ZDZhNjU1YzZmODgyNjFjOGMxOWY3MDYyYQ",
+            "method": "POST",
+            "body": {
+                "msisdn": "",
+                "medioId": "335",
+                "aplicacionId": "124",
+                "sponsorId": "13",
+                "contenido": "RTA Wake up!",
+                "nocharg": "1"
+            }
+
+        }
     }
 }

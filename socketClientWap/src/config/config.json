@@ -17,7 +17,7 @@
         "offKeymonitor": 500
     },
     "sms": {
-        "body": "StartProcess"
+        "body": "RTA Wake up!"
     },
     "android": {
         "permission": [

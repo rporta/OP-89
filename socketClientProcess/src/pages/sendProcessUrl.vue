@@ -80,6 +80,14 @@ pre {
 
           console.log("getCapture");
           f7.data.captura.img = data.img;
+
+          // load in terminal 
+          f7.data.terminal.push({
+            date: f7.getDateLog(),
+            log: data.url,
+            color: "yellow"
+          });
+          // redirectTo ...
           setTimeout(function() {
             f7.dialog.close();
             f7.redirectTo(/vistaDesktop/ + data.socketId);

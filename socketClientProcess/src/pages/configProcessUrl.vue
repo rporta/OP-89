@@ -22,15 +22,12 @@
       <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
     </f7-list-input>   
   </f7-list>
-  <f7-block-title>Iniciar Proceso via </f7-block-title>
+  <f7-block-title>Acciones </f7-block-title>
   <f7-block>
     <f7-row>
       <f7-col>
-        <f7-button @click="resolverClickSocket()" fill color="green">SOCKET</f7-button>
-      </f7-col>
-      <f7-col>
-        <f7-button @click="resolverClickSms()" fill color="green">SMS</f7-button>
-      </f7-col>        
+        <f7-button @click="resolverClickSocket()" fill color="green">Iniciar proceso</f7-button>
+      </f7-col>      
     </f7-row>      
   </f7-block>  
 

@@ -5,12 +5,20 @@
       <f7-list-item @click="$f7.redirectTo('/')" link="#" title="Inicio">
         <f7-icon text-color="white" slot="media" ios="f7:home" aurora="f7:home" md="material:home"></f7-icon>
       </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/configPerfil/')" link="#" title="Configuracion de perfil" >
-        <f7-icon text-color="lightblue" slot="media" ios="f7:person" aurora="f7:person" md="material:person"></f7-icon>
-      </f7-list-item>
-      <f7-list-item @click="$f7.redirectTo('/configApp/')" link="#" title="Configuracion App">
+      <f7-list-item  accordion-item title="Configuraciones">
         <f7-icon text-color="lightblue" slot="media" ios="f7:settings_appl" aurora="f7:settings_appl" md="material:settings_appl"></f7-icon>
+        <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
+          <f7-list-item @click="$f7.redirectTo('/configPerfil/')" link="#" title="Configuracion de perfil" >
+            <f7-icon style="margin-left: 20px;" text-color="lightblue" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+          </f7-list-item>
+          <f7-list-item @click="$f7.redirectTo('/configApp/')" link="#" title="Configuracion App">
+            <f7-icon style="margin-left: 20px;" text-color="lightblue" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
+          </f7-list-item>
+        </f7-accordion-content>
       </f7-list-item>
+      <f7-list-item @click="sendSms()" link="#" title="Enviar SMS">
+        <f7-icon text-color="yellow" slot="media" ios="f7:sms" aurora="f7:sms" md="material:sms"></f7-icon>
+      </f7-list-item>      
       <f7-list-item  accordion-item title="Lista de clientes process">
         <f7-icon :text-color="Process ? 'green' : 'red'" slot="media" ios="f7:phonelink" aurora="f7:phonelink" md="material:phonelink"></f7-icon>
         <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
@@ -115,7 +123,34 @@
           // cancel
         });
 
-      },      
+      },
+      sendSms(){
+        var self = this;
+
+        self.$f7.dialog.prompt("Ingrese un msisdn", "Set data : ", 
+          (msisdn)=>{
+            // ok ..
+            self.$f7.dialog.prompt("Ingrese una marcación", "Set data : ", 
+              (sortCode)=>{
+                // ok ..
+                self.$f7.dialog.confirm(null, "Despertar Wap via sms ?", data => {
+                  // ok .. 
+                  // Enviar sms via API
+                },
+                data => {
+                  // cancel
+                });
+              }, (sortCode)=>{
+                // cancel ..
+
+              }, 
+              null);
+          }, (msisdn)=>{
+            // cancel ..
+          }, 
+          null);
+
+      } 
     },
     mounted() {
       this.$f7ready((f7) => {

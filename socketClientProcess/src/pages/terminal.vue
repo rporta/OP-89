@@ -8,17 +8,16 @@
 
     <f7-navbar bg-color="teal" v-if="JSON.parse(navbarDescktop)" title="Terminal" >
     </f7-navbar>
-
-    <f7-block text-color="green">
-      <div v-for="(t, i) in $f7.data.terminal">
+    <template v-for="(t, i) in $f7.data.terminal">
+      <f7-block :text-color="!t.color ? 'green' : t.color">
         <pre style="word-wrap: break-word;overflow-wrap: break-word;">{{i + 1}} : {{JSON.stringify(t)}}</pre>
-      </div>
-    </f7-block>
+      </f7-block>
+    </template>
     <br>
     <br>
     <f7-toolbar bottom-md style="background-color: #1a1a1ad4;">
       <f7-link ></f7-link>
-      <f7-link @click="truncateTerminal()">Truncar terminal</f7-link>
+      <f7-link @click="truncateTerminal()"><f7-icon text-color="red" ios="f7:delete" aurora="f7:delete" md="material:delete"></f7-icon></f7-link>
       <f7-link ></f7-link>
     </f7-toolbar>  
   </f7-page>
