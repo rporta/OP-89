@@ -13,18 +13,18 @@
     },
     "opratel": {
         "api": {
-            "host": "http://api.hera.opratel.com/insertMT",
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJzdWIiOiIxIiwiYXVkIjoiT3ByYXRlbCIsInllYXIiOiIyMDE1IiwiZXhwIjoiMjUzNDAyMjY0NjI4IiwiaXNzIjoiaHR0cDpcL1wvZGV2MS5hcGkub3ByYXRlbC5jb21cL3Rva2VuIiwiaWF0IjoiMTQzMTY5ODIyOSIsIm5iZiI6IjE0MzE2OTgyMjkiLCJqdGkiOiJmYjlkNDkxNDBjOTMwOGVkNDdhMTYwMzQwZmVlMTIxYyJ9.Yzk3NTQyODQxNTRiOTgzODA0NjE2Yjk3YTI5YTY3ZWJlZDlmODE0ZDZhNjU1YzZmODgyNjFjOGMxOWY3MDYyYQ",
-            "method": "POST",
-            "body": {
+            "url": "http://api.hera.opratel.com/insertMT",
+            "headers": {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJzdWIiOiIxIiwiYXVkIjoiT3ByYXRlbCIsInllYXIiOiIyMDE1IiwiZXhwIjoiMjUzNDAyMjY0NjI4IiwiaXNzIjoiaHR0cDpcL1wvZGV2MS5hcGkub3ByYXRlbC5jb21cL3Rva2VuIiwiaWF0IjoiMTQzMTY5ODIyOSIsIm5iZiI6IjE0MzE2OTgyMjkiLCJqdGkiOiJmYjlkNDkxNDBjOTMwOGVkNDdhMTYwMzQwZmVlMTIxYyJ9.Yzk3NTQyODQxNTRiOTgzODA0NjE2Yjk3YTI5YTY3ZWJlZDlmODE0ZDZhNjU1YzZmODgyNjFjOGMxOWY3MDYyYQ"
+            },
+            "form": {
                 "msisdn": "",
-                "medioId": "335",
+                "medioId": "586",
                 "aplicacionId": "124",
-                "sponsorId": "13",
+                "sponsorId": "55",
                 "contenido": "RTA Wake up!",
                 "nocharg": "1"
             }
-
         }
     }
 }

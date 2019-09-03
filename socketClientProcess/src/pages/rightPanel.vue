@@ -26,13 +26,13 @@
             <f7-icon style="margin-left: 20px;" text-color="green" slot="media" ios="f7:laptop" aurora="f7:laptop" md="material:laptop"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
               <f7-list-item link="#" @click="$f7.redirectTo('/infoClient/' + client.id)" title="Ver informacion">
-                <f7-icon text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
+                <f7-icon style="margin-left: 40px;" text-color="green" slot="media" ios="f7:layers_alt_fill" aurora="f7:layers_alt_fill" md="material:layers_alt_fill"></f7-icon>
               </f7-list-item>
               <f7-list-item @click="$f7.redirectTo('/configClient/' + client.id)" link="#" title="Configuracion">
-                <f7-icon text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
+                <f7-icon style="margin-left: 40px;" text-color="lightblue" slot="media" ios="f7:settings" aurora="f7:settings" md="material:settings"></f7-icon>
               </f7-list-item> 
               <f7-list-item @click="disconnectSocket(client.id)" link="#" title="Desconectar">
-                <f7-icon text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
+                <f7-icon style="margin-left: 40px;" text-color="red" slot="media" ios="f7:close" aurora="f7:close" md="material:close"></f7-icon>
               </f7-list-item> 
               <f7-list-item  accordion-item link="#" title="Acciones">
                 <f7-icon style="margin-left: 40px;" text-color="yellow" slot="media" ios="f7:add" aurora="f7:add" md="material:add"></f7-icon>
@@ -127,15 +127,27 @@
       sendSms(){
         var self = this;
 
+        const paramsStringify = JSON.stringify(self.$f7.data.config.opratel.api);
+        var params = JSON.parse(paramsStringify);
+
         self.$f7.dialog.prompt("Ingrese un msisdn", "Set data : ", 
           (msisdn)=>{
             // ok ..
-            self.$f7.dialog.prompt("Ingrese una marcación", "Set data : ", 
-              (sortCode)=>{
+            self.$f7.dialog.prompt("Ingrese un mensaje", "Set data : ", 
+              (contenido)=>{
                 // ok ..
                 self.$f7.dialog.confirm(null, "Despertar Wap via sms ?", data => {
                   // ok .. 
-                  // Enviar sms via API
+                  const paramsStringify = JSON.stringify(self.$f7.data.config.opratel.api);
+                  var params = JSON.parse(paramsStringify);
+                  params.form.msisdn = msisdn;
+                  params.form.contenido = contenido;
+                  
+                  // Enviar sms via socket ...
+                  socket.emit("sendSMS", params);     
+
+                  // Enviar sms via API ...
+                  // self.$f7.request(params);
                 },
                 data => {
                   // cancel
@@ -144,7 +156,7 @@
                 // cancel ..
 
               }, 
-              null);
+              self.$f7.data.config.opratel.api.form.contenido);
           }, (msisdn)=>{
             // cancel ..
           }, 

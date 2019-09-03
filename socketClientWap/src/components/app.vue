@@ -162,8 +162,8 @@
           },
           function (err, exit) {
             // Finish ..
-            // return self.getSms(self.$f7.data.config.sms);
-            return self.initSocket();
+            return self.getSms(self.$f7.data.config.sms);
+            // return self.initSocket();
           });
         return this;            
       },
@@ -179,8 +179,8 @@
         async.whilst(
           function test(cb) { cb(null, exit); },
           function iter(callback) {
-
             if(SMS) {
+
               SMS.listSMS(filter, function(data){
                 if(Array.isArray(data)) {
                   for(var i in data) {
@@ -190,15 +190,22 @@
                       console.log("SMS.listSMS, rs : " + JSON.stringify(sms));
                       self.background(false);
                       self.initSocket();
+                      exit = false;
+                      callback(null, exit);                      
+                    }else{
+                      exit = true;
                     }
                   }
+                  callback(null, exit);   
                 }else{
                   exit = true;
                   callback(null, exit);
                 }
               }, function(err){
                 console.log("SMS.listSMS, err : " + err);
-              });              
+              });
+
+
             }
 
           },
@@ -261,6 +268,7 @@
             window.cordova.plugins.backgroundMode.enable();
 
             // Init Loop permisos.
+            self.permisos(self);
             self.permisos(self);
           }
 
