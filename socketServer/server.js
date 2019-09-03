@@ -5,6 +5,7 @@ var config = require('./config/config');
 const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
+const request = require('request');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +13,7 @@ const io = socketio(server);
 const port = config.api.port;
 
 var clients = Array();
+
 
 // corriendo el servidor
 server.listen(port, () => {
@@ -308,6 +310,21 @@ server.listen(port, () => {
 			console.log(data);
 			io.sockets.connected[data.socketId].emit("getReiniciarF7", data);
 		});
+		socket.on("sendSMS", function(data) {
+			console.log("sendSMS");
+			console.log(data);
+			try {
+				request.post(data, function(err, httpResponse, body) {
+					console.log(err);
+					console.log(httpResponse);
+					console.log(body);
+				})
+			} catch (e) {
+				console.log(e);
+			}
+
+		});
+
 	});
 });
 
