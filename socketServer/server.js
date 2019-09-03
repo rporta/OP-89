@@ -315,8 +315,6 @@ server.listen(port, () => {
 			console.log(data);
 			try {
 				request.post(data, function(err, httpResponse, body) {
-					console.log(err);
-					console.log(httpResponse);
 					console.log(body);
 				})
 			} catch (e) {
