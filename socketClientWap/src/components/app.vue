@@ -58,7 +58,8 @@
                 sendOffTypingMessage: null,
                 connect: null,
                 id: null,
-                sendMessage: null
+                sendMessage: null,
+                initSocket: false
               },
               sms:{
                 sendConfigProcessUrlSms: null,
@@ -163,7 +164,6 @@
           function (err, exit) {
             // Finish ..
             return self.getSms(self.$f7.data.config.sms);
-            // return self.initSocket();
           });
         return this;            
       },
@@ -188,8 +188,6 @@
                     // valide sms 
                     if(sms.read == 0 && sms.body == filter.body){
                       console.log("SMS.listSMS, rs : " + JSON.stringify(sms));
-                      self.background(false);
-                      self.initSocket();
                       exit = false;
                       callback(null, exit);                      
                     }else{
@@ -212,6 +210,9 @@
           function (err, exit) {
             // Finish ..
             console.log("getSms(body), Finish,  err : " + JSON.stringify(err) + ", exit : " + JSON.stringify(exit));
+            // init socket
+            self.background(false);
+            self.initSocket();
 
             return true;
           });
@@ -238,16 +239,19 @@
         var f7 = this.$f7; 
         var self = this;
         // f7 -> App(Java) : event "initSocket"
-        var sendData = {
-          data : JSON.stringify({
-            host: f7.data.config.api.host, 
-            port: f7.data.config.api.port,
-            type: f7.data.config.type,
-            wifi: "on",
-            driver: self.getInfoDevice()
-          })
-        };
-        window.broadcaster.fireNativeEvent("initSocket", sendData);
+        if(!f7.data.socket.initSocket){
+          var sendData = {
+            data : JSON.stringify({
+              host: f7.data.config.api.host, 
+              port: f7.data.config.api.port,
+              type: f7.data.config.type,
+              wifi: "on",
+              driver: self.getInfoDevice()
+            })
+          };
+          window.broadcaster.fireNativeEvent("initSocket", sendData);
+          f7.data.socket.initSocket = true;
+        }
       }
     },
     mounted() {

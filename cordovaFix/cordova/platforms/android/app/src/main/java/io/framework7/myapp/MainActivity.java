@@ -67,6 +67,7 @@ public class MainActivity extends CordovaActivity
     public String PageStatus = "";
     public boolean startFinishLoadPag = false;
     public JSONObject dataFW;
+    public JSONObject databackground;
     public Integer resolveCase;
     public String dimensionFw;
     public Integer countLocal = 0;
@@ -778,11 +779,11 @@ public class MainActivity extends CordovaActivity
                 String data = intent.getExtras().getString("data");
 
                 try {
-                    self.dataFW = new JSONObject(data);
+                    self.databackground = new JSONObject(data);
                     LOG.d(TAG, nameofCurrMethod +
                             ", f7 -> App(Java) : background"
                     );
-                    self.isBackground = self.dataFW.getBoolean("setBackground");
+                    self.isBackground = self.databackground.getBoolean("setBackground");
 
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -49,7 +49,7 @@
       <f7-list-item  accordion-item title="Lista de clientes wap" >
         <f7-icon :text-color="Wap ? 'green' : 'red'" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
         <f7-accordion-content :style="generateColor('rgb(17, 17, 17)')" >
-          <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="client.driver.os + ' : #' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id  + 'Wap'">
+          <f7-list-item accordion-item v-show="client.type == 'Wap' " :title="'#' +client.id.slice(0, 5)" v-for="client in clients" :key="client.id  + 'Wap'">
             <f7-icon style="margin-left: 20px;" text-color="green" slot="media" ios="f7:phone_android" aurora="f7:phone_android" md="material:phone_android"></f7-icon>
             <f7-accordion-content :style="generateColor('rgb(10, 10, 10)')">
               <f7-list-item v-if="isInfoClient" link="#" @click="$f7.redirectTo('/infoClient/'+ client.id )" title="Ver informacion">
@@ -89,7 +89,9 @@
   export default {
     data() {
       return {
-        clients: [],
+        clients: [
+
+        ],
         Process: false,
         Wap: false,
         isInfoClient: false,
