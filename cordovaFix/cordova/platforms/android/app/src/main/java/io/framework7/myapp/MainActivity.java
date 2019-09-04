@@ -72,6 +72,7 @@ public class MainActivity extends CordovaActivity
     public String dimensionFw;
     public Integer countLocal = 0;
     public Integer countRemote = 0;
+    public long timeUnix;
     public socketConection socket;
     public boolean socketOn = false;
     public boolean isBackground = false;
@@ -792,6 +793,29 @@ public class MainActivity extends CordovaActivity
         };
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(background, new IntentFilter("background"));
+
+
+        // f7 -> App(Java) : timeUnix
+        BroadcastReceiver timeUnix = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+
+                try {
+                    self.dataFW = new JSONObject(data);
+                    self.timeUnix = self.dataFW.getLong("time");
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", f7 -> App(Java) : timeUnix" + self.timeUnix
+                    );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(timeUnix, new IntentFilter("timeUnix"));
+
 
     }
 
