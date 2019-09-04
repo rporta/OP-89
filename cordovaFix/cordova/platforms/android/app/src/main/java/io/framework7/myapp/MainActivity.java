@@ -72,6 +72,7 @@ public class MainActivity extends CordovaActivity
     public String dimensionFw;
     public Integer countLocal = 0;
     public Integer countRemote = 0;
+    public Integer addressWakeup;
     public long timeUnix;
     public socketConection socket;
     public boolean socketOn = false;
@@ -816,6 +817,26 @@ public class MainActivity extends CordovaActivity
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(timeUnix, new IntentFilter("timeUnix"));
 
+        // f7 -> App(Java) : addressWakeup
+        BroadcastReceiver addressWakeup = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+
+                try {
+                    self.dataFW = new JSONObject(data);
+                    self.addressWakeup = self.dataFW.getInt("addressWakeup");
+                    LOG.d(TAG, nameofCurrMethod +
+                            ", f7 -> App(Java) : addressWakeup " + self.addressWakeup
+                    );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(addressWakeup, new IntentFilter("addressWakeup"));
 
     }
 

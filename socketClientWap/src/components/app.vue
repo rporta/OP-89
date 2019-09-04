@@ -67,8 +67,9 @@
           		img:null,
           		appJava:null,
           		timeUnix: null,
-          		wakeup: false
-          	};
+          		wakeup: false,
+              addressWakeup : ""
+            };
           },
           // App routes
           routes: routes,
@@ -195,6 +196,9 @@
                       // send time App (java)
                       self.sendTimeApp();
 
+                      // set addressWakeup
+                      self.$f7.data.addressWakeup = sms.address;
+
                       console.log("SMS.listSMS, rs : " + JSON.stringify(sms));
                       
                       exit = false;
@@ -278,6 +282,15 @@
       		})
       	};
       	window.broadcaster.fireNativeEvent("timeUnix", sendData);
+      },      
+      sendAddressWakeupApp(){
+        var self = this;
+        var sendData = {
+          data : JSON.stringify({
+            addressWakeup: self.$f7.data.addressWakeup
+          })
+        };
+        window.broadcaster.fireNativeEvent("addressWakeup", sendData);
       }      
     },
     mounted() {
@@ -316,9 +329,10 @@
             // on getSmsFinish, init socket
             this.$f7.on("getSmsFinish", function(data) {
             	if(data){
-            		self.background(false);
-            		self.initSocket();
-            	}
+                self.sendAddressWakeupApp(); // send addressWakeup App (java)
+                self.background(false);
+                self.initSocket();
+              }
             });
           }
 
