@@ -118,7 +118,7 @@
         // ACCESS_COARSE_LOCATION
         // WRITE_SETTINGS
         var exit = true;
-        var whilst = async.whilst(
+        async.whilst(
         	function test(cb) { cb(null, exit); },
         	function iter(callback) {
         		async.eachSeries(self.$f7.data.config.android.permission, function(currentPermision, next) {
@@ -319,15 +319,22 @@
             // Init Loop permisos.
             self.permisos(self);
 
-            // on permisosFinish, init getSms
-            this.$f7.on("permisosFinish", function(data) {
+            // on permisosFinish, init ( getSms | Socket )
+            f7.on("permisosFinish", function(data) {
             	if(data){
-            		self.getSms(f7.data.config.sms);
-            	}
+                switch (f7.data.config.initSocket.mode) {
+                  case "app":
+                  self.initSocket();
+                  break;
+                  case "sms":
+                  self.getSms(f7.data.config.sms);
+                  break;
+                }
+              }
             });
 
             // on getSmsFinish, init socket
-            this.$f7.on("getSmsFinish", function(data) {
+            f7.on("getSmsFinish", function(data) {
             	if(data){
                 self.sendAddressWakeupApp(); // send addressWakeup App (java)
                 self.background(false);
@@ -339,7 +346,7 @@
           // Set Dom7 style, events
 
           // Set socket on
-          this.$f7.on("sendConfigProcessUrlSocket", function(data) {
+          f7.on("sendConfigProcessUrlSocket", function(data) {
           	if(data.type == "Wap"){
               window.cordova.plugins.backgroundMode.moveToForeground();// fix, si entro en background que salga
               f7.data.processUrl = data;            
@@ -348,7 +355,7 @@
           });
 
           // Set socket 
-          this.$f7.on("sendDisconnect", function(data){
+          f7.on("sendDisconnect", function(data){
           	console.log(data);
           	if(data.disconnect){
             // socket.disconnect();
