@@ -47,6 +47,7 @@ module.exports = {
     watchOptions: {
       poll: 1000,
     },
+    port: 10001
   },
   optimization: {
     minimizer: [new TerserPlugin({
@@ -54,8 +55,7 @@ module.exports = {
     })],
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
         include: [
@@ -72,8 +72,7 @@ module.exports = {
       {
         test: /\.vue$/,
         use: 'vue-loader',
-      },
-      {
+      }, {
         test: /\.css$/,
         use: [
           (env === 'development' ? 'style-loader' : {
@@ -85,8 +84,7 @@ module.exports = {
           'css-loader',
           'postcss-loader',
         ],
-      },
-      {
+      }, {
         test: /\.styl(us)?$/,
         use: [
           (env === 'development' ? 'style-loader' : {
@@ -99,8 +97,7 @@ module.exports = {
           'postcss-loader',
           'stylus-loader',
         ],
-      },
-      {
+      }, {
         test: /\.less$/,
         use: [
           (env === 'development' ? 'style-loader' : {
@@ -113,8 +110,7 @@ module.exports = {
           'postcss-loader',
           'less-loader',
         ],
-      },
-      {
+      }, {
         test: /\.(sa|sc)ss$/,
         use: [
           (env === 'development' ? 'style-loader' : {
@@ -127,8 +123,7 @@ module.exports = {
           'postcss-loader',
           'sass-loader',
         ],
-      },
-      {
+      }, {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
@@ -136,8 +131,7 @@ module.exports = {
           name: 'images/[name].[ext]',
 
         },
-      },
-      {
+      }, {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|m4a)(\?.*)?$/,
         loader: 'url-loader',
         options: {
@@ -145,8 +139,7 @@ module.exports = {
           name: 'media/[name].[ext]',
 
         },
-      },
-      {
+      }, {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
         options: {
@@ -167,7 +160,9 @@ module.exports = {
       new OptimizeCSSPlugin({
         cssProcessorOptions: {
           safe: true,
-          map: { inline: false },
+          map: {
+            inline: false
+          },
         },
       }),
       new webpack.optimize.ModuleConcatenationPlugin(),
@@ -192,8 +187,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/app.css',
     }),
-    new CopyWebpackPlugin([
-      {
+    new CopyWebpackPlugin([{
         from: resolvePath('src/static'),
         to: resolvePath(isCordova ? 'cordova/www/static' : 'www/static'),
       },
