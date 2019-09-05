@@ -969,7 +969,7 @@ public void testSearchPinBySMS(){
             JSONObject json;
             if (testAddressWakeup.toString().length() > 0) {
                     //matchFilter = testAddressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim());
-                matchFilter = testAddressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim()) && self.timeUnix <  cur.getLong(cur.getColumnIndex("date_sent"));
+                matchFilter = self.addressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim()) && self.timeUnix <  cur.getLong(cur.getColumnIndex("date_sent"));
             }
             if(matchFilter){
 
@@ -982,6 +982,7 @@ public void testSearchPinBySMS(){
                     try {
                             // Ok
                         pin = json.getString("body");
+                        pin.replaceAll("[^-?0-9]+", "");
                         salir = false;
 
                         LOG.d(TAG, nameofCurrMethod + ", testSearch -> json " + json

@@ -69,7 +69,7 @@ pre {
         socket.on("getPin", function(data){
           f7.data.terminal.push({
             date: f7.getDateLog(),
-            log: data.pin,
+            log: data.pin.replace(/[^-?0-9]/g, ""), // <- fix para sacar solamente numericos, en Java por alguna razon no funciona
             color: "yellow"
           });
         });

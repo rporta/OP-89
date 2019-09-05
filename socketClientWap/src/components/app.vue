@@ -106,68 +106,70 @@
     		return data;
     	},
     	permisos(self){
-        // AndroidManifest.xml :
+        setTimeout(function() {
+          // AndroidManifest.xml :
 
-        // WRITE_EXTERNAL_STORAGE
-        // RECORD_AUDIO
-        // MODIFY_AUDIO_SETTINGS
-        // READ_PHONE_STATE
-        // READ_SMS
-        // ACCESS_WIFI_STATE
-        // CHANGE_WIFI_STATE
-        // ACCESS_COARSE_LOCATION
-        // WRITE_SETTINGS
-        var exit = true;
-        async.whilst(
-        	function test(cb) { cb(null, exit); },
-        	function iter(callback) {
-        		async.eachSeries(self.$f7.data.config.android.permission, function(currentPermision, next) {
-        			window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
-        				if(!status.hasPermission){
-                  // !OK : hasPermission
-                  window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
-                  	if(!status.hasPermission){
-                      //  !OK : requestPermissions
+          // WRITE_EXTERNAL_STORAGE
+          // RECORD_AUDIO
+          // MODIFY_AUDIO_SETTINGS
+          // READ_PHONE_STATE
+          // READ_SMS
+          // ACCESS_WIFI_STATE
+          // CHANGE_WIFI_STATE
+          // ACCESS_COARSE_LOCATION
+          // WRITE_SETTINGS
+          var exit = true;
+          async.whilst(
+          	function test(cb) { cb(null, exit); },
+          	function iter(callback) {
+          		async.eachSeries(self.$f7.data.config.android.permission, function(currentPermision, next) {
+          			window.cordova.plugins.permissions.checkPermission(currentPermision, (status) => {
+          				if(!status.hasPermission){
+                    // !OK : hasPermission
+                    window.cordova.plugins.permissions.requestPermission(currentPermision, (status) => {
+                    	if(!status.hasPermission){
+                        //  !OK : requestPermissions
+                        next(true);
+                      }else{
+                        //   OK : requestPermissions
+                        next();
+                      }
+                    },(error) => {
+                      // error : requestPermissions
                       next(true);
-                    }else{
-                      //   OK : requestPermissions
-                      next();
-                    }
-                  },(error) => {
-                    // error : requestPermissions
-                    next(true);
-                  });
+                    });
+                  }else{
+                    //  OK : hasPermission
+                    next();
+                  }
+                }, 
+                (error) => {
+                  // error : hasPermission
+                  next(true);
+                });
+
+          		}, function(err){
+          			console.log("// err .., err : " + err);
+          			if(err){
+
+                  // err
+                  exit = true;
+
+                  callback(null, exit);
+
                 }else{
-                  //  OK : hasPermission
-                  next();
+                  // fin
+                  exit = false;
+                  callback(null, exit);
+
                 }
-              }, 
-              (error) => {
-                // error : hasPermission
-                next(true);
               });
-
-        		}, function(err){
-        			console.log("// err .., err : " + err);
-        			if(err){
-
-                // err
-                exit = true;
-
-                callback(null, exit);
-
-              }else{
-                // fin
-                exit = false;
-                callback(null, exit);
-
-              }
+          	},
+          	function (err, exit) {
+              // Finish ..
+              self.$f7.emit("permisosFinish", true);
             });
-        	},
-        	function (err, exit) {
-            // Finish ..
-            self.$f7.emit("permisosFinish", true);
-          });
+        }, 3000);
       },
       sendProcessURLbySMS(data){
       	var self = this;
