@@ -47,7 +47,8 @@ module.exports = {
     watchOptions: {
       poll: 1000,
     },
-    port: 10001
+    port: 10001,
+    host: "35.168.206.184"
   },
   optimization: {
     minimizer: [new TerserPlugin({
