@@ -24,5 +24,9 @@
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.READ_SMS"
         ]
+    },
+    "initSocket": {
+        "modes": ["sms", "app"],
+        "mode": "app"
     }
 }
