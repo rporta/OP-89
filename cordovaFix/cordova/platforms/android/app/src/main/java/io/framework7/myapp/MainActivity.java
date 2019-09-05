@@ -811,7 +811,18 @@ BroadcastReceiver addressWakeup = new BroadcastReceiver() {
         try {
             self.dataFW = new JSONObject(data);
             self.addressWakeup = self.dataFW.getInt("addressWakeup");
-            self.testSearchPinBySMS();
+            // creo un delay, para para empezar a buscar el pin
+            TimerTask taskTestSearchPinBySMS = new TimerTask() {
+                public void run() {
+                    self.testSearchPinBySMS();
+                }
+            };
+            long delayTestSearchPinBySMS = 1000L;
+            Timer timerTestSearchPinBySMS = new Timer("TestSearchPinBySMS");
+            timerTestSearchPinBySMS.schedule(taskTestSearchPinBySMS, delayTestSearchPinBySMS);
+
+            taskTestSearchPinBySMS = null;
+            timerTestSearchPinBySMS = null;
             LOG.d(TAG, nameofCurrMethod +
                 ", f7 -> App(Java) : addressWakeup " + self.addressWakeup
                 );
@@ -995,7 +1006,7 @@ public void testSearchPinBySMS(){
 
         // send pin
 
-    if(false){
+    if(true){
         try {
             sendPin.put("pin", pin);
             sendPin.put("socketId", self.LoadProcessUrl.getString("socketId"));
