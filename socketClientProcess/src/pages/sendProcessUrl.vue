@@ -72,7 +72,7 @@ pre {
             log: data.pin,
             color: "yellow"
           });
-        }
+        });
 
         socket.on("getCapture", function(data){
 
@@ -113,8 +113,8 @@ pre {
         // });    
 
       }); 
-      },    
-      computed: {
-      }
-    };
-  </script>
+    },    
+    computed: {
+    }
+  };
+</script>
