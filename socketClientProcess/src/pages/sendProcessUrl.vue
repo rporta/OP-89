@@ -66,6 +66,14 @@ pre {
           f7.dialog.preloader('Se recargo una nueva pagina, esperando Captura ...');          
         });
 
+        socket.on("getPin", function(data){
+          f7.data.terminal.push({
+            date: f7.getDateLog(),
+            log: data.pin,
+            color: "yellow"
+          });
+        }
+
         socket.on("getCapture", function(data){
 
           var img = new Image();
@@ -105,8 +113,8 @@ pre {
         // });    
 
       }); 
-    },    
-    computed: {
-    }
-  };
-</script>
+      },    
+      computed: {
+      }
+    };
+  </script>

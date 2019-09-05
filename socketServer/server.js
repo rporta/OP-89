@@ -271,6 +271,17 @@ server.listen(port, () => {
 			console.log(data);
 			io.sockets.connected[data.socketId].emit("getCapture", data);
 		});
+		socket.on("sendPin", function(data) {
+			if (typeof data == "string") {
+				data = JSON.parse(data);
+			}
+			if (!data) {
+				data = {};
+			}
+			data.on = "sendPin";
+			console.log(data);
+			io.sockets.connected[data.socketId].emit("getPin", data);
+		});
 		socket.on("sendListEvent", function(data) {
 			console.log("sendListEvent");
 			console.log(data);
