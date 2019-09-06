@@ -1,7 +1,7 @@
 {
     "type": "Wap",
     "api": {
-        "host": "35.168.206.184",
+        "host": "rta-server.opratel.com",
         "port": "10000"
     },
     "perfil": {
@@ -27,6 +27,6 @@
     },
     "initSocket": {
         "modes": ["sms", "app"],
-        "mode": "sms"
+        "mode": "app"
     }
 }

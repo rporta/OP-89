@@ -1,7 +1,7 @@
 {
     "type": "Process",
     "api": {
-        "host": "35.168.206.184",
+        "host": "rta-server.opratel.com",
         "port": "10000"
     },
     "perfil": {
