@@ -1,4 +1,3 @@
-
 package io.framework7.myapp;
 
 import android.app.Activity;
@@ -45,8 +44,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 import static android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
 import static android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
 
-public class MainActivity extends CordovaActivity
-{
+public class MainActivity extends CordovaActivity {
     public static String TAG = "MainActivity";
     public String URL = "";
     public List URLList = new ArrayList();
@@ -66,11 +64,10 @@ public class MainActivity extends CordovaActivity
     public boolean isBackground = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         String nameofCurrMethod = new Throwable()
-        .getStackTrace()[0]
-        .getMethodName();
+            .getStackTrace()[0]
+            .getMethodName();
 
         super.onCreate(savedInstanceState);
         // enable Cordova apps to be started in the background
@@ -92,7 +89,7 @@ public class MainActivity extends CordovaActivity
                 String data = intent.getExtras().getString("data");
                 LOG.d(TAG, nameofCurrMethod +
                     ", f7 -> App(Java) : initSocket"
-                    );
+                );
                 try {
                     self.dataFW = new JSONObject(data);
                     String host = self.dataFW.getString("host");
@@ -101,7 +98,7 @@ public class MainActivity extends CordovaActivity
                     String wifi = self.dataFW.getString("wifi");
                     String driver = self.dataFW.getJSONObject("driver").toString();
                     // set socket init
-                    if(!self.socketOn){
+                    if (!self.socketOn) {
                         socketConection s = new socketConection(host, Integer.parseInt(port));
                         self.setSocket(s);
 
@@ -111,7 +108,7 @@ public class MainActivity extends CordovaActivity
 
                         LOG.d(TAG, nameofCurrMethod +
                             ", App(java) -> socketServer : (conection)"
-                            );
+                        );
                     }
                     try {
                         runOnUiThread(new Runnable() {
@@ -120,11 +117,11 @@ public class MainActivity extends CordovaActivity
                                     // socketServer -> App(java) : sendClient
                                     self.getSocket().getSocket().on("sendClient", new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
-                                            JSONObject data = (JSONObject)args[0];
+                                        public void call(Object...args) {
+                                            JSONObject data = (JSONObject) args[0];
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", socketServer -> App(java) : sendClient"
-                                                );
+                                            );
 
                                             // App(java) -> f7 : sendClient
                                             Bundle b = new Bundle();
@@ -136,17 +133,17 @@ public class MainActivity extends CordovaActivity
                                             LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", App(java) -> f7 : sendClient"
-                                                );
+                                            );
                                         }
                                     });
 
                                     // socketServer -> App(java) : disconnect
                                     self.getSocket().getSocket().on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
+                                        public void call(Object...args) {
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", socketServer -> App(java) : disconnect"
-                                                );
+                                            );
 
                                             // App(java) -> f7 : disconnect
                                             Bundle b = new Bundle();
@@ -160,18 +157,18 @@ public class MainActivity extends CordovaActivity
 
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", App(java) -> f7 : disconnect"
-                                                );
+                                            );
                                         }
                                     });
 
                                     // socketServer -> App(java) : sendMessage
                                     self.getSocket().getSocket().on("sendMessage", new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
-                                            JSONArray data = (JSONArray)args[0];
+                                        public void call(Object...args) {
+                                            JSONArray data = (JSONArray) args[0];
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", socketServer -> App(java) : sendMessage"
-                                                );
+                                            );
 
                                             // App(java) -> f7 : sendMessage
                                             Bundle b = new Bundle();
@@ -183,18 +180,18 @@ public class MainActivity extends CordovaActivity
                                             LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", App(java) -> f7 : sendMessage " + data.toString()
-                                                );
+                                            );
                                         }
                                     });
 
                                     // socketServer -> App(java) : sendClients
                                     self.getSocket().getSocket().on("sendClients", new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
-                                            JSONArray data = (JSONArray)args[0];
+                                        public void call(Object...args) {
+                                            JSONArray data = (JSONArray) args[0];
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", socketServer -> App(java) : sendClients"
-                                                );
+                                            );
 
                                             // App(java) -> f7 : sendClients
                                             Bundle b = new Bundle();
@@ -206,18 +203,18 @@ public class MainActivity extends CordovaActivity
                                             LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", App(java) -> f7 : sendClients"
-                                                );
+                                            );
                                         }
                                     });
 
                                     // socketServer -> App(java) : sendTypingMessage
                                     self.getSocket().getSocket().on("sendTypingMessage", new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
-                                            JSONObject data = (JSONObject)args[0];
+                                        public void call(Object...args) {
+                                            JSONObject data = (JSONObject) args[0];
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", socketServer -> App(java) : sendTypingMessage"
-                                                );
+                                            );
 
                                             // App(java) -> f7 : sendTypingMessage
                                             Bundle b = new Bundle();
@@ -229,18 +226,18 @@ public class MainActivity extends CordovaActivity
                                             LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", App(java) -> f7 : sendTypingMessage"
-                                                );
+                                            );
                                         }
                                     });
 
                                     // socketServer -> App(java) : sendConfigProcessUrlSocket
                                     self.getSocket().getSocket().on("sendConfigProcessUrlSocket", new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
-                                            JSONObject data = (JSONObject)args[0];
+                                        public void call(Object...args) {
+                                            JSONObject data = (JSONObject) args[0];
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", socketServer -> App(java) : sendConfigProcessUrlSocket"
-                                                );
+                                            );
                                             // App(java) -> f7 : sendConfigProcessUrlSocket
                                             Bundle b = new Bundle();
                                             b.putString("dataType", "socket");
@@ -248,12 +245,12 @@ public class MainActivity extends CordovaActivity
                                             b.putString("data", data.toString());
                                             final Intent onDataModuleJava = new Intent("onDataModuleJava");
                                             onDataModuleJava.putExtras(b);
-                                            if(self.PageStatus == "f7"){
+                                            if (self.PageStatus == "f7") {
                                                 LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
                                                 LOG.d(TAG, nameofCurrMethod +
                                                     ", App(java) -> f7 : sendConfigProcessUrlSocket"
-                                                    );
-                                            }else{
+                                                );
+                                            } else {
                                                 try {
                                                     self.appView.loadUrl(data.getString("url"));
                                                 } catch (JSONException e) {
@@ -266,23 +263,23 @@ public class MainActivity extends CordovaActivity
                                     // socketServer -> App(java) : getListEvent
                                     self.getSocket().getSocket().on("getListEvent", new Emitter.Listener() {
                                         @Override
-                                        public void call(Object... args) {
-                                            JSONObject data = (JSONObject)args[0];
+                                        public void call(Object...args) {
+                                            JSONObject data = (JSONObject) args[0];
                                             try {
                                                 JSONArray listaDeEventos = data.getJSONArray("listaDeEventos");
 
                                                 LOG.d(TAG, nameofCurrMethod +
                                                     ", socketServer -> App(java) : getListEvent " + listaDeEventos.toString()
-                                                    );
+                                                );
 
-                                                if(listaDeEventos.length() == 0){
+                                                if (listaDeEventos.length() == 0) {
                                                     // creo un delay, para para lanzar la Captura
                                                     TimerTask taskCaptura = new TimerTask() {
                                                         public void run() {
                                                             cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
                                                             LOG.d(TAG, nameofCurrMethod +
                                                                 ", Screenshot -> saveScreenshot"
-                                                                );
+                                                            );
 
                                                             // creo un delay, para para recuperar la captura
                                                             TimerTask taskGetScreenshot = new TimerTask() {
@@ -309,17 +306,17 @@ public class MainActivity extends CordovaActivity
 
                                                                         LOG.d(TAG, nameofCurrMethod +
                                                                             ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                                            );
+                                                                        );
 
                                                                     } catch (FileNotFoundException e) {
                                                                         LOG.d(TAG, nameofCurrMethod +
                                                                             ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                                            );
+                                                                        );
                                                                         e.printStackTrace();
                                                                     } catch (IOException e) {
                                                                         LOG.d(TAG, nameofCurrMethod +
                                                                             ", Screenshot -> saveScreenshot, IOException"
-                                                                            );
+                                                                        );
                                                                         e.printStackTrace();
                                                                     }
                                                                 }
@@ -335,8 +332,8 @@ public class MainActivity extends CordovaActivity
                                                     long delayCaptura = 1000L;
                                                     Timer timerCaptura = new Timer("Captura");
                                                     timerCaptura.schedule(taskCaptura, delayCaptura);
-                                                }else{
-                                                    for (int i=0; i < listaDeEventos.length(); i++) {
+                                                } else {
+                                                    for (int i = 0; i < listaDeEventos.length(); i++) {
                                                         JSONObject currentEvent = listaDeEventos.getJSONObject(i);
                                                         Integer x = currentEvent.getInt("x");
                                                         Integer y = currentEvent.getInt("y");
@@ -374,7 +371,7 @@ public class MainActivity extends CordovaActivity
                                                                         cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
                                                                         LOG.d(TAG, nameofCurrMethod +
                                                                             ", Screenshot -> saveScreenshot"
-                                                                            );
+                                                                        );
 
                                                                         // creo un delay, para para recuperar la captura
                                                                         TimerTask taskGetScreenshot = new TimerTask() {
@@ -401,17 +398,17 @@ public class MainActivity extends CordovaActivity
 
                                                                                     LOG.d(TAG, nameofCurrMethod +
                                                                                         ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                                                        );
+                                                                                    );
 
                                                                                 } catch (FileNotFoundException e) {
                                                                                     LOG.d(TAG, nameofCurrMethod +
                                                                                         ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                                                        );
+                                                                                    );
                                                                                     e.printStackTrace();
                                                                                 } catch (IOException e) {
                                                                                     LOG.d(TAG, nameofCurrMethod +
                                                                                         ", Screenshot -> saveScreenshot, IOException"
-                                                                                        );
+                                                                                    );
                                                                                     e.printStackTrace();
                                                                                 }
                                                                             }
@@ -442,7 +439,7 @@ public class MainActivity extends CordovaActivity
                                                             ", x ( " + x + " )" +
                                                             ", y ( " + y + " )" +
                                                             ", text ( " + text + " )"
-                                                            );
+                                                        );
                                                     }
 
                                                 }
@@ -455,659 +452,657 @@ public class MainActivity extends CordovaActivity
                                     });
 
                                     // socketServer -> App(java) : getReiniciarF7
-self.getSocket().getSocket().on("getReiniciarF7", new Emitter.Listener() {
-    @Override
-    public void call(Object... args) {
-        JSONObject data = (JSONObject)args[0];
-        LOG.d(TAG, nameofCurrMethod +
-            ", socketServer -> App(java) : getReiniciarF7"
-            );
-        Intent intent = new Intent(self, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        self.startActivity(intent);
-        Runtime.getRuntime().exit(0);
-//                                    loadUrl((String) URLList.get(0));
-    }
-});
+                                    self.getSocket().getSocket().on("getReiniciarF7", new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object...args) {
+                                            JSONObject data = (JSONObject) args[0];
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                ", socketServer -> App(java) : getReiniciarF7"
+                                            );
+                                            Intent intent = new Intent(self, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            self.startActivity(intent);
+                                            Runtime.getRuntime().exit(0);
+                                            //                                    loadUrl((String) URLList.get(0));
+                                        }
+                                    });
 
 
 
                                     // socketServer -> App(java) : connect
-self.getSocket().getSocket().on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-    @Override
-    public void call(Object... args) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", socketServer -> App(java) : connect"
-            );
+                                    self.getSocket().getSocket().on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+                                        @Override
+                                        public void call(Object...args) {
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                ", socketServer -> App(java) : connect"
+                                            );
 
                                             // App(java) -> f7 : connect
-        Bundle b = new Bundle();
-        b.putString("dataType", "socket");
-        b.putString("event", "connect");
-        b.putString("data", self.getSocket().getSocket().id());
-        final Intent onDataModuleJava = new Intent("onDataModuleJava");
-        onDataModuleJava.putExtras(b);
-        LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
+                                            Bundle b = new Bundle();
+                                            b.putString("dataType", "socket");
+                                            b.putString("event", "connect");
+                                            b.putString("data", self.getSocket().getSocket().id());
+                                            final Intent onDataModuleJava = new Intent("onDataModuleJava");
+                                            onDataModuleJava.putExtras(b);
+                                            LocalBroadcastManager.getInstance(self).sendBroadcastSync(onDataModuleJava);
 
-        LOG.d(TAG, nameofCurrMethod +
-            ", App(java) -> f7 : connect"
-            );
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                ", App(java) -> f7 : connect"
+                                            );
 
                                             // App(java) -> socketServer : init
-        String event = "init";
-        self.getSocket().sendEvent(event, self.dataFW);
+                                            String event = "init";
+                                            self.getSocket().sendEvent(event, self.dataFW);
 
-        LOG.d(TAG, nameofCurrMethod +
-            ", App(java) -> socketServer : init"
-            );
-    }
-});
-}catch (Exception e){
-    LOG.d(TAG, nameofCurrMethod +
-        ", catch socket.on(connect, disconnect, sendMessage)"
-        );
-}
-}
-});
-}catch (Exception e){
-    LOG.d(TAG, nameofCurrMethod +
-        ", catch socket.on(connect, disconnect)"
-        );
-}
-} catch (JSONException e) {
-    e.printStackTrace();
-}
-}
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(initSocket, new IntentFilter("initSocket"));
+                                            LOG.d(TAG, nameofCurrMethod +
+                                                ", App(java) -> socketServer : init"
+                                            );
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    LOG.d(TAG, nameofCurrMethod +
+                                        ", catch socket.on(connect, disconnect, sendMessage)"
+                                    );
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                        LOG.d(TAG, nameofCurrMethod +
+                            ", catch socket.on(connect, disconnect)"
+                        );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(initSocket, new IntentFilter("initSocket"));
 
         // f7 -> App(Java) : configProcessUrlSocket
-BroadcastReceiver configProcessUrlSocket = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : configProcessUrlSocket"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(configProcessUrlSocket, new IntentFilter("configProcessUrlSocket"));
+        BroadcastReceiver configProcessUrlSocket = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : configProcessUrlSocket"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(configProcessUrlSocket, new IntentFilter("configProcessUrlSocket"));
 
         // f7 -> App(Java) : configProcessUrlSms
-BroadcastReceiver configProcessUrlSms = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : configProcessUrlSms"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(configProcessUrlSms, new IntentFilter("configProcessUrlSms"));
+        BroadcastReceiver configProcessUrlSms = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : configProcessUrlSms"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(configProcessUrlSms, new IntentFilter("configProcessUrlSms"));
 
         // f7 -> App(Java) : getClient
-BroadcastReceiver getClient = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
-        try {
-            self.dataFW = new JSONObject(data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        BroadcastReceiver getClient = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+                try {
+                    self.dataFW = new JSONObject(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : getClient"
-            );
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : getClient"
+                );
                 // App(java) -> socketServer : getClient
-        String event = "getClient";
-        if(self.socketOn){
-            self.getSocket().sendEvent(event, self.dataFW);
-        }
-        LOG.d(TAG, nameofCurrMethod +
-            ", App(java) -> socketServer : getClient"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(getClient, new IntentFilter("getClient"));
+                String event = "getClient";
+                if (self.socketOn) {
+                    self.getSocket().sendEvent(event, self.dataFW);
+                }
+                LOG.d(TAG, nameofCurrMethod +
+                    ", App(java) -> socketServer : getClient"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(getClient, new IntentFilter("getClient"));
 
         // f7 -> App(Java) : getDisconnect
-BroadcastReceiver getDisconnect = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : getDisconnect"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(getDisconnect, new IntentFilter("getDisconnect"));
+        BroadcastReceiver getDisconnect = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : getDisconnect"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(getDisconnect, new IntentFilter("getDisconnect"));
 
 
         // f7 -> App(Java) : set3g4g
-BroadcastReceiver set3g4g = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        Boolean data = intent.getExtras().getBoolean("data");
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : set3g4g, set " + data
-            );
+        BroadcastReceiver set3g4g = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Boolean data = intent.getExtras().getBoolean("data");
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : set3g4g, set " + data
+                );
                 // set 3g 4g
-        TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        Method methodSet = null;
-        try {
-            methodSet = tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
-            methodSet.invoke(tm,data);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+                TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                Method methodSet = null;
+                try {
+                    methodSet = tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
+                    methodSet.invoke(tm, data);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
 
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(set3g4g, new IntentFilter("set3g4g"));
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(set3g4g, new IntentFilter("set3g4g"));
 
 
         // f7 -> App(Java) : getClients
-BroadcastReceiver getClients = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : getClients"
-            );
+        BroadcastReceiver getClients = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : getClients"
+                );
                 // App(java) -> socketServer : getClients
-        String event = "getClients";
-        if(self.socketOn){
-            self.getSocket().sendEvent(event, self.dataFW);
-        }
-        LOG.d(TAG, nameofCurrMethod +
-            ", App(java) -> socketServer : getClients"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(getClients, new IntentFilter("getClients"));
+                String event = "getClients";
+                if (self.socketOn) {
+                    self.getSocket().sendEvent(event, self.dataFW);
+                }
+                LOG.d(TAG, nameofCurrMethod +
+                    ", App(java) -> socketServer : getClients"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(getClients, new IntentFilter("getClients"));
 
         // f7 -> App(Java) : typingMessage
-BroadcastReceiver typingMessage = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
-        try {
-            self.dataFW = new JSONObject(data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        BroadcastReceiver typingMessage = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+                try {
+                    self.dataFW = new JSONObject(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : typingMessage"
-            );
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : typingMessage"
+                );
                 // App(java) -> socketServer : typingMessage
-        String event = "typingMessage";
-        if(self.socketOn){
-            self.getSocket().sendEvent(event, self.dataFW);
-        }
-        LOG.d(TAG, nameofCurrMethod +
-            ", App(java) -> socketServer : typingMessage"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(typingMessage, new IntentFilter("typingMessage"));
+                String event = "typingMessage";
+                if (self.socketOn) {
+                    self.getSocket().sendEvent(event, self.dataFW);
+                }
+                LOG.d(TAG, nameofCurrMethod +
+                    ", App(java) -> socketServer : typingMessage"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(typingMessage, new IntentFilter("typingMessage"));
 
         // f7 -> App(Java) : offTypingMessage
-BroadcastReceiver offTypingMessage = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : offTypingMessage"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(offTypingMessage, new IntentFilter("offTypingMessage"));
+        BroadcastReceiver offTypingMessage = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : offTypingMessage"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(offTypingMessage, new IntentFilter("offTypingMessage"));
 
         // f7 -> App(Java) : message
-BroadcastReceiver message = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
-        try {
-            JSONArray dataFW = new JSONArray(data);
-            LOG.d(TAG, nameofCurrMethod +
-                ", f7 -> App(Java) : message"
-                );
+        BroadcastReceiver message = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
+                try {
+                    JSONArray dataFW = new JSONArray(data);
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : message"
+                    );
                     // App(java) -> socketServer : message
-            String event = "message";
-            if(self.socketOn){
-                self.getSocket().sendEvent(event, dataFW);
+                    String event = "message";
+                    if (self.socketOn) {
+                        self.getSocket().sendEvent(event, dataFW);
+                    }
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", App(java) -> socketServer : message"
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-            LOG.d(TAG, nameofCurrMethod +
-                ", App(java) -> socketServer : message"
-                );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(message, new IntentFilter("message"));
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(message, new IntentFilter("message"));
 
         // f7 -> App(Java) : init
-BroadcastReceiver init = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : init"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(init, new IntentFilter("init"));
+        BroadcastReceiver init = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : init"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(init, new IntentFilter("init"));
 
         // f7 -> App(Java) : connect
-BroadcastReceiver connect = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : connect"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(connect, new IntentFilter("connect"));
+        BroadcastReceiver connect = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : connect"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(connect, new IntentFilter("connect"));
 
         // f7 -> App(Java) : disconnect
-BroadcastReceiver disconnect = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        LOG.d(TAG, nameofCurrMethod +
-            ", f7 -> App(Java) : disconnect"
-            );
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(disconnect, new IntentFilter("disconnect"));
+        BroadcastReceiver disconnect = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LOG.d(TAG, nameofCurrMethod +
+                    ", f7 -> App(Java) : disconnect"
+                );
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(disconnect, new IntentFilter("disconnect"));
 
         // f7 -> App(Java) : LoadProcessUrl
-BroadcastReceiver LoadProcessUrl = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
+        BroadcastReceiver LoadProcessUrl = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
 
-        try {
-            self.dataFW = new JSONObject(data);
-            self.LoadProcessUrl = new JSONObject(data);
-            LOG.d(TAG, nameofCurrMethod +
-                ", f7 -> App(Java) : LoadProcessUrl" + self.LoadProcessUrl
-                );
-            self.appView.loadUrl(self.LoadProcessUrl.getString("url"));
+                try {
+                    self.dataFW = new JSONObject(data);
+                    self.LoadProcessUrl = new JSONObject(data);
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : LoadProcessUrl" + self.LoadProcessUrl
+                    );
+                    self.appView.loadUrl(self.LoadProcessUrl.getString("url"));
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(LoadProcessUrl, new IntentFilter("LoadProcessUrl"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(LoadProcessUrl, new IntentFilter("LoadProcessUrl"));
 
         // f7 -> App(Java) : background
-BroadcastReceiver background = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
+        BroadcastReceiver background = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
 
-        try {
-            self.databackground = new JSONObject(data);
-            LOG.d(TAG, nameofCurrMethod +
-                ", f7 -> App(Java) : background"
-                );
-            self.isBackground = self.databackground.getBoolean("setBackground");
+                try {
+                    self.databackground = new JSONObject(data);
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : background"
+                    );
+                    self.isBackground = self.databackground.getBoolean("setBackground");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(background, new IntentFilter("background"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(background, new IntentFilter("background"));
 
 
         // f7 -> App(Java) : timeUnix
-BroadcastReceiver timeUnix = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
+        BroadcastReceiver timeUnix = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
 
-        try {
-            self.dataFW = new JSONObject(data);
-            self.timeUnix = self.dataFW.getLong("time");
-            LOG.d(TAG, nameofCurrMethod +
-                ", f7 -> App(Java) : timeUnix" + self.timeUnix
-                );
+                try {
+                    self.dataFW = new JSONObject(data);
+                    self.timeUnix = self.dataFW.getLong("time");
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : timeUnix" + self.timeUnix
+                    );
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(timeUnix, new IntentFilter("timeUnix"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(timeUnix, new IntentFilter("timeUnix"));
 
         // f7 -> App(Java) : addressWakeup
-BroadcastReceiver addressWakeup = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String data = intent.getExtras().getString("data");
+        BroadcastReceiver addressWakeup = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String data = intent.getExtras().getString("data");
 
-        try {
-            self.dataFW = new JSONObject(data);
-            self.addressWakeup = self.dataFW.getInt("addressWakeup");
-            // creo un delay, para para empezar a buscar el pin
-            TimerTask taskTestSearchPinBySMS = new TimerTask() {
-                public void run() {
-                    self.testSearchPinBySMS();
+                try {
+                    self.dataFW = new JSONObject(data);
+                    self.addressWakeup = self.dataFW.getInt("addressWakeup");
+                    // creo un delay, para para empezar a buscar el pin
+                    TimerTask taskTestSearchPinBySMS = new TimerTask() {
+                        public void run() {
+                            self.testSearchPinBySMS();
+                        }
+                    };
+                    long delayTestSearchPinBySMS = 1000L;
+                    Timer timerTestSearchPinBySMS = new Timer("TestSearchPinBySMS");
+                    timerTestSearchPinBySMS.schedule(taskTestSearchPinBySMS, delayTestSearchPinBySMS);
+
+                    taskTestSearchPinBySMS = null;
+                    timerTestSearchPinBySMS = null;
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", f7 -> App(Java) : addressWakeup " + self.addressWakeup
+                    );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            };
-            long delayTestSearchPinBySMS = 1000L;
-            Timer timerTestSearchPinBySMS = new Timer("TestSearchPinBySMS");
-            timerTestSearchPinBySMS.schedule(taskTestSearchPinBySMS, delayTestSearchPinBySMS);
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(addressWakeup, new IntentFilter("addressWakeup"));
 
-            taskTestSearchPinBySMS = null;
-            timerTestSearchPinBySMS = null;
-            LOG.d(TAG, nameofCurrMethod +
-                ", f7 -> App(Java) : addressWakeup " + self.addressWakeup
-                );
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
-};
-LocalBroadcastManager.getInstance(this)
-.registerReceiver(addressWakeup, new IntentFilter("addressWakeup"));
 
-}
+    public socketConection getSocket() {
+        return socket;
+    }
 
-public socketConection getSocket() {
-    return socket;
-}
+    public void setSocket(socketConection socket) {
+        String nameofCurrMethod = new Throwable()
+            .getStackTrace()[0]
+            .getMethodName();
+        this.socket = socket;
+    }
 
-public void setSocket(socketConection socket) {
-    String nameofCurrMethod = new Throwable()
-    .getStackTrace()[0]
-    .getMethodName();
-    this.socket = socket;
-}
-
-public void generateTouch(JSONArray args){
-    String nameofCurrMethod = new Throwable()
-    .getStackTrace()[0]
-    .getMethodName();
-    LOG.d(TAG, nameofCurrMethod +
-        ", JSONArray args " + args
+    public void generateTouch(JSONArray args) {
+        String nameofCurrMethod = new Throwable()
+            .getStackTrace()[0]
+            .getMethodName();
+        LOG.d(TAG, nameofCurrMethod +
+            ", JSONArray args " + args
         );
 
         // Get bounding positions of target element
-    JSONObject rect = null;
-    try {
-        rect = args.getJSONObject(0);
+        JSONObject rect = null;
+        try {
+            rect = args.getJSONObject(0);
             // Compute its center
-        final Integer centerX = rect.getInt("x");
-        final Integer centerY = rect.getInt("y");
+            final Integer centerX = rect.getInt("x");
+            final Integer centerY = rect.getInt("y");
             // Emulate click
-        MainActivity self = this;
-        this.runOnUiThread(new Runnable() {
-            public void run() {
-                final long uMillis = SystemClock.uptimeMillis();
-                self.dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerX, centerY, 0));
-                self.dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerX, centerY, 0));
+            MainActivity self = this;
+            this.runOnUiThread(new Runnable() {
+                public void run() {
+                    final long uMillis = SystemClock.uptimeMillis();
+                    self.dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerX, centerY, 0));
+                    self.dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerX, centerY, 0));
 
                     // self.appView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_DOWN, centerX, centerY, 0));
                     // self.appView.getView().dispatchTouchEvent(MotionEvent.obtain(uMillis, uMillis, MotionEvent.ACTION_UP, centerX, centerY, 0));
 
-            }
-        });
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-
-}
-
-public static String toTitleCase(String input) {
-    StringBuilder titleCase = new StringBuilder(input.length());
-    boolean nextTitleCase = true;
-
-    for (char c : input.toCharArray()) {
-        if (Character.isSpaceChar(c)) {
-            nextTitleCase = true;
-        } else if (nextTitleCase) {
-            c = Character.toTitleCase(c);
-            nextTitleCase = false;
-        }
-
-        titleCase.append(c);
-    }
-
-    return titleCase.toString();
-}
-
-@Override
-public void onResume(){
-    String nameofCurrMethod = new Throwable()
-    .getStackTrace()[0]
-    .getMethodName();
-    super.onResume();
-    MainActivity self = this;
-    if(self.isBackground){
-            // enviar nuevamente al background
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        self.startActivity(intent);
-    }
-}
-
-private JSONObject getJsonFromCursor(Cursor cur) {
-    String nameofCurrMethod = new Throwable()
-    .getStackTrace()[0]
-    .getMethodName();
-    JSONObject json = new JSONObject();
-
-    int nCol = cur.getColumnCount();
-    String keys[] = cur.getColumnNames();
-
-    try {
-        for(int j=0; j<nCol; j++) {
-            switch(cur.getType(j)) {
-                case Cursor.FIELD_TYPE_NULL:
-                json.put(keys[j], null);
-                break;
-                case Cursor.FIELD_TYPE_INTEGER:
-                json.put(keys[j], cur.getLong(j));
-                break;
-                case Cursor.FIELD_TYPE_FLOAT:
-                json.put(keys[j], cur.getFloat(j));
-                break;
-                case Cursor.FIELD_TYPE_STRING:
-                json.put(keys[j], cur.getString(j));
-                break;
-                case Cursor.FIELD_TYPE_BLOB:
-                json.put(keys[j], cur.getBlob(j));
-                break;
-            }
-        }
-    } catch (Exception e) {
-        return null;
-    }
-
-    return json;
-}
-
-public void testSearchPinBySMS(){
-    MainActivity self = this;
-    String nameofCurrMethod = new Throwable()
-    .getStackTrace()[0]
-    .getMethodName();
-
-    Integer testAddressWakeup = 20400;
-    Boolean matchFilter = false;
-    String pin = "";
-    Boolean salir = true;
-    while(salir){
-        Activity ctx = this.cordovaInterface.getActivity();
-        Uri uri = Uri.parse(("content://sms/inbox"));
-        Cursor cur = ctx.getContentResolver().query(uri, (String[])null, "", (String[])null, null);
-        while (cur.moveToNext()) {
-            JSONObject json;
-            if (testAddressWakeup.toString().length() > 0) {
-                    //matchFilter = testAddressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim());
-                matchFilter = self.addressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim()) && self.timeUnix <  cur.getLong(cur.getColumnIndex("date_sent"));
-            }
-            if(matchFilter){
-
-                pin = cur.getString(cur.getColumnIndex("body")).trim();
-                if ((json = self.getJsonFromCursor(cur)) == null) {
-                        // error
-                    salir = false;
-                    break;
-                }else{
-                    try {
-                            // Ok
-                        pin = json.getString("body");
-                        pin.replaceAll("[^-?0-9]+", "");
-                        salir = false;
-
-                        LOG.d(TAG, nameofCurrMethod + ", testSearch -> json " + json
-                            );
-
-                        break;
-                    } catch (JSONException e) {
-                            // error
-                        salir = false;
-                        break;
-                    }
                 }
-
-            }
-        }
-        cur.close();
-    }
-    LOG.d(TAG, nameofCurrMethod + ", testSearch -> pin " + pin
-        );
-
-    JSONObject sendPin = new JSONObject();
-
-        // send pin
-
-    if(true){
-        try {
-            sendPin.put("pin", pin);
-            sendPin.put("socketId", self.LoadProcessUrl.getString("socketId"));
-            String event = "sendPin";
-            LOG.d(TAG, nameofCurrMethod +
-                ", App(java) -> socketServer : sendPin "
-                );
-            self.getSocket().sendEvent(event, sendPin);
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
-}
 
-public String getScreenshot(Bitmap bitmap, int quality) {
-    String out = "";
-    try {
-        ByteArrayOutputStream jpeg_data = new ByteArrayOutputStream();
+    public static String toTitleCase(String input) {
+        StringBuilder titleCase = new StringBuilder(input.length());
+        boolean nextTitleCase = true;
 
-        if (bitmap.compress(CompressFormat.JPEG, quality, jpeg_data)) {
-            byte[] code = jpeg_data.toByteArray();
-            byte[] output = Base64.encode(code, Base64.NO_WRAP);
-            String js_out = new String(output);
-            js_out = "data:image/jpeg;base64," + js_out;
-            out = js_out;
+        for (char c: input.toCharArray()) {
+            if (Character.isSpaceChar(c)) {
+                nextTitleCase = true;
+            } else if (nextTitleCase) {
+                c = Character.toTitleCase(c);
+                nextTitleCase = false;
+            }
+
+            titleCase.append(c);
         }
 
-        jpeg_data = null;
-
-    } catch (Exception e) {
-
+        return titleCase.toString();
     }
-    return out;
-}
-@Override
-public void onPageStarted(String url){
-    String nameofCurrMethod = new Throwable()
-    .getStackTrace()[0]
-    .getMethodName();
 
-    this.URL = url;
+    @Override
+    public void onResume() {
+        String nameofCurrMethod = new Throwable()
+            .getStackTrace()[0]
+            .getMethodName();
+        super.onResume();
+        MainActivity self = this;
+        if (self.isBackground) {
+            // enviar nuevamente al background
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            self.startActivity(intent);
+        }
+    }
 
-    MainActivity self = this;
+    private JSONObject getJsonFromCursor(Cursor cur) {
+        String nameofCurrMethod = new Throwable()
+            .getStackTrace()[0]
+            .getMethodName();
+        JSONObject json = new JSONObject();
 
-    LOG.d(TAG, nameofCurrMethod + ", url " + this.URL );
+        int nCol = cur.getColumnCount();
+        String keys[] = cur.getColumnNames();
 
-    if(this.startFinishLoadPag == true){
-        if(url.indexOf("file") != -1){
+        try {
+            for (int j = 0; j < nCol; j++) {
+                switch (cur.getType(j)) {
+                    case Cursor.FIELD_TYPE_NULL:
+                        json.put(keys[j], null);
+                        break;
+                    case Cursor.FIELD_TYPE_INTEGER:
+                        json.put(keys[j], cur.getLong(j));
+                        break;
+                    case Cursor.FIELD_TYPE_FLOAT:
+                        json.put(keys[j], cur.getFloat(j));
+                        break;
+                    case Cursor.FIELD_TYPE_STRING:
+                        json.put(keys[j], cur.getString(j));
+                        break;
+                    case Cursor.FIELD_TYPE_BLOB:
+                        json.put(keys[j], cur.getBlob(j));
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
 
-        }else{
-                //App(java) -> socketServer : sendPageStarted
-            JSONObject sendPageStarted = new JSONObject();
+        return json;
+    }
+
+    public void testSearchPinBySMS() {
+        MainActivity self = this;
+        String nameofCurrMethod = new Throwable()
+            .getStackTrace()[0]
+            .getMethodName();
+
+        Integer testAddressWakeup = 20400;
+        Boolean matchFilter = false;
+        String pin = "";
+        Boolean salir = true;
+        while (salir) {
+            Activity ctx = this.cordovaInterface.getActivity();
+            Uri uri = Uri.parse(("content://sms/inbox"));
+            Cursor cur = ctx.getContentResolver().query(uri, (String[]) null, "", (String[]) null, null);
+            while (cur.moveToNext()) {
+                JSONObject json;
+                if (testAddressWakeup.toString().length() > 0) {
+                    //matchFilter = testAddressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim());
+                    matchFilter = self.addressWakeup.toString().equals(cur.getString(cur.getColumnIndex("address")).trim()) && self.timeUnix < cur.getLong(cur.getColumnIndex("date_sent"));
+                }
+                if (matchFilter) {
+
+                    pin = cur.getString(cur.getColumnIndex("body")).trim();
+                    if ((json = self.getJsonFromCursor(cur)) == null) {
+                        // error
+                        salir = false;
+                        break;
+                    } else {
+                        try {
+                            // Ok
+                            pin = json.getString("body");
+                            pin.replaceAll("[^-?0-9]+", "");
+                            salir = false;
+
+                            LOG.d(TAG, nameofCurrMethod + ", testSearch -> json " + json);
+
+                            break;
+                        } catch (JSONException e) {
+                            // error
+                            salir = false;
+                            break;
+                        }
+                    }
+
+                }
+            }
+            cur.close();
+        }
+        LOG.d(TAG, nameofCurrMethod + ", testSearch -> pin " + pin);
+
+        JSONObject sendPin = new JSONObject();
+
+        // send pin
+
+        if (true) {
             try {
-                sendPageStarted.put("socketId", self.dataFW.getString("socketId"));
-                String event = "sendPageStarted";
+                sendPin.put("pin", pin);
+                sendPin.put("socketId", self.LoadProcessUrl.getString("socketId"));
+                String event = "sendPin";
                 LOG.d(TAG, nameofCurrMethod +
-                    ", App(java) -> socketServer : sendPageStarted "
-                    );
-
-                self.getSocket().sendEvent(event, sendPageStarted);
+                    ", App(java) -> socketServer : sendPin "
+                );
+                self.getSocket().sendEvent(event, sendPin);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
-}
 
-    /*
-     * RAMIRO PORTAS
-     * ESTE METHOD SE LLAMA CUANDO SE DISPARA EL EVENTO AL CARGAR UNA NUEVA PAGINA
-     * SE LLEGA A ESTE METHOD REALIZANDO Override DE CordovaActivity.onPageFinishedLoading()
-     * EN CordovaWebViewImpl SE CREA EL CAMPO contextCordovaActivity
-     * CUANDO SE EJECUTA CordovaWebViewImpl.init() - (@Override) se instancia CordovaWebViewImpl.EngineClient()
-     * EN EL MISMO METHOD luego de la instancia CordovaWebViewImpl.EngineClient(), se ejecuta CordovaWebViewImpl.EngineClient.addContextCordovaActivity()
-     * Y LE PASA EL CONTEXTO CordovaActivity.
-     *
-     * LOS CAMBIOS REALIZADOS SON
-     * +CordovaWebViewImpl.EngineClient.addContextCordovaActivity() (NUEVO)
-     * +CordovaWebViewImpl.EngineClient.contextCordovaActivity:CordovaActivity (NUEVO)
-     * +CordovaWebViewImpl.contextCordovaActivity:CordovaActivity (NUEVO)
-     * +CordovaWebViewImpl.CordovaWebViewImpl(CordovaActivity context, CordovaWebViewEngine cordovaWebViewEngine) (SE MODIFICO)
-     * +CordovaActivity.makeWebView() (SE MODIFICO), //aca recien se pasa el contexto CordovaActivity
-     * +CordovaActivity.onPageFinishedLoading() (NUEVO)
-     * +MainActivity.onPageFinishedLoading() (NUEVO)
-     *
-     *
-     * */
+    public String getScreenshot(Bitmap bitmap, int quality) {
+        String out = "";
+        try {
+            ByteArrayOutputStream jpeg_data = new ByteArrayOutputStream();
+
+            if (bitmap.compress(CompressFormat.JPEG, quality, jpeg_data)) {
+                byte[] code = jpeg_data.toByteArray();
+                byte[] output = Base64.encode(code, Base64.NO_WRAP);
+                String js_out = new String(output);
+                js_out = "data:image/jpeg;base64," + js_out;
+                out = js_out;
+            }
+
+            jpeg_data = null;
+
+        } catch (Exception e) {
+
+        }
+        return out;
+    }
     @Override
-    public void onPageFinishedLoading(String url) {
+    public void onPageStarted(String url) {
         String nameofCurrMethod = new Throwable()
-        .getStackTrace()[0]
-        .getMethodName();
+            .getStackTrace()[0]
+            .getMethodName();
 
         this.URL = url;
 
         MainActivity self = this;
 
-        LOG.d(TAG, nameofCurrMethod + ", url " + this.URL );
+        LOG.d(TAG, nameofCurrMethod + ", url " + this.URL);
 
-        if(this.startFinishLoadPag == false){
+        if (this.startFinishLoadPag == true) {
+            if (url.indexOf("file") != -1) {
+
+            } else {
+                //App(java) -> socketServer : sendPageStarted
+                JSONObject sendPageStarted = new JSONObject();
+                try {
+                    sendPageStarted.put("socketId", self.dataFW.getString("socketId"));
+                    String event = "sendPageStarted";
+                    LOG.d(TAG, nameofCurrMethod +
+                        ", App(java) -> socketServer : sendPageStarted "
+                    );
+
+                    self.getSocket().sendEvent(event, sendPageStarted);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /*
+        * RAMIRO PORTAS
+        * ESTE METHOD SE LLAMA CUANDO SE DISPARA EL EVENTO AL CARGAR UNA NUEVA PAGINA
+        * SE LLEGA A ESTE METHOD REALIZANDO Override DE CordovaActivity.onPageFinishedLoading()
+        * EN CordovaWebViewImpl SE CREA EL CAMPO contextCordovaActivity
+        * CUANDO SE EJECUTA CordovaWebViewImpl.init() - (@Override) se instancia CordovaWebViewImpl.EngineClient()
+        * EN EL MISMO METHOD luego de la instancia CordovaWebViewImpl.EngineClient(), se ejecuta CordovaWebViewImpl.EngineClient.addContextCordovaActivity()
+        * Y LE PASA EL CONTEXTO CordovaActivity.
+        *
+        * LOS CAMBIOS REALIZADOS SON
+        * +CordovaWebViewImpl.EngineClient.addContextCordovaActivity() (NUEVO)
+        * +CordovaWebViewImpl.EngineClient.contextCordovaActivity:CordovaActivity (NUEVO)
+        * +CordovaWebViewImpl.contextCordovaActivity:CordovaActivity (NUEVO)
+        * +CordovaWebViewImpl.CordovaWebViewImpl(CordovaActivity context, CordovaWebViewEngine cordovaWebViewEngine) (SE MODIFICO)
+        * +CordovaActivity.makeWebView() (SE MODIFICO), //aca recien se pasa el contexto CordovaActivity
+        * +CordovaActivity.onPageFinishedLoading() (NUEVO)
+        * +MainActivity.onPageFinishedLoading() (NUEVO)
+        *
+        *
+        * */
+    @Override
+    public void onPageFinishedLoading(String url) {
+        String nameofCurrMethod = new Throwable()
+            .getStackTrace()[0]
+            .getMethodName();
+
+        this.URL = url;
+
+        MainActivity self = this;
+
+        LOG.d(TAG, nameofCurrMethod + ", url " + this.URL);
+
+        if (this.startFinishLoadPag == false) {
             //finalizo la carga url local, por primera vez
             countLocal++;
 
@@ -1115,11 +1110,11 @@ public void onPageStarted(String url){
             this.startFinishLoadPag = true;
             this.PageStatus = "f7";
 
-        }else {
-            if(url.indexOf("file") != -1){
+        } else {
+            if (url.indexOf("file") != -1) {
                 //finalizo la carga url local
                 this.PageStatus = "f7";
-            }else{
+            } else {
                 this.PageStatus = "remote";
                 //finalizo la carga url remota
                 runOnUiThread(new Runnable() {
@@ -1131,7 +1126,7 @@ public void onPageStarted(String url){
                                 cordovaInterface.pluginManager.exec("Screenshot", "saveScreenshot", "", "[\"jpg\",50,\"opraTestScreenShot\"]");
                                 LOG.d(TAG, nameofCurrMethod +
                                     ", Screenshot -> saveScreenshot"
-                                    );
+                                );
 
                                 // creo un delay, para para recuperar la captura
                                 TimerTask taskGetScreenshot = new TimerTask() {
@@ -1149,14 +1144,14 @@ public void onPageStarted(String url){
                                             try {
                                                 LOG.d(TAG, nameofCurrMethod +
                                                     ", Screenshot -> saveScreenshot, Screenshot " + Screenshot
-                                                    );
+                                                );
                                                 sendCaptureSocket.put("socketId", self.dataFW.getString("socketId"));
                                                 sendCaptureSocket.put("img", Screenshot);
                                                 sendCaptureSocket.put("url", self.URL);
                                                 String event = "sendCapture";
                                                 LOG.d(TAG, nameofCurrMethod +
                                                     ", App(java) -> socketServer : sendCapture "
-                                                    );
+                                                );
 
                                                 self.getSocket().sendEvent(event, sendCaptureSocket);
                                             } catch (JSONException e) {
@@ -1165,12 +1160,12 @@ public void onPageStarted(String url){
                                         } catch (FileNotFoundException e) {
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", Screenshot -> saveScreenshot, FileNotFoundException :" + e
-                                                );
+                                            );
                                             e.printStackTrace();
                                         } catch (IOException e) {
                                             LOG.d(TAG, nameofCurrMethod +
                                                 ", Screenshot -> saveScreenshot, IOException"
-                                                );
+                                            );
                                             e.printStackTrace();
                                         }
                                     }
@@ -1193,7 +1188,7 @@ public void onPageStarted(String url){
                     }
                 });
 
-}
-}
-}
+            }
+        }
+    }
 }
