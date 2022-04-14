@@ -146,7 +146,7 @@
     "framework7-vue": "^4.4.10",
     "template7": "^1.4.2",
     "vue": "^2.6.10",
-    "async": "^3.1.0"
+    "async": "^3.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
